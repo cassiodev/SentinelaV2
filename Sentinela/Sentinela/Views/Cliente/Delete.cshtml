@@ -1,0 +1,61 @@
+﻿@model Sentinela.Models.Cliente
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Excluir</h2>
+
+<h3>Tem certeza que deseja excluir este registro?</h3><br/><br/>
+<fieldset>
+    <legend>Cliente</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Cidade.Nome):
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Cidade.Nome)
+    </div><br/>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Logradouro):
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Logradouro)
+    </div><br/>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Numero):
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Numero)
+    </div><br/>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Cpf):
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Cpf)
+    </div><br/>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Celular):
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Celular)
+    </div><br/>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Telefone):
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Telefone)
+    </div><br/>
+</fieldset>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="Excluir" /> |
+        @Html.ActionLink("Voltar", "Index")
+    </p>
+}

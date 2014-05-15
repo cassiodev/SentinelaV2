@@ -1,0 +1,46 @@
+﻿@model Sentinela.Models.Evento
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Ajax.BeginForm("Create","Evento",null , new AjaxOptions() { HttpMethod = "POST" }))
+{
+    @Html.AntiForgeryToken()
+
+    <fieldset>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OrcamentoId, "Orcamento")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(m => m.OrcamentoId)
+            @Html.ValidationMessageFor(model => model.OrcamentoId)
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Data)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Data, new { disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.Data)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Observacao)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Observacao)
+            @Html.ValidationMessageFor(model => model.Observacao)
+        </div>
+
+        <p>
+            <input type="submit" value="Salvar" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Voltar", "Index")
+</div>
+

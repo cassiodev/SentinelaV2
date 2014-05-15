@@ -1,0 +1,108 @@
+﻿@model Sentinela.Models.Cliente
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Editar</h2><br/>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Cliente</legend>
+
+        @Html.HiddenFor(model => model.ClienteId)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CidadeId, "Cidade")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("CidadeId", String.Empty)
+            @Html.ValidationMessageFor(model => model.CidadeId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Logradouro)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Logradouro)
+            @Html.ValidationMessageFor(model => model.Logradouro)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Numero)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Numero)
+            @Html.ValidationMessageFor(model => model.Numero)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Cpf)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Cpf)
+            @Html.ValidationMessageFor(model => model.Cpf)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Celular)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Celular)
+            @Html.ValidationMessageFor(model => model.Celular)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Telefone)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Telefone)
+            @Html.ValidationMessageFor(model => model.Telefone)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Cidade.Estado.EstadoId, "Estado")
+        </div>
+
+        <div class="editor-field">
+            @Html.DropDownList("EstadoId", String.Empty)
+            @Html.ValidationMessageFor(model => model.Cidade.Estado)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CidadeId, "Cidade")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(m => m.CidadeId, new List<SelectListItem>())
+            @Html.ValidationMessageFor(model => model.CidadeId)
+        </div>
+
+        <p>
+            <input type="submit" value="Salvar" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Voltar", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(document).ready(function () {
+        $('#EstadoId').change(function () {
+            $.get('/Cidade/GetCidades', { estadoId: $(this).val() }, function (data) {
+                $("#CidadeId").html('');
+                $("#CidadeId").append($("<option></option>").val(null).html('[Selecione]'))
+                for (var i in data) {
+                    $("#CidadeId").append($("<option></option>").val(data[i].id).html(data[i].text))
+                }
+            }, 'json');
+        });
+    });
+    </script>
+}

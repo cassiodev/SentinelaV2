@@ -1,0 +1,68 @@
+﻿@model Sentinela.Models.Usuario
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Novo</h2><br/>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Usuario</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Pessoa.Nome)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Pessoa.Nome)
+            @Html.ValidationMessageFor(model => model.Pessoa.Nome)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Pessoa.Email)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Pessoa.Email)
+            @Html.ValidationMessageFor(model => model.Pessoa.Email)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Senha)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Senha)
+            @Html.ValidationMessageFor(model => model.Senha)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Login)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Login)
+            @Html.ValidationMessageFor(model => model.Login)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Ativo)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Ativo)
+            @Html.ValidationMessageFor(model => model.Ativo)
+        </div>
+
+        <p>
+            <input type="submit" value="Salvar" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Voltar", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

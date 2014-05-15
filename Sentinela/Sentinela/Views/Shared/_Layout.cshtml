@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - Sentinela</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/bootstrap.css")
+        @Styles.Render("~/Content/bootstrap-theme.css")
+
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title">@Html.ActionLink("Área Admin", "Index", "Admin")</p>
+                </div>
+                <div class="float-right">
+
+                    <nav>
+                        <ul id="menu">
+                            <li style="position: relative;" class="topLista">
+                                <a data-toggle="dropdown" href="#">
+                                    Cadastros <span class="caret"></span>
+                                </a>
+                                <ul class="minhaLista" role="menu">
+                                    <li>@Html.ActionLink("Adicionais", "Index", "Adicional")</li>
+                                    <li>@Html.ActionLink("Item", "Index", "Item")</li>
+                                    <li>@Html.ActionLink("Refeições", "Index", "Refeicao")</li>   
+                                </ul>
+                            </li>
+                            
+                            <li>@Html.ActionLink("Cardapios", "Index", "Cardapio")</li>
+                            <li>@Html.ActionLink("Clientes", "Index", "Cliente")</li>
+                            <li>@Html.ActionLink("Eventos", "Index", "Evento")</li>
+                            <li>@Html.ActionLink("Locais", "Index", "Local")</li>
+                            <li>@Html.ActionLink("Orçamentos", "Index", "Orcamento")</li>
+                            <li style="position: relative;" class="topLista">
+                                <a data-toggle="dropdown" href="#">
+                                    Configs <span class="caret"></span>
+                                </a>
+                                <ul class="minhaLista" role="menu">
+                                    <li>@Html.ActionLink("Usuários", "Index", "Usuario")</li>
+                                    <li>@Html.ActionLink("Cidades", "Index", "Cidade")</li>
+                                </ul>
+                            </li>
+                            
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            <section class="content-wrapper main-content clear-fix">
+                @RenderBody()
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - Sentinela</p>
+                </div>
+            </div>
+        </footer>
+
+                @*@Scripts.Render("~/bundles/jquery")*@
+        <script src="~/Scripts/jquery.js"></script>
+        @Scripts.Render("~/bundles/modernizr")
+
+        <script src="~/Scripts/globalize/globalize.js"></script>
+        <script src="~/Scripts/globalize/cultures/globalize.culture.@(System.Threading.Thread.CurrentThread.CurrentCulture.Name).js"></script>
+
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/jquery.tablesorter.js"></script>
+        @RenderSection("scripts", required: false)
+        @if (TempData["message"] != null)
+        {
+            <script type="text/javascript">
+                      @*alert(@Html.Raw(Json.Encode(TempData["message"])));*@
+
+                alert(@Html.Raw(Json.Encode(TempData["message"])));
+
+                
+            </script>
+        }
+        <script>
+            $(document).ready(function () {
+                $(".topLista").click(function () {
+                    $(this).children(".minhaLista").hide();
+                });
+                $(".topLista").hover(function () { $(this).children(".minhaLista").show(); }, function () { $(this).children(".minhaLista").hide(); });
+                $(".tablesorter").tablesorter();
+            });
+        </script>
+    </body>
+
+</html>

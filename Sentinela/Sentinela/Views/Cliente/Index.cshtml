@@ -1,0 +1,85 @@
+﻿@model PagedList.IPagedList<Sentinela.Models.Cliente>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2><br/>
+
+<p>
+    @Html.ActionLink("Novo", "Create")
+</p>
+
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Pessoa.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Pessoa.Email)
+        </th>
+        <th>
+            Cidade
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Logradouro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Numero)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Cpf)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Celular)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Telefone)
+        </th>
+        <th style="text-align: center;">Ações</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pessoa.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pessoa.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cidade.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Logradouro)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Numero)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cpf)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Celular)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Telefone)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.ClienteId }) |
+            @Html.ActionLink("Detalhes", "Details", new { id=item.ClienteId }) |
+            @Html.ActionLink("Excluir", "Delete", new { id=item.ClienteId })
+        </td>
+    </tr>
+}
+
+</table>
+
+<br />
+
+Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+

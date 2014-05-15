@@ -1,0 +1,37 @@
+﻿@model Sentinela.Models.Usuario
+
+@{
+    ViewBag.Title = "Login";
+}
+
+
+<hgroup class="title">
+    <h1>Autenticação Necessária!</h1>
+</hgroup>
+
+<section id="loginForm">
+    @using (Html.BeginForm(new { ReturnUrl = ViewBag.returnUrl }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <fieldset>
+            <legend>Log in Form</legend>
+            <ol>
+                <li>
+                    @Html.LabelFor(m => m.Login)
+                    @Html.TextBoxFor(m => m.Login)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Senha)
+                    @Html.PasswordFor(m => m.Senha)
+                </li>
+            </ol>
+            <input type="submit" value="Entrar" />
+        </fieldset>
+    }
+</section>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

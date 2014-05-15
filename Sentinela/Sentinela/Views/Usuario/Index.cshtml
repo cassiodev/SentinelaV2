@@ -1,0 +1,61 @@
+﻿@model PagedList.IPagedList<Sentinela.Models.Usuario>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2><br/>
+
+<p>
+    @Html.ActionLink("Novo", "Create")
+</p>
+
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Pessoa.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Pessoa.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Login)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Ativo)
+        </th>
+        <th style="text-align: center;">Ações</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pessoa.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pessoa.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Login)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ativo)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.UsuarioId }) |
+            @Html.ActionLink("Detalhes", "Details", new { id=item.UsuarioId }) |
+            @Html.ActionLink("Excluir", "Delete", new { id=item.UsuarioId })
+        </td>
+    </tr>
+}
+
+</table>
+
+<br />
+
+Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+

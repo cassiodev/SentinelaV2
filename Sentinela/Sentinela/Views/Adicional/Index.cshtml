@@ -1,0 +1,43 @@
+﻿@model PagedList.IPagedList<Sentinela.Models.Adicional>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2><br/>
+
+<p>
+    @Html.ActionLink("Novo", "Create")
+</p>
+
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Nome)
+        </th>
+        <th style="text-align: center;">Ações</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nome)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.AdicionalId }) |
+            @Html.ActionLink("Detalhes", "Details", new { id=item.AdicionalId }) |
+            @Html.ActionLink("Excluir", "Delete", new { id=item.AdicionalId })
+        </td>
+    </tr>
+}
+
+</table>
+
+<br />
+
+Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+

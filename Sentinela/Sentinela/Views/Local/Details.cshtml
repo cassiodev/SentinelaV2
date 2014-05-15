@@ -1,0 +1,114 @@
+﻿@model Sentinela.Models.Local
+
+@{
+    ViewBag.Title = "Detalhes - " + Model.Nome;
+}
+<link href="~/Content/jquery.fileupload-ui.css" rel="stylesheet" />
+<h2>Detalhes - @Model.Nome</h2>
+
+<fieldset>
+    <legend>Local</legend><br /><br />
+
+    <div class="display-label">
+         Cidade:
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Cidade.Nome)
+    </div><br />
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nome):
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nome)
+    </div><br />
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Tamanho):
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Tamanho) m²
+    </div><br />
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Capacidade):
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Capacidade) pessoas
+    </div><br />
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Logradouro):
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Logradouro)
+    </div><br />
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Numero):
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Numero)
+    </div><br />
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Ativo):
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Ativo)
+    </div><br />
+
+    <div class="display-label">
+        Fotos:
+    </div>
+    <div class="display-field">
+        <a href="javascript:;" data-id="@Model.LocalId" class="foto">Album</a>
+    </div><br />
+</fieldset>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id=Model.LocalId }) |
+    @Html.ActionLink("Voltar", "Index")
+</p>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Fotos do item</h4>
+            </div>
+
+            <div class="modal-body" id="fotos">
+            </div>
+
+            <div class="modal-footer" id="modal-footer">
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@section scripts{
+<script src="~/Scripts/jquery.uploadfile.min.js"></script>
+
+<script>
+$(document).ready(function () {
+
+
+    $('.foto').click(function () {
+        $("#myModal").modal();
+
+        $("#fotos").html('<h4>Carregando...</h4>');
+        $(".btn-adicionar").attr("data-id", $(this).attr("data-id"));
+        var that = this;
+
+        $.get("/Imagem/Index", { id: $(that).attr("data-id"), classe: 'local' }, function (data) {
+            debugger;
+            $("#fotos").html(data);
+        }, 'html');
+    });
+});
+</script>    
+    }

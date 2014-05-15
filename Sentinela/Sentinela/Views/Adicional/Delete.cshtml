@@ -1,0 +1,26 @@
+﻿@model Sentinela.Models.Adicional
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Excluir</h2>
+
+<h3>Tem certeza que deseja excluir este registro?</h3><br/><br/>
+<fieldset>
+    <legend>Adicional</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nome):
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nome)
+    </div><br/>
+</fieldset>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="Excluir" /> |
+        @Html.ActionLink("Voltar", "Index")
+    </p>
+}

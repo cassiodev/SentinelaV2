@@ -1,0 +1,85 @@
+﻿@model Sentinela.Models.Orcamento
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Orcamento</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Cliente.Logradouro)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Cliente.Logradouro)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Local.Nome)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Local.Nome)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DataOrcamento)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DataOrcamento)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DataEvento)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DataEvento)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DataAlteracao)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DataAlteracao)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Situacao)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Situacao)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Convidados)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Convidados)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Periodo)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Periodo)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.TipoEvento.TipoEventoId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TipoEvento.TipoEventoId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Orcamentocol)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Orcamentocol)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.OrcamentoId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

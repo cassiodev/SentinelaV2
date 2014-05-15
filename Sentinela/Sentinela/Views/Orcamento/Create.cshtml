@@ -1,0 +1,108 @@
+﻿@model Sentinela.Models.Orcamento
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Novo</h2><br/>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Orcamento</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ClienteId, "Cliente")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ClienteId", String.Empty)
+            @Html.ValidationMessageFor(model => model.ClienteId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LocalId, "Local")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("LocalId", String.Empty)
+            @Html.ValidationMessageFor(model => model.LocalId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DataOrcamento)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DataOrcamento)
+            @Html.ValidationMessageFor(model => model.DataOrcamento)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DataEvento)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DataEvento)
+            @Html.ValidationMessageFor(model => model.DataEvento)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DataAlteracao)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DataAlteracao)
+            @Html.ValidationMessageFor(model => model.DataAlteracao)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Situacao)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Situacao)
+            @Html.ValidationMessageFor(model => model.Situacao)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Convidados)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Convidados)
+            @Html.ValidationMessageFor(model => model.Convidados)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Periodo)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Periodo)
+            @Html.ValidationMessageFor(model => model.Periodo)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TipoEventoId, "TipoEvento")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("TipoEventoId", String.Empty)
+            @Html.ValidationMessageFor(model => model.TipoEventoId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Orcamentocol)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Orcamentocol)
+            @Html.ValidationMessageFor(model => model.Orcamentocol)
+        </div>
+
+        <p>
+            <input type="submit" value="Salvar" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Voltar", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

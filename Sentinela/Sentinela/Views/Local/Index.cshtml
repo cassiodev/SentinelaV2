@@ -1,0 +1,117 @@
+﻿@model PagedList.IPagedList<Sentinela.Models.Local>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<link href="~/Content/jquery.fileupload-ui.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Locais</h2><br/>
+
+<p>
+    @Html.ActionLink("Novo", "Create")
+</p>
+
+<table class="tablesorter">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Nome)
+        </th>
+        <th>
+            Cidade
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Tamanho)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Ativo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Capacidade)
+        </th>
+        <th>
+            Album
+        </th>
+        <th style="text-align: center;">Ações</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cidade.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tamanho) m²
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ativo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capacidade) pessoas
+            </td>
+            <td>
+                <a href="javascript:;" data-id="@item.LocalId" class="foto">Fotos (<span id="count-@item.LocalId">@item.Imagem.Count</span>)</a>
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.LocalId }) |
+                @Html.ActionLink("Detalhes", "Details", new { id = item.LocalId }) |
+                @Html.ActionLink("Excluir", "Delete", new { id = item.LocalId })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<br />
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Fotos do item</h4>
+            </div>
+
+            <div class="modal-body" id="fotos">
+            </div>
+
+            <div class="modal-footer" id="modal-footer">
+                
+                
+            </div>
+
+        </div>
+    </div>
+</div>
+
+Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
+@section scripts{
+<script src="~/Scripts/jquery.uploadfile.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+
+            $('.foto').click(function () {
+                $("#myModal").modal();
+
+                $("#fotos").html('<h4>Carregando...</h4>');
+                $(".btn-adicionar").attr("data-id", $(this).attr("data-id"));
+                var that = this;
+
+                $.get("/Imagem/Index", { id: $(that).attr("data-id"), entidade: 'local' }, function (data) {
+                    $("#fotos").html(data);
+                }, 'html');
+            });
+        });
+        
+    </script>
+    }

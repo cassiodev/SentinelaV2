@@ -1,0 +1,43 @@
+﻿@model Sentinela.Models.Imagem
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Imagem</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Local.Logradouro)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Local.Logradouro)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Cardapio.Nome)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Cardapio.Nome)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Url)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Url)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.principal)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.principal)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ImagemId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

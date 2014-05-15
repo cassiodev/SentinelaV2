@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Sentinela.Models.Imagem>
+
+<div>
+    <script>
+    $(document).ready(function () {
+        $(".modal-title").html('@ViewBag.Titulo - Fotos')
+        $(".modal-footer").html('<div id="multiplefileuploader">Carregar</div><div id="status" style="display:block"></div>');
+
+        var settings = {
+            url: "/Imagem/Create?entidade=@ViewBag.Classe&id=@ViewBag.ItemId",
+            method: "POST",
+            allowedTypes: "jpg,png,gif",
+            multiple: true,
+            onSuccess: function (files, data, xhr) {
+                $(".ajax-file-upload-statusbar").attr("style", "display:none");
+                $("#fotos").html(data);
+            },
+            onError: function (files, status, errMsg) {
+                $("#status").html("<font color='red'>Falha no envio. " + errMsg + "</font>");
+            }
+        }
+
+        $("#multiplefileuploader").uploadFile(settings);
+
+        $(".btn-excluir-foto").click(function () {
+            var that = this;
+            var idd = $(this).attr("data-id");
+            $.post("/Imagem/Delete", { id: idd, __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val() }, function () {
+                $(that).parent().parent().slideUp();
+
+                
+                var nums = $("#count-@ViewBag.ItemId").html();
+                nums = nums - 1;
+                $("#count-@ViewBag.ItemId").html(nums)
+            },"json");
+        });
+
+        $("#count-@ViewBag.ItemId").html(@ViewBag.Qtd);
+    });
+
+</script>
+    @if (Model.Count() > 0)
+    {
+        @Html.AntiForgeryToken()
+        foreach (var item in Model)
+        {
+            <div style="display: inline-block; margin: 10px 0 10px 0; width: 172px">
+                <div>
+                    <img src="@String.Format("{0}",string.IsNullOrEmpty(item.Url) ? "#" : item.Url)" style="width: 172px; height: 172px;" />
+                </div>
+                <div style="text-align: center; ">
+                    <a href="javascript:;" data-id="@item.ImagemId" style="color:red;" class="btn-excluir-foto">Excluir</a>
+                </div>
+            </div>
+        
+        }
+    }
+    else
+    {
+        <p>Sem fotos</p>
+    }
+</div>
+
