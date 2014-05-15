@@ -320,29 +320,28 @@
     }
 
     $(document).ready(function () {
-        changeYear();
+
+        if ($('#ano').text() == '') {
+            ano = parseInt('@ViewBag.Ano');
+            $('#ano').text(ano);
+        }
+        else {
+            ano = $('#ano').text();
+        }
+        changeYear(ano);
 
     });
 
-    function changeYear() {
-        var _ano = '';
+    function changeYear(ano) {
         
-        if ($('#ano').text() == '') {
-            _ano = parseInt('@DateTime.Now.Year');
-            $('#ano').text(_ano);
-        }
-        else {
-            _ano = $('#ano').text();
-        }
-
         $.post('/Evento/GetEventos',
             {
-                ano: _ano,
+                ano: ano,
                 localId: $('#localId').val(),
                 __RequestVerificationToken: $('input[name=__RequestVerificationToken]').val()
             },
             function (data) {
-                gerarCalendario($("#calendarioAnual"), data, _ano,
+                gerarCalendario($("#calendarioAnual"), data, ano,
                     function (item) {
                         // essa funcao é executada quando se clica num feriado
                         alert('Clicou no item:' + item.id + 'descricao:' + item.descricao);
@@ -354,16 +353,16 @@
                     var ano = parseInt(String($('#ano').text()));
                     ano--;
                     $('#ano').text(ano);
-                    changeYear();
+                    changeYear(ano);
                 });
                 $('.nextYear').click(function () {
                     var ano = parseInt(String($('#ano').text()));
                     ano++;
                     $('#ano').text(ano);
-                    changeYear();
+                    changeYear(ano);
                 });
 
-                $('#ano').text(_ano);
+                $('#ano').text(ano);
 
                 $('.day').click(function () {
                     if (!$(this).hasClass('past') && !$(this).hasClass('feriado')) {

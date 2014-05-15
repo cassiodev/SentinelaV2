@@ -4,7 +4,7 @@
     ViewBag.Title = "Create";
 }
 
-@using (Ajax.BeginForm("Create","Evento",null , new AjaxOptions() { HttpMethod = "POST" }))
+@using (Ajax.BeginForm("Create", "Evento", null, new AjaxOptions() { HttpMethod = "POST", OnComplete = "onComplete", OnFailure = "onFailure",  }))
 {
     @Html.AntiForgeryToken()
 
@@ -44,3 +44,13 @@
     @Html.ActionLink("Voltar", "Index")
 </div>
 
+<script>
+    function onComplete(data) {
+        alert(data.msg);
+        $('#myModal').modal("hide");
+        changeYear(data.ano);
+    }
+    function onFailure(data) {
+        alert('Erro na conexão!');
+    }
+</script>
