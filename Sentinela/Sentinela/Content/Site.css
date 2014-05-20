@@ -93,6 +93,10 @@ h5, h6 {
 
 /* main layout
 ----------------------------------------------------------*/
+.disabled {
+        cursor: not-allowed !important;
+        background-color: rgb(235, 235, 228) !important;
+    }
 .content-wrapper {
     margin: 0 auto;
     max-width: 960px;
@@ -424,7 +428,7 @@ label.checkbox {
     display: inline;
 }
 
-input, textarea {
+input, select, textarea {
     border: 1px solid #e2e2e2;
     background: #fff;
     color: #333;

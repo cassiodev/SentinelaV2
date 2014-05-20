@@ -1,30 +1,51 @@
 ﻿@model Sentinela.Models.Evento
 
-@{
-    ViewBag.Title = "Create";
-}
-
-@using (Ajax.BeginForm("Create", "Evento", null, new AjaxOptions() { HttpMethod = "POST", OnComplete = "onComplete", OnFailure = "onFailure",  }))
+@using (Ajax.BeginForm("Create", "Evento", null, new AjaxOptions() { HttpMethod = "POST", OnComplete = "onComplete",OnSuccess = "onSuccess", OnFailure = "onFailure", OnBegin = "showLoader" }, new { @id = "formEvento" }))
 {
     @Html.AntiForgeryToken()
 
     <fieldset>
         
         <div class="editor-label">
-            @Html.LabelFor(model => model.OrcamentoId, "Orcamento")
+            @Html.LabelFor(model => model.LocalId, "Local")
+        </div>
+        <div class="editor-field">
+            <select name="LocalId" id="LocalEvento">
+                @foreach (var local in ViewBag.Local)
+                {
+                    <option value="@local.LocalId" @String.Format("{0}", Model.LocalId == local.LocalId ? "selected=selected"    : "")> @local.Nome</option>
+                }
+            </select>
+        </div>
+
+        
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Data)
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("Data",Model.Data.ToShortDateString())
+            @Html.ValidationMessageFor(model => model.Data)
+        </div>
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OrcamentoId, "Nº Orcamento")
         </div>
         <div class="editor-field">
             @Html.EditorFor(m => m.OrcamentoId)
             @Html.ValidationMessageFor(model => model.OrcamentoId)
         </div>
-        
+
+
         <div class="editor-label">
-            @Html.LabelFor(model => model.Data)
+            @Html.LabelFor(model => model.TipoEventoId, "Tipo Evento")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Data, new { disabled = "disabled" })
-            @Html.ValidationMessageFor(model => model.Data)
+            @Html.DropDownList("TipoEventoId", "[Selecione]")
+            @Html.ValidationMessageFor(model => model.TipoEventoId)
         </div>
+
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Observacao)
@@ -35,22 +56,46 @@
         </div>
 
         <p>
-            <input type="submit" value="Salvar" />
+            <input type="button" class="btn-submit" value="Salvar" />
         </p>
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Voltar", "Index")
-</div>
+
 
 <script>
-    function onComplete(data) {
+    
+
+    $(document).ready(function () {
+
+        $('#LocalEvento').prop('disabled', true).addClass('disabled');
+        $('#Data').prop('disabled', true).addClass('disabled');
+        $('.btn-submit').click(function (e) {
+            e.preventDefault();
+            
+            $('#LocalEvento').prop('disabled', false);
+            $('#Data').prop('disabled', false);
+
+            $('#formEvento').submit();
+        });
+    });
+
+    
+
+    function onSuccess(data, status, xhr) {
         alert(data.msg);
-        $('#myModal').modal("hide");
-        changeYear(data.ano);
+        if (data.erro !== true) {
+            $('#myModal').modal("hide");
+            changeYear(data.ano);
+        }
     }
-    function onFailure(data) {
+
+    function onComplete() {
+        hideLoader();
+        $('#LocalEvento').prop('disabled', true).addClass('disabled');
+        $('#Data').prop('disabled', true).addClass('disabled'); 
+    }
+    function onFailure(data, status, xhr) {
         alert('Erro na conexão!');
     }
 </script>

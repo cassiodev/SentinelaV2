@@ -16,9 +16,9 @@ namespace Sentinela.Models
     {
         public Orcamento()
         {
-            this.Evento = new HashSet<Evento>();
             this.Adicional = new HashSet<Adicional>();
             this.Cardapio = new HashSet<Cardapio>();
+            this.Evento = new HashSet<Evento>();
         }
     
         public int OrcamentoId { get; set; }
@@ -33,10 +33,10 @@ namespace Sentinela.Models
         public int TipoEventoId { get; set; }
     
         public virtual Cliente Cliente { get; set; }
-        public virtual ICollection<Evento> Evento { get; set; }
         public virtual Local Local { get; set; }
         public virtual TipoEvento TipoEvento { get; set; }
         public virtual ICollection<Adicional> Adicional { get; set; }
         public virtual ICollection<Cardapio> Cardapio { get; set; }
+        public virtual ICollection<Evento> Evento { get; set; }
     }
 }

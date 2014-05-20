@@ -31,7 +31,7 @@ namespace Sentinela.Controllers
         public ActionResult GetEventos(int? ano, int? localId)
         {
 
-            var query = _Contexto.Evento.Where(e => e.Data.Year == ano && (localId.HasValue && e.Orcamento.LocalId == localId.Value))
+            var query = _Contexto.Evento.Where(e => e.Data.Year == ano && e.LocalId == localId.Value)
                                             .ToList()
                                             .Select(e => new
                                             {
@@ -39,33 +39,24 @@ namespace Sentinela.Controllers
                                                 dia = e.Data.Day,
                                                 mes = e.Data.Month,
                                                 cor = "rgb(255, 187, 187)",
-                                                tipo = e.Orcamento.TipoEvento.Nome,
+                                                tipo = e.TipoEvento.Nome,
                                                 observacao = e.Observacao,
                                                 cliente = e.Orcamento != null ? String.Format("<a href='/Cliente/{0}' target='_blank'>{1}</a>", e.Orcamento.Cliente.ClienteId, e.Orcamento.Cliente.Pessoa.Nome) : ""
 
                                             });
             return Json(query, JsonRequestBehavior.AllowGet);
         }
-        //
-        // GET: /Evento/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Evento evento = _Contexto.Evento.Find(id);
-            if (evento == null)
-            {
-                return HttpNotFound();
-            }
-            return View(evento);
-        }
 
         //
         // GET: /Evento/Create
 
-        public ActionResult Create(string data, int? localId)
+        public ActionResult Create(int? localId, string dataEvento)
         {
-
-            return View(new Evento() { Data = Convert.ToDateTime(data), LocalId = localId } );
+            
+            Evento evento = new Evento() { Data = DateTime.Parse(dataEvento) };
+            ViewBag.Local = _Contexto.Local.ToList();
+            ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento.ToList(), "TipoEventoId", "Nome");
+            return View(evento);
         }
 
         //
@@ -77,18 +68,22 @@ namespace Sentinela.Controllers
         {
             try
             {
+                #region Validacao
+
                 if (evento.OrcamentoId != 0 && evento.OrcamentoId != null)
                 {
                     //Valida orçamento
                     evento.Orcamento = _Contexto.Orcamento.Find(evento.OrcamentoId);
                     if (evento.Orcamento == null)
-                        throw new Exception("Data não disponível");
+                        throw new Exception("Orçamento não encontrado.");
                 }
 
                 //Valida data
-                if (_Contexto.Evento.Any(e => e.Data == evento.Data))
+                if (_Contexto.Evento.Any(e => e.Data == evento.Data && e.LocalId == evento.LocalId))
                     throw new Exception("Data não disponível" );
 
+
+                #endregion
 
                 if (ModelState.IsValid)
                 {
@@ -111,7 +106,7 @@ namespace Sentinela.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { erro = false, msg = ex.Message });
+                return Json(new { erro = true, msg = ex.Message });
             }
             
         }
@@ -121,12 +116,16 @@ namespace Sentinela.Controllers
 
         public ActionResult Edit(int id = 0)
         {
+            
             Evento evento = _Contexto.Evento.Find(id);
+
+
             if (evento == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.OrcamentoId = new SelectList(_Contexto.Orcamento, "OrcamentoId", "Situacao", evento.OrcamentoId);
+            ViewBag.TipoEventoId = _Contexto.TipoEvento.ToList();
+            ViewBag.Local = _Contexto.Local.ToList();
             return View(evento);
         }
 
@@ -137,28 +136,45 @@ namespace Sentinela.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Evento evento)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _Contexto.Entry(evento).State = EntityState.Modified;
+                #region Validacao
+
+                if (evento.OrcamentoId != 0 && evento.OrcamentoId != null)
+                {
+                    //Valida orçamento
+                    evento.Orcamento = _Contexto.Orcamento.Find(evento.OrcamentoId);
+                    if (evento.Orcamento == null)
+                        throw new Exception("Orçamento não encontrado.");
+                }
+
+                //Valida data
+                if (_Contexto.Evento.Any(e => e.Data == evento.Data && e.LocalId == evento.LocalId))
+                    throw new Exception("Data não disponível");
+
+
+                #endregion
+
+
+
+                var _evento = _Contexto.Evento.Find(evento.EventoId);
+                _evento.Observacao = evento.Observacao;
+                _evento.OrcamentoId = evento.OrcamentoId;
+                _evento.TipoEventoId = evento.TipoEventoId;
+
                 _Contexto.SaveChanges();
-                return RedirectToAction("Index");
+
+
+                return Json(new { erro = false, msg = "Evento alterado com sucesso!", ano = _evento.Data.Year });
             }
-            ViewBag.OrcamentoId = new SelectList(_Contexto.Orcamento, "OrcamentoId", "Situacao", evento.OrcamentoId);
-            return View(evento);
-        }
-
-        //
-        // GET: /Evento/Delete/5
-
-        public ActionResult Delete(int id = 0)
-        {
-            Evento evento = _Contexto.Evento.Find(id);
-            if (evento == null)
+            catch (Exception ex)
             {
-                return HttpNotFound();
+                return Json(new { erro = true, msg = ex.Message });
             }
-            return View(evento);
+
+            
         }
+
 
         //
         // POST: /Evento/Delete/5
@@ -167,10 +183,18 @@ namespace Sentinela.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Evento evento = _Contexto.Evento.Find(id);
-            _Contexto.Evento.Remove(evento);
-            _Contexto.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                Evento evento = _Contexto.Evento.Find(id);
+                _Contexto.Evento.Remove(evento);
+                _Contexto.SaveChanges();
+                return Json(new { erro = false, msg = "Evento desmarcado com sucesso!", ano = evento.Data.Year });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { erro = true, msg = ex.Message });
+            }
+            
         }
 
         

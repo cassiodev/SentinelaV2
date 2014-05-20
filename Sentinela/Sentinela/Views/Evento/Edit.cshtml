@@ -1,54 +1,122 @@
 ﻿@model Sentinela.Models.Evento
 
-@{
-    ViewBag.Title = "Edit";
-}
 
-<h2>Editar</h2><br/>
-
-@using (Html.BeginForm()) {
+@using (Ajax.BeginForm("Edit", "Evento", null, new AjaxOptions() { HttpMethod = "POST", OnComplete = "onComplete", OnSuccess = "onSuccess", OnFailure = "onFailure", OnBegin = "showLoader" }, new { @id = "formEvento" }))
+{
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Evento</legend>
 
-        @Html.HiddenFor(model => model.EventoId)
+        @Html.HiddenFor(m => m.EventoId)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.OrcamentoId, "Orcamento")
+            @Html.LabelFor(model => model.LocalId, "Local")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("OrcamentoId", String.Empty)
-            @Html.ValidationMessageFor(model => model.OrcamentoId)
+            <select name="LocalId" id="LocalEvento">
+                @foreach (var local in ViewBag.Local)
+                {
+                    <option value="@local.LocalId" selected="@String.Format("{0}", Model.LocalId == local.LocalId ? "selected" : "")"> @local.Nome</option>
+                }
+            </select>
         </div>
+
+        
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Data)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Data)
+            @Html.TextBox("Data", Model.Data.ToShortDateString())
             @Html.ValidationMessageFor(model => model.Data)
         </div>
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TipoEventoId, "Tipo Evento")
+        </div>
+        <div class="editor-field">
+            <select name="TipoEventoId" id="TipoEventoId">
+                @foreach (var item in ViewBag.TipoEventoId)
+                {
+                    <option value="@item.TipoEventoId" @String.Format("{0}", Model.TipoEventoId == item.TipoEventoId ? "selected=selected" : "")> @item.Nome</option>
+                }
+            </select>
+            @Html.ValidationMessageFor(model => model.TipoEventoId)
+        </div>
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OrcamentoId, "Nº Orcamento")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(m => m.OrcamentoId)
+            @Html.ValidationMessageFor(model => model.OrcamentoId)
+        </div>
+
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Observacao)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Observacao)
+            @Html.TextAreaFor(model => model.Observacao)
             @Html.ValidationMessageFor(model => model.Observacao)
         </div>
 
         <p>
-            <input type="submit" value="Salvar" />
+            <input type="button" class="btn-submit" value="Salvar" />
         </p>
+        
     </fieldset>
 }
-
-<div>
-    @Html.ActionLink("Voltar", "Index")
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+@using (Ajax.BeginForm("Delete", "Evento", null, new AjaxOptions() { HttpMethod = "POST", OnComplete = "onComplete", OnSuccess = "onSuccess", OnFailure = "onFailure", OnBegin = "showLoader" }, new { @id = "formDeleteEvento" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("id",Model.EventoId)
+    <p>
+        <a href="javascript:;" class="event-remove" data-id="@Model.EventoId">Desmarcar evento</a>
+    </p>
 }
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#LocalEvento').prop('disabled', true).addClass('disabled');
+        $('#Data').prop('disabled', true).addClass('disabled');
+
+        $('.btn-submit').click(function (e) {
+            e.preventDefault();
+
+            $('#formEvento').submit();
+        });
+
+        $('.event-remove').click(function (e) {
+            e.preventDefault();
+            
+            if (confirm("Deseja realmente desmarcar este evento?")) {
+                $('#formDeleteEvento').submit();
+            }
+            
+        });
+
+    });
+
+
+
+    function onSuccess(data, status, xhr) {
+        alert(data.msg);
+        if (data.erro !== true) {
+            $('#myModal').modal("hide");
+            changeYear(data.ano);
+        }
+        
+    }
+
+    function onComplete() {
+        hideLoader();
+    }
+    function onFailure(data, status, xhr) {
+        alert('Erro na conexão!');
+    }
+</script>

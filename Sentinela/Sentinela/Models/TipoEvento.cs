@@ -17,11 +17,13 @@ namespace Sentinela.Models
         public TipoEvento()
         {
             this.Orcamento = new HashSet<Orcamento>();
+            this.Evento = new HashSet<Evento>();
         }
     
         public int TipoEventoId { get; set; }
         public string Nome { get; set; }
     
         public virtual ICollection<Orcamento> Orcamento { get; set; }
+        public virtual ICollection<Evento> Evento { get; set; }
     }
 }

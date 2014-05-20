@@ -2,6 +2,43 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
+        <style>
+            #loader {
+                z-index: 9999;
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                background-color: #333;
+                background-color: rgba(51,51,51,0.8)8);
+                display: none;
+                opacity: 0.8;
+            }
+
+                #loader .icon {
+                    width: 32px;
+                    height: 32px;
+                    background-image: url(/Images/bx_loader.gif);
+                    top: 50%;
+                    left: 50%;
+                    position: absolute;
+                    margin-left: -16px;
+                    margin-top: -16px;
+                }
+
+                #loader .msg {
+                    color: white;
+                    font-family: Tahoma;
+                    font-size: 16px;
+                    position: absolute;
+                    top: 50%;
+                    width: 100%;
+                    text-align: center;
+                    margin-top: 20px;
+                }
+
+        </style>
         <title>@ViewBag.Title - Sentinela</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
@@ -85,14 +122,25 @@
             </script>
         }
         <script>
+            function hideLoader() {
+                $('#loader').fadeOut('fast');
+            }
+
+            function showLoader(msg) {
+                if (typeof msg == 'undefined')
+                    msg = 'Carregando...';
+                $("#loader>.msg").html(msg);
+                $('#loader').fadeIn('fast');
+            }
             $(document).ready(function () {
                 $(".topLista").click(function () {
                     $(this).children(".minhaLista").hide();
                 });
                 $(".topLista").hover(function () { $(this).children(".minhaLista").show(); }, function () { $(this).children(".minhaLista").hide(); });
-                $(".tablesorter").tablesorter();
+                
             });
         </script>
+        <div id="loader"><div class="icon"></div><div class="msg">Carregando...</div></div>
     </body>
 
 </html>

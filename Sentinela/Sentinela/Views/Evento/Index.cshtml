@@ -9,9 +9,11 @@
         padding: 1px;
     }
 
+    .feriado{
+        border: 1px solid red!important;
+    }
 
-
-    th {
+     th {
         font-size: 14px;
         text-align: center;
         border: none 0px;
@@ -60,6 +62,7 @@
         background-color: rgb(205, 205, 245);
     }
 
+    
 
     .calendarioMensal td.past {
         background-color: #F5F5F5;
@@ -186,7 +189,7 @@
             <div class="legenda hoje"></div> Hoje - 
             <div class="legenda" style="background-color: rgb(205, 205, 245);"></div> Seleção - 
             <div class="legenda"  style=" background-color:#f5f5f5"></div> Passado - 
-            <div class="legenda" style=" background-color: rgb(255, 187, 187)"></div> Evento marcado
+            <div class="legenda" style=" background-color: rgb(255, 187, 187); border: 1px solid red;"></div> Evento marcado
         </div>
     </div>
     <table class="calendarioAnual">
@@ -311,9 +314,29 @@
 
         $c.find('.feriado').unbind('click').on('click', function (e) {
             e.preventDefault();
+            debugger;
             var feriado = _(dados).findWhere({ id: parseInt($(this).attr('data-id')) });
             if (typeof feriado != 'undefined') {
-                _cb(feriado);
+                
+                if (!$(this).hasClass('past')) {
+                    $('.modal-title').text('Editar Evento');
+
+                    showLoader('Gerando Formulário');
+                    $.get('/Evento/Edit', { id: feriado.id },
+                        function (data) {
+                            $('#myModal').modal();
+                            $('#crud').html(data);
+                        },
+                        'html')
+                        .fail(function () {
+                            alert("Erro de conexão!");
+                        })
+                        .always(function () {
+                            hideLoader();
+                        });
+
+                }
+
             }
         });
 
@@ -330,10 +353,32 @@
         }
         changeYear(ano);
 
+        $(".localId").change(function () {
+            changeYear($('#ano').text());
+        });
+
     });
+    function getFormatedDate(data) {
+        var retorno = '';
+
+        if (data.getDate() < 9)
+            retorno += '0' + data.getDate() + '-';
+        else
+            retorno += data.getDate() + '-';
+
+        if(data.getMonth() < 9)
+            retorno += '0' + (data.getMonth() + 1) + '-';
+        else
+            retorno += (data.getMonth() + 1) + '-';
+
+        retorno += data.getFullYear();
+
+        return retorno;
+    }
 
     function changeYear(ano) {
         
+        showLoader();
         $.post('/Evento/GetEventos',
             {
                 ano: ano,
@@ -363,27 +408,42 @@
                 });
 
                 $('#ano').text(ano);
-
+                new Date()
                 $('.day').click(function () {
                     if (!$(this).hasClass('past') && !$(this).hasClass('feriado')) {
                         $('.modal-title').text('Novo Evento');
                         
-                        $('#myModal').modal();
-                        var _data = new Date($('#ano').text().trim(),$(this).attr('data-month').trim(), $(this).text().trim());
+                        var _data = new Date($('#ano').text().trim(), parseInt($(this).attr('data-month').trim()) -1, $(this).text().trim());
+                        debugger;
+                        console.log(getFormatedDate(_data));
 
-                        $('#crud').html('<p>Carregando...</p>');
-                        $.get('/Evento/Create', { data:  _data.getDate() + "-" + _data.getMonth() + "-" + _data.getFullYear()},
+                        showLoader('Gerando Formulário');
+                        $.get('/Evento/Create', { localId: $('#localId').val(), dataEvento: getFormatedDate(_data) },
                             function (data) {
+                                $('#myModal').modal();
                                 $('#crud').html(data);
                             },
-                            'html');
+                            'html')
+                            .fail(function () {
+                                alert("Erro de conexão!");
+                            })
+                            .always(function () {
+                                hideLoader();
+                            });
 
 
                     }
                 });
             },
-            'json');
+            'json')
+            .error(function () {
+                alert("Erro de conexão!");
+            })
+            .always(function () {
+                hideLoader();
+            });
     }
+
 
 </script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
@@ -392,3 +452,4 @@
 
 
     }
+    

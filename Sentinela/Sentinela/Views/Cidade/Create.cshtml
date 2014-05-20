@@ -28,16 +28,14 @@
             @Html.DropDownList("EstadoId", String.Empty)
             @Html.ValidationMessageFor(model => model.EstadoId)
         </div>
-
-        <p>
-            <input type="submit" value="Salvar" />
-        </p>
+        <div>
+            <p>
+                <input type="submit" value="Salvar" />
+            </p>
+        </div>
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Voltar", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
