@@ -4,7 +4,7 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Detalhes</h2>
 
 <fieldset>
     <legend>Cliente</legend>
@@ -51,7 +51,29 @@
         @Html.DisplayFor(model => model.Telefone)
     </div>
 </fieldset>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.ClienteId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<fieldset>
+    <legend>Orçamentos Cadastrados</legend>
+    <h2>Orçamentos Cadastrados</h2>
+    @foreach (var item in Model.Orcamento)
+    {
+        <div class="display-label">
+            Data Cadastro
+        </div>
+        <div class="display-field">
+            @item.DataOrcamento.ToShortDateString()
+        </div>
+        <div class="display-label">
+            Código
+        </div>
+        <div class="display-field">
+            <a href="/Orcamento/Details/@item.OrcamentoId">@item.OrcamentoId</a>
+        </div>
+    }
+
+</fieldset>
+
+    <p>
+        @Html.ActionLink("Editar", "Edita", new { id = Model.ClienteId }) |
+        @Html.ActionLink("Voltar", "Index")
+    </p>

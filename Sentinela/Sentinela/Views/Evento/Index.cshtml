@@ -329,7 +329,7 @@
                         },
                         'html')
                         .fail(function () {
-                            alert("Erro de conexão!");
+                            bootbox.alert("Erro de conexão!");
                         })
                         .always(function () {
                             hideLoader();
@@ -389,7 +389,7 @@
                 gerarCalendario($("#calendarioAnual"), data, ano,
                     function (item) {
                         // essa funcao é executada quando se clica num feriado
-                        alert('Clicou no item:' + item.id + 'descricao:' + item.descricao);
+                        bootbox.alert('Clicou no item:' + item.id + 'descricao:' + item.descricao);
                     }
                 );
 
@@ -414,8 +414,6 @@
                         $('.modal-title').text('Novo Evento');
                         
                         var _data = new Date($('#ano').text().trim(), parseInt($(this).attr('data-month').trim()) -1, $(this).text().trim());
-                        debugger;
-                        console.log(getFormatedDate(_data));
 
                         showLoader('Gerando Formulário');
                         $.get('/Evento/Create', { localId: $('#localId').val(), dataEvento: getFormatedDate(_data) },
@@ -425,7 +423,7 @@
                             },
                             'html')
                             .fail(function () {
-                                alert("Erro de conexão!");
+                                bootbox.alert("Erro de conexão!");
                             })
                             .always(function () {
                                 hideLoader();
@@ -437,7 +435,7 @@
             },
             'json')
             .error(function () {
-                alert("Erro de conexão!");
+                bootbox.alert("Erro de conexão!");
             })
             .always(function () {
                 hideLoader();

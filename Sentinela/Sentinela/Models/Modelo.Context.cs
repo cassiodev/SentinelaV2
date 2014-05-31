@@ -25,20 +25,20 @@ namespace Sentinela.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public DbSet<Adicional> Adicional { get; set; }
         public DbSet<Cardapio> Cardapio { get; set; }
         public DbSet<CardapioRefeicaoItem> CardapioRefeicaoItem { get; set; }
         public DbSet<Cidade> Cidade { get; set; }
         public DbSet<Cliente> Cliente { get; set; }
         public DbSet<Estado> Estado { get; set; }
+        public DbSet<Evento> Evento { get; set; }
         public DbSet<Imagem> Imagem { get; set; }
         public DbSet<Item> Item { get; set; }
         public DbSet<Local> Local { get; set; }
+        public DbSet<Orcamento> Orcamento { get; set; }
         public DbSet<Pessoa> Pessoa { get; set; }
         public DbSet<Refeicao> Refeicao { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
-        public DbSet<Adicional> Adicional { get; set; }
         public DbSet<TipoEvento> TipoEvento { get; set; }
-        public DbSet<Orcamento> Orcamento { get; set; }
-        public DbSet<Evento> Evento { get; set; }
     }
 }

@@ -10,6 +10,7 @@ using PagedList;
 using System.Configuration;
 using Sentinela.Models;
 
+
 namespace Sentinela.Controllers
 {
     public class OrcamentoController : MasterController
@@ -33,7 +34,7 @@ namespace Sentinela.Controllers
         }
 
         //
-        // GET: /Orcamento/Details/5
+        // GET: /Orcamento/Detalhes/5
 
         public ActionResult Details(int id = 0)
         {
@@ -45,37 +46,7 @@ namespace Sentinela.Controllers
             return View(orcamento);
         }
 
-        //
-        // GET: /Orcamento/Create
-
-        public ActionResult Create()
-        {
-            ViewBag.ClienteId = new SelectList(_Contexto.Cliente, "ClienteId", "Logradouro");
-            ViewBag.LocalId = new SelectList(_Contexto.Local, "LocalId", "Nome");
-            ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento, "TipoEventoId", "TipoEventoId");
-            return View();
-        }
-
-        //
-        // POST: /Orcamento/Create
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Orcamento orcamento)
-        {
-            if (ModelState.IsValid)
-            {
-                _Contexto.Orcamento.Add(orcamento);
-                _Contexto.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.ClienteId = new SelectList(_Contexto.Cliente, "ClienteId", "Logradouro", orcamento.ClienteId);
-            ViewBag.LocalId = new SelectList(_Contexto.Local, "LocalId", "Nome", orcamento.LocalId);
-            ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento, "TipoEventoId", "TipoEventoId", orcamento.TipoEventoId);
-            return View(orcamento);
-        }
-
+        
         //
         // GET: /Orcamento/Edit/5
 
@@ -86,9 +57,10 @@ namespace Sentinela.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.ClienteId = new SelectList(_Contexto.Cliente, "ClienteId", "Logradouro", orcamento.ClienteId);
             ViewBag.LocalId = new SelectList(_Contexto.Local, "LocalId", "Nome", orcamento.LocalId);
-            ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento, "TipoEventoId", "TipoEventoId", orcamento.TipoEventoId);
+            ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento, "TipoEventoId", "Nome", orcamento.TipoEventoId);
+            ViewBag.CardapioId = new SelectList(_Contexto.Cardapio, "CardapioId", "Nome", orcamento.CardapioId);
+            ViewBag.Adicional = new MultiSelectList(_Contexto.Adicional, "AdicionalId", "Nome", orcamento.Adicional.Select(a => a.AdicionalId));
             return View(orcamento);
         }
 
@@ -97,17 +69,34 @@ namespace Sentinela.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Orcamento orcamento)
+        public ActionResult Edit(Orcamento orcamento, IEnumerable<int> Adicional, FormCollection form)
         {
-            if (ModelState.IsValid)
+                var _orcamento = _Contexto.Orcamento.Find(orcamento.OrcamentoId);
+
+            ModelState["Adicional"].Errors.Clear();
+            if (ModelState.IsValid && _orcamento != null)
             {
-                _Contexto.Entry(orcamento).State = EntityState.Modified;
+
+                _orcamento.Adicional.Clear();
+                if (Adicional != null)
+                    foreach (var item in Adicional)
+                        _orcamento.Adicional.Add(_Contexto.Adicional.Find(item));
+                _orcamento.ClienteId = orcamento.ClienteId;
+                _orcamento.LocalId = orcamento.LocalId;
+                _orcamento.DataEvento = orcamento.DataEvento;
+                _orcamento.Convidados = orcamento.Convidados;
+                _orcamento.Periodo = orcamento.Periodo;
+                _orcamento.TipoEventoId = orcamento.TipoEventoId;
+                _orcamento.CardapioId = orcamento.CardapioId;
+                _orcamento.DataAlteracao = DateTime.Now;
+
                 _Contexto.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ClienteId = new SelectList(_Contexto.Cliente, "ClienteId", "Logradouro", orcamento.ClienteId);
             ViewBag.LocalId = new SelectList(_Contexto.Local, "LocalId", "Nome", orcamento.LocalId);
-            ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento, "TipoEventoId", "TipoEventoId", orcamento.TipoEventoId);
+            ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento, "TipoEventoId", "Nome", orcamento.TipoEventoId);
+            ViewBag.CardapioId = new SelectList(_Contexto.Cardapio, "CardapioId", "Nome", orcamento.CardapioId);
+            ViewBag.Adicional = new MultiSelectList(_Contexto.Adicional, "AdicionalId", "Nome", orcamento.Adicional.Select(a => a.AdicionalId));
             return View(orcamento);
         }
 

@@ -1118,13 +1118,13 @@ the specific language governing permissions and limitations under the Apache Lic
          * Triggers the change event on the source element
          */
         // abstract
-        triggerChange: function (details) {
+        triggerChange: function (Detalhes) {
 
-            details = details || {};
-            details= $.extend({}, details, { type: "change", val: this.val() });
+            Detalhes = Detalhes || {};
+            Detalhes= $.extend({}, Detalhes, { type: "change", val: this.val() });
             // prevents recursive triggering
             this.opts.element.data("select2-change-triggered", true);
-            this.opts.element.trigger(details);
+            this.opts.element.trigger(Detalhes);
             this.opts.element.data("select2-change-triggered", false);
 
             // some validation frameworks ignore the change event and listen instead to keyup, click for selects
@@ -3169,7 +3169,7 @@ the specific language governing permissions and limitations under the Apache Lic
         },
 
         // multi
-        buildChangeDetails: function (old, current) {
+        buildChangeDetalhes: function (old, current) {
             var current = current.slice(0),
                 old = old.slice(0);
 
@@ -3219,7 +3219,7 @@ the specific language governing permissions and limitations under the Apache Lic
             if (this.select) {
                 this.opts.initSelection(this.select, this.bind(this.updateSelection));
                 if (triggerChange) {
-                    this.triggerChange(this.buildChangeDetails(oldData, this.data()));
+                    this.triggerChange(this.buildChangeDetalhes(oldData, this.data()));
                 }
             } else {
                 if (this.opts.initSelection === undefined) {
@@ -3232,7 +3232,7 @@ the specific language governing permissions and limitations under the Apache Lic
                     self.updateSelection(data);
                     self.clearSearch();
                     if (triggerChange) {
-                        self.triggerChange(self.buildChangeDetails(oldData, self.data()));
+                        self.triggerChange(self.buildChangeDetalhes(oldData, self.data()));
                     }
                 });
             }
@@ -3287,7 +3287,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 this.updateSelection(values);
                 this.clearSearch();
                 if (triggerChange) {
-                    this.triggerChange(this.buildChangeDetails(old, this.data()));
+                    this.triggerChange(this.buildChangeDetalhes(old, this.data()));
                 }
             }
         }

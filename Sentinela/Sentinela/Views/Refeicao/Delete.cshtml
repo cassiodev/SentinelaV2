@@ -5,29 +5,39 @@
 }
 
 <h2>Excluir</h2>
-
-<h3>Tem certeza que deseja excluir este registro?</h3><br/><br/>
-<fieldset>
-    <legend>Refeicao</legend>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Nome):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Nome)
-    </div><br/>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Cardapio.Nome):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Cardapio.Nome)
-    </div><br/>
-</fieldset>
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    <p>
-        <input type="submit" value="Excluir" /> |
-        @Html.ActionLink("Voltar", "Index")
-    </p>
+@if (Model.CardapioRefeicaoItem.Any())
+{
+    <h4>Não é possível excluir essa refeição, pois ela está vinculado á um item ou um cardápio.</h4>   
+    @Html.ActionLink("Voltar", "Index")    
 }
+else
+{
+    <h3>Tem certeza que deseja excluir este registro?</h3><br/><br/>
+    <fieldset>
+        <legend>Refeicao</legend>
+
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Nome):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Nome)
+        </div>
+
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.Ativo):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Ativo)
+        </div><br/>
+
+    </fieldset>
+    using (Html.BeginForm()) {
+        <p>
+            @Html.AntiForgeryToken()
+            <input type="submit" value="Excluir" /> |
+            @Html.ActionLink("Voltar", "Index")
+        </p>
+    }
+    
+}
+

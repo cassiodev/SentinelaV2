@@ -16,13 +16,13 @@ namespace Sentinela.Models
     {
         public int EventoId { get; set; }
         public Nullable<int> OrcamentoId { get; set; }
+        public int TipoEventoId { get; set; }
+        public int LocalId { get; set; }
         public System.DateTime Data { get; set; }
         public string Observacao { get; set; }
-        public int LocalId { get; set; }
-        public int TipoEventoId { get; set; }
     
         public virtual Local Local { get; set; }
-        public virtual TipoEvento TipoEvento { get; set; }
         public virtual Orcamento Orcamento { get; set; }
+        public virtual TipoEvento TipoEvento { get; set; }
     }
 }

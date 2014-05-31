@@ -33,19 +33,6 @@ namespace Sentinela.Controllers
         }
 
         //
-        // GET: /Refeicao/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Refeicao refeicao = _Contexto.Refeicao.Find(id);
-            if (refeicao == null)
-            {
-                return HttpNotFound();
-            }
-            return View(refeicao);
-        }
-
-        //
         // GET: /Refeicao/Create
 
         public ActionResult Create()

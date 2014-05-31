@@ -36,6 +36,7 @@
                     width: 100%;
                     text-align: center;
                     margin-top: 20px;
+                    z-index: 9999;
                 }
 
         </style>
@@ -63,15 +64,23 @@
                                 </a>
                                 <ul class="minhaLista" role="menu">
                                     <li>@Html.ActionLink("Adicionais", "Index", "Adicional")</li>
-                                    <li>@Html.ActionLink("Item", "Index", "Item")</li>
-                                    <li>@Html.ActionLink("Refeições", "Index", "Refeicao")</li>   
+                                    <li>@Html.ActionLink("Clientes", "Index", "Cliente")</li>
+                                    <li>@Html.ActionLink("Locais", "Index", "Local")</li>
                                 </ul>
                             </li>
                             
-                            <li>@Html.ActionLink("Cardapios", "Index", "Cardapio")</li>
-                            <li>@Html.ActionLink("Clientes", "Index", "Cliente")</li>
+                            <li style="position: relative;" class="topLista">
+                                <a data-toggle="dropdown" href="#">
+                                    Cardápios <span class="caret"></span>
+                                </a>
+                                <ul class="minhaLista" role="menu">
+                                    <li>@Html.ActionLink("Cardapios", "Index", "Cardapio")</li>
+                                    <li>@Html.ActionLink("Itens", "Index", "Item")</li>
+                                    <li>@Html.ActionLink("Refeições", "Index", "Refeicao")</li>
+                                </ul>
+                            </li>
+                            
                             <li>@Html.ActionLink("Eventos", "Index", "Evento")</li>
-                            <li>@Html.ActionLink("Locais", "Index", "Local")</li>
                             <li>@Html.ActionLink("Orçamentos", "Index", "Orcamento")</li>
                             <li style="position: relative;" class="topLista">
                                 <a data-toggle="dropdown" href="#">
@@ -109,7 +118,7 @@
         <script src="~/Scripts/globalize/cultures/globalize.culture.@(System.Threading.Thread.CurrentThread.CurrentCulture.Name).js"></script>
 
         <script src="~/Scripts/bootstrap.min.js"></script>
-        <script src="~/Scripts/jquery.tablesorter.js"></script>
+        <script src="~/Scripts/bootbox.js"></script>
         @RenderSection("scripts", required: false)
         @if (TempData["message"] != null)
         {
@@ -133,6 +142,10 @@
                 $('#loader').fadeIn('fast');
             }
             $(document).ready(function () {
+                debugger;
+                $("input[type=datetime]").each(function(){
+                    $(this).val(($(this).val().split(' ')[0]));
+                });
                 $(".topLista").click(function () {
                     $(this).children(".minhaLista").hide();
                 });

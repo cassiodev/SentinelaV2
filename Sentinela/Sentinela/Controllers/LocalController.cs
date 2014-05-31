@@ -34,9 +34,9 @@ namespace Sentinela.Controllers
         }
 
         //
-        // GET: /Local/Details/5
+        // GET: /Local/Detalhes/5
 
-        public ActionResult Details(int id = 0)
+        public ActionResult Detalhes(int id = 0)
         {
             Local local = _Contexto.Local.Find(id);
             if (local == null)

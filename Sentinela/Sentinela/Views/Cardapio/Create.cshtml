@@ -14,6 +14,8 @@
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
+    <div style="display: inline-block; width: 100%;">
+
         <fieldset class="col-lg-6">
             <legend>Cardapio</legend>
 
@@ -64,10 +66,10 @@
             
 
         </fieldset>
-
-<div style ="float:left">
+     </div>
+<p>
         <input type="submit" value="Salvar" />    <span>@Html.ActionLink("Voltar", "Index")</span>
-</div>
+</p>
 }
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

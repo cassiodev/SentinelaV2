@@ -32,18 +32,6 @@ namespace Sentinela.Controllers
             return View(cidade.ToPagedList(pageNumber,pageSize));
         }
 
-        //
-        // GET: /Cidade/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Cidade cidade = _Contexto.Cidade.Find(id);
-            if (cidade == null)
-            {
-                return HttpNotFound();
-            }
-            return View(cidade);
-        }
 
         //
         // GET: /Cidade/Create

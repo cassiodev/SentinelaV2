@@ -5,57 +5,68 @@
 }
 
 <h2>Excluir</h2>
-
-<h3>Tem certeza que deseja excluir este registro?</h3><br/><br/>
-<fieldset>
-    <legend>Local</legend>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Cidade.Nome):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Cidade.Nome)
-    </div><br/>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Nome):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Nome)
-    </div><br/>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Tamanho):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Tamanho)
-    </div><br/>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Logradouro):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Logradouro)
-    </div><br/>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Numero):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Numero)
-    </div><br/>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Ativo):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Ativo)
-    </div><br/>
-</fieldset>
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    <p>
-        <input type="submit" value="Excluir" /> |
-        @Html.ActionLink("Voltar", "Index")
-    </p>
+@if (Model.Orcamento.Any() || Model.Evento.Any())
+{
+    <h4>Não é possível excluir este local, pois está vinculado com algum orçamento ou evento.</h4>
+    @Html.ActionLink("Voltar", "Index")
+    
 }
+else
+{
+    
+    <h3>Tem certeza que deseja excluir este registro?</h3><br/><br/>
+    <fieldset>
+        <legend>Local</legend>
+
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Cidade.Nome):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Cidade.Nome)
+        </div><br/>
+
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Nome):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Nome)
+        </div><br/>
+
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Tamanho):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Tamanho)
+        </div><br/>
+
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Logradouro):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Logradouro)
+        </div><br/>
+
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Numero):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Numero)
+        </div><br/>
+
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Ativo):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Ativo)
+        </div><br/>
+    </fieldset>
+    using (Html.BeginForm()) {
+        <p>
+            @Html.AntiForgeryToken()
+            <input type="submit" value="Excluir" /> |
+            @Html.ActionLink("Voltar", "Index")
+        </p>
+    }
+    
+}
+

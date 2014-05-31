@@ -16,9 +16,9 @@ namespace Sentinela.Models
     {
         public Local()
         {
+            this.Evento = new HashSet<Evento>();
             this.Imagem = new HashSet<Imagem>();
             this.Orcamento = new HashSet<Orcamento>();
-            this.Evento = new HashSet<Evento>();
         }
     
         public int LocalId { get; set; }
@@ -31,8 +31,8 @@ namespace Sentinela.Models
         public int Capacidade { get; set; }
     
         public virtual Cidade Cidade { get; set; }
+        public virtual ICollection<Evento> Evento { get; set; }
         public virtual ICollection<Imagem> Imagem { get; set; }
         public virtual ICollection<Orcamento> Orcamento { get; set; }
-        public virtual ICollection<Evento> Evento { get; set; }
     }
 }

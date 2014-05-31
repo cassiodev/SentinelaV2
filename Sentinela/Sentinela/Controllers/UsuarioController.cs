@@ -33,19 +33,6 @@ namespace Sentinela.Controllers
         }
 
         //
-        // GET: /Usuario/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Usuario usuario = _Contexto.Usuario.Find(id);
-            if (usuario == null)
-            {
-                return HttpNotFound();
-            }
-            return View(usuario);
-        }
-
-        //
         // GET: /Usuario/Create
 
         public ActionResult Create()

@@ -9,6 +9,7 @@ using PagedList.Mvc;
 using PagedList;
 using System.Configuration;
 using Sentinela.Models;
+using System.IO;
 
 namespace Sentinela.Controllers
 {
@@ -29,19 +30,6 @@ namespace Sentinela.Controllers
 
 
             return View(_Contexto.Cardapio.Include("Imagem").OrderBy(c => c.CardapioId).ToPagedList(pageNumber,pageSize));
-        }
-
-        //
-        // GET: /Cardapio/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Cardapio cardapio = _Contexto.Cardapio.Find(id);
-            if (cardapio == null)
-            {
-                return HttpNotFound();
-            }
-            return View(cardapio);
         }
 
         //
@@ -136,7 +124,23 @@ namespace Sentinela.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+
+
             Cardapio cardapio = _Contexto.Cardapio.Find(id);
+
+
+            foreach (var imagem in cardapio.Imagem.ToList())
+            {
+                _Contexto.Imagem.Remove(imagem);
+                string FileToDelete;
+                // Set full path to file 
+                string filename = imagem.Url.Split('/').Last();
+                FileToDelete = Path.Combine(Server.MapPath("~/Images/"), Path.GetFileName(filename));
+                // Delete a file
+                System.IO.File.Delete(FileToDelete);
+            }
+            
+            
             _Contexto.Cardapio.Remove(cardapio);
             _Contexto.SaveChanges();
             return RedirectToAction("Index");

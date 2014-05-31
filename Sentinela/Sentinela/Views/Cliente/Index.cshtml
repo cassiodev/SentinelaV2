@@ -24,12 +24,6 @@
             Cidade
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.First().Logradouro)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.First().Numero)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.First().Cpf)
         </th>
         <th>
@@ -50,13 +44,7 @@
             @Html.DisplayFor(modelItem => item.Pessoa.Email)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Cidade.Nome)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Logradouro)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Numero)
+            @item.Cidade.Nome/@item.Cidade.Estado.UF
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Cpf)

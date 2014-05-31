@@ -6,35 +6,48 @@
 
 <h2>Excluir</h2>
 
-<h3>Tem certeza que deseja excluir este registro?</h3><br/><br/>
-<fieldset>
-    <legend>Cardapio</legend>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Nome):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Nome)
-    </div><br/>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Descricao):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Descricao)
-    </div><br/>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Ativo):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Ativo)
-    </div><br/>
-</fieldset>
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
+@if (Model.CardapioRefeicaoItem.Any() || Model.Imagem.Any() || Model.Orcamento.Any())
+{
+    <h4>Não é possivel excluir este cardápio pois existem Refeições ou Orçamentos vinculados á ele.</h4>
     <p>
-        <input type="submit" value="Excluir" /> |
         @Html.ActionLink("Voltar", "Index")
-    </p>
+    </p>   
 }
+else
+{
+    <h3>Tem certeza que deseja excluir este registro?</h3><br/><br/>
+    <fieldset>
+        <legend>Cardapio</legend>
+
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Nome):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Nome)
+        </div><br/>
+
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Descricao):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Descricao)
+        </div><br/>
+
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Ativo):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Ativo)
+        </div><br/>
+    </fieldset>
+    using (Html.BeginForm()) {
+        
+        <p>
+            @Html.AntiForgeryToken()
+            <input type="submit" value="Excluir" /> |
+            @Html.ActionLink("Voltar", "Index")
+        </p>
+    }
+    
+}
+

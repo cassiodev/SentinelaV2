@@ -32,19 +32,6 @@ namespace Sentinela.Controllers
         }
 
         //
-        // GET: /Item/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Item item = _Contexto.Item.Find(id);
-            if (item == null)
-            {
-                return HttpNotFound();
-            }
-            return View(item);
-        }
-
-        //
         // GET: /Item/Create
 
         public ActionResult Create()

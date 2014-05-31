@@ -5,6 +5,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+
 
 namespace Sentinela.Controllers
 {

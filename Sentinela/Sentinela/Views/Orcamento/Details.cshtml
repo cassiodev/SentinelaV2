@@ -1,85 +1,150 @@
 ﻿@model Sentinela.Models.Orcamento
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalhes";
 }
 
-<h2>Details</h2>
+<h2>Detalhes</h2>
 
-<fieldset>
-    <legend>Orcamento</legend>
+<div style="display: inline-block; width: 100%;">
+    <fieldset class="col-lg-6">
+        <legend style="display: block!important">Orcamento @Html.ActionLink("Editar", "Edit", new { id = Model.OrcamentoId })</legend>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Cliente.Logradouro)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Cliente.Logradouro)
-    </div>
+        <div class="display-label">
+            Código
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.OrcamentoId)
+            
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Local.Nome)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Local.Nome)
-    </div>
+        <div class="display-label">
+            Local
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Local.Nome)
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.DataOrcamento)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DataOrcamento)
-    </div>
+        <div class="display-label">
+            Data Orçamento
+        </div>
+        <div class="display-field">
+            @Model.DataOrcamento.ToShortDateString()
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.DataEvento)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DataEvento)
-    </div>
+        <div class="display-label">
+            Data Evento
+        </div>
+        <div class="display-field">
+            @Model.DataEvento.ToShortDateString()
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.DataAlteracao)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DataAlteracao)
-    </div>
+        <div class="display-label">
+            Data Alteração
+        </div>
+        <div class="display-field">
+            @Model.DataAlteracao.ToShortDateString()
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Situacao)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Situacao)
-    </div>
+        <div class="display-label">
+            Situação
+        </div>
+        <div class="display-field">
+            @Enum.GetName(typeof(Sentinela.Models.Enums.SituacaoOrcamento), Convert.ToInt32(Model.Situacao))
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Convidados)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Convidados)
-    </div>
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.Convidados)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Convidados)
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Periodo)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Periodo)
-    </div>
+        <div class="display-label">
+            Período
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Periodo)
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.TipoEvento.TipoEventoId)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.TipoEvento.TipoEventoId)
-    </div>
+        <div class="display-label">
+            Tipo Evento
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.TipoEvento.Nome)
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Orcamentocol)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Orcamentocol)
-    </div>
-</fieldset>
+
+    </fieldset>
+
+
+    <fieldset class="col-lg-6">
+        <legend style="display: block!important">Cliente <a href="/Cliente/Edit/@Model.ClienteId">Editar</a></legend>
+
+        <div class="display-label">
+            Código 
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.ClienteId)
+            
+        </div>
+
+        <div class="display-label">
+            Nome
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Cliente.Pessoa.Nome)
+        </div>
+
+        <div class="display-label">
+            Email
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Cliente.Pessoa.Email)
+        </div>
+
+
+        <div class="display-label">
+            Cidade
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Cliente.Cidade.Nome)
+        </div>
+
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.Cliente.Logradouro)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Cliente.Logradouro), @Model.Cliente.Numero
+        </div>
+
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.Cliente.Cpf)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Cliente.Cpf)
+        </div>
+
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.Cliente.Celular)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Cliente.Celular)
+        </div>
+
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.Cliente.Telefone)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Cliente.Telefone)
+        </div>
+    </fieldset>
+
+
+</div>
+
+
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.OrcamentoId }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Voltar", "Index")
 </p>

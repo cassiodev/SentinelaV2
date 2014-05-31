@@ -4,23 +4,33 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Excluir</h2>
+    <h2>Excluir</h2>
 
-<h3>Tem certeza que deseja excluir este registro?</h3><br/><br/>
-<fieldset>
-    <legend>Adicional</legend>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Nome):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Nome)
-    </div><br/>
-</fieldset>
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    <p>
-        <input type="submit" value="Excluir" /> |
+    @if (Model.Orcamento.Any())
+    {
+        <h4>Não é possivel excluir este item pois está vinculado á um ou mais orçamentos.</h4>
         @Html.ActionLink("Voltar", "Index")
-    </p>
+    }
+    else
+    {
+        
+    <h3>Tem certeza que deseja excluir este registro?</h3><br/><br/>
+    <fieldset>
+        <legend>Adicional</legend>
+
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Nome):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Nome)
+        </div><br/>
+    </fieldset>
+    @using (Html.BeginForm()) {
+        <p>
+            @Html.AntiForgeryToken()
+            <input type="submit" value="Excluir" /> |
+            @Html.ActionLink("Voltar", "Index")
+        </p>
+    }
+    
 }

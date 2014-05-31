@@ -1242,7 +1242,7 @@ window.Modernizr = (function( window, document, undefined ) {
          * @memberOf html5
          * @type Array|String
          */
-        'elements': options.elements || 'abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video',
+        'elements': options.elements || 'abbr article aside audio bdi canvas data datalist Detalhes figcaption figure footer header hgroup mark meter nav output progress section summary time video',
 
         /**
          * A flag to indicate that the HTML5 style sheet should be inserted.

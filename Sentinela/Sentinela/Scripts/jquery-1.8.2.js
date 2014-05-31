@@ -411,7 +411,7 @@ jQuery.extend({
 		}
 	},
 
-	// See test/unit/core.js for details concerning isFunction.
+	// See test/unit/core.js for Detalhes concerning isFunction.
 	// Since version 1.3, DOM methods and functions like alert
 	// aren't supported. They return false on IE (#2968).
 	isFunction: function( obj ) {
@@ -5647,7 +5647,7 @@ function createSafeFragment( document ) {
 	return safeFrag;
 }
 
-var nodeNames = "abbr|article|aside|audio|bdi|canvas|data|datalist|details|figcaption|figure|footer|" +
+var nodeNames = "abbr|article|aside|audio|bdi|canvas|data|datalist|Detalhes|figcaption|figure|footer|" +
 		"header|hgroup|mark|meter|nav|output|progress|section|summary|time|video",
 	rinlinejQuery = / jQuery\d+="(?:null|\d+)"/g,
 	rleadingWhitespace = /^\s+/,
@@ -6465,7 +6465,7 @@ jQuery.extend({
 var matched, browser;
 
 // Use of jQuery.browser is frowned upon.
-// More details: http://api.jquery.com/jQuery.browser
+// More Detalhes: http://api.jquery.com/jQuery.browser
 // jQuery.uaMatch maintained for back-compat
 jQuery.uaMatch = function( ua ) {
 	ua = ua.toLowerCase();

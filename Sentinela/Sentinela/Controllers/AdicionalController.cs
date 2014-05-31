@@ -32,19 +32,6 @@ namespace Sentinela.Controllers
         }
 
         //
-        // GET: /Adicional/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Adicional adicional = _Contexto.Adicional.Find(id);
-            if (adicional == null)
-            {
-                return HttpNotFound();
-            }
-            return View(adicional);
-        }
-
-        //
         // GET: /Adicional/Create
 
         public ActionResult Create()

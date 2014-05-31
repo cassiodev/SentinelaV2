@@ -1,7 +1,7 @@
 ﻿@model Sentinela.Models.Evento
 
 
-@using (Ajax.BeginForm("Edit", "Evento", null, new AjaxOptions() { HttpMethod = "POST", OnComplete = "onComplete", OnSuccess = "onSuccess", OnFailure = "onFailure", OnBegin = "showLoader" }, new { @id = "formEvento" }))
+@using (Ajax.BeginForm("Edit", "Evento", null, new AjaxOptions() { HttpMethod = "POST", OnComplete = "onComplete", OnSuccess = "onSuccess", OnFailure = "onFailure", OnBegin = "onBegin" }, new { @id = "formEvento" }))
 {
     @Html.AntiForgeryToken()
 
@@ -105,7 +105,7 @@
 
 
     function onSuccess(data, status, xhr) {
-        alert(data.msg);
+        bootbox.alert(data.msg);
         if (data.erro !== true) {
             $('#myModal').modal("hide");
             changeYear(data.ano);
@@ -116,7 +116,10 @@
     function onComplete() {
         hideLoader();
     }
+    function onBegin() {
+        showLoader('Salvando...');
+    }
     function onFailure(data, status, xhr) {
-        alert('Erro na conexão!');
+        bootbox.alert('Erro na conexão!');
     }
 </script>

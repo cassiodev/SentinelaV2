@@ -33,7 +33,7 @@ namespace Sentinela.Controllers
         }
 
         //
-        // GET: /Cliente/Details/5
+        // GET: /Cliente/Detalhes/5
 
         public ActionResult Details(int id = 0)
         {
@@ -80,14 +80,13 @@ namespace Sentinela.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            Cliente cliente = _Contexto.Cliente.Find(id);
+            Cliente cliente = _Contexto.Cliente.Include("Cidade").Include("Cidade.Estado").FirstOrDefault(f => f.ClienteId == id);
             if (cliente == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.EstadoId = new SelectList(_Contexto.Estado, "EstadoId", "UF");
-            ViewBag.CidadeId = new SelectList(_Contexto.Cidade, "CidadeId", "Nome", cliente.CidadeId);
-            ViewBag.ClienteId = new SelectList(_Contexto.Pessoa, "PessoaId", "Email", cliente.ClienteId);
+            ViewBag.EstadoId = new SelectList(_Contexto.Estado, "EstadoId", "UF",cliente.Cidade.EstadoId);
+            ViewBag.CidadeId = new SelectList(_Contexto.Cidade.Where(c => c.EstadoId == cliente.Cidade.EstadoId), "CidadeId", "Nome", cliente.CidadeId);
             return View(cliente);
         }
 
@@ -135,6 +134,28 @@ namespace Sentinela.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public ActionResult GetClientes(string nome)
+        {
+            int id;
+
+            if (int.TryParse(nome, out id))
+            {
+                return Json(_Contexto.Cliente.Where(c => c.ClienteId == id)
+                                            .Select(c => new 
+                                            {   
+                                                id = c.ClienteId,
+                                                text = c.Pessoa.Nome
+                                            }), JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(_Contexto.Cliente.Where(c => c.Pessoa.Nome.ToUpper().Contains(nome.ToUpper()))
+                                            .Select(c => new 
+                                            {   
+                                                id = c.ClienteId,
+                                                text = c.Pessoa.Nome
+                                            }), JsonRequestBehavior.AllowGet);
+        }
         
     }
 }

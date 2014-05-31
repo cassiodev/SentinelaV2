@@ -15,69 +15,48 @@
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.First().Cliente.Logradouro)
+            Código
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.First().Local.Nome)
+            Cliente
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.First().DataOrcamento)
+            Local
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.First().DataEvento)
+            Cadastro
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.First().DataAlteracao)
+            Evento
         </th>
+        
         <th>
-            @Html.DisplayNameFor(model => model.First().Situacao)
+            Tipo Evento
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.First().Convidados)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.First().Periodo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.First().TipoEvento.TipoEventoId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.First().Orcamentocol)
-        </th>
+
         <th style="text-align: center;">Ações</th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Cliente.Logradouro)
+            @item.OrcamentoId
+        </td>
+        <td>
+            <a href="/Cliente/Details/@item.Cliente.ClienteId">@item.Cliente.Pessoa.Nome</a>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Local.Nome)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DataOrcamento)
+            @item.DataOrcamento.ToShortDateString()
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DataEvento)
+            @item.DataEvento.ToShortDateString()
         </td>
+
         <td>
-            @Html.DisplayFor(modelItem => item.DataAlteracao)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Situacao)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Convidados)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Periodo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TipoEvento.TipoEventoId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Orcamentocol)
+            @Html.DisplayFor(modelItem => item.TipoEvento.Nome)
         </td>
         <td>
             @Html.ActionLink("Editar", "Edit", new { id=item.OrcamentoId }) |

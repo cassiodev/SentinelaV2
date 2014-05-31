@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsnCore">
+      <HintPath>..\..\..\Core\CsnCore\bin\Debug\CsnCore.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PagedList">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
@@ -209,6 +212,7 @@
     <Compile Include="Controllers\OrcamentoController.cs" />
     <Compile Include="Controllers\RefeicaoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
+    <Compile Include="CPFAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -228,6 +232,7 @@
       <DependentUpon>Modelo.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DataAnnotation.cs" />
+    <Compile Include="Models\Enum.cs" />
     <Compile Include="Models\Estado.cs">
       <DependentUpon>Modelo.tt</DependentUpon>
     </Compile>
@@ -389,11 +394,23 @@
     <Content Include="favicon.ico" />
     <Content Include="Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Images\bx_loader.gif" />
+    <Content Include="Content\Select2\bower.json" />
+    <Content Include="Content\Select2\component.json" />
+    <Content Include="Content\Select2\composer.json" />
+    <Content Include="Content\Select2\LICENSE" />
+    <Content Include="Content\Select2\package.json" />
+    <Content Include="Content\Select2\README.md" />
+    <Content Include="Content\Select2\release.sh" />
+    <Content Include="Content\Select2\select2.jquery.json" />
+    <Content Include="Content\Select2\select2_locale_en.js.template" />
+    <Content Include="Fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Fonts\glyphicons-halflings-regular.woff" />
     <EntityDeploy Include="Models\Modelo.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Modelo.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Images\bx_loader.gif" />
     <Content Include="Models\Modelo.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Modelo.edmx</DependentUpon>
@@ -407,20 +424,10 @@
       <DependentUpon>Modelo.edmx</DependentUpon>
       <LastGenOutput>Modelo.cs</LastGenOutput>
     </Content>
-    <Content Include="Content\Select2\bower.json" />
-    <Content Include="Content\Select2\component.json" />
-    <Content Include="Content\Select2\composer.json" />
-    <Content Include="Content\Select2\LICENSE" />
-    <Content Include="Content\Select2\package.json" />
-    <Content Include="Content\Select2\README.md" />
-    <Content Include="Content\Select2\release.sh" />
-    <Content Include="Content\Select2\select2.jquery.json" />
-    <Content Include="Content\Select2\select2_locale_en.js.template" />
-    <Content Include="Fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Fonts\glyphicons-halflings-regular.woff" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\CustomValidation.js" />
     <Content Include="Scripts\globalize\cultures\globalize.culture.af-ZA.js" />
     <Content Include="Scripts\globalize\cultures\globalize.culture.af.js" />
     <Content Include="Scripts\globalize\cultures\globalize.culture.am-ET.js" />
@@ -826,7 +833,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Conta\Login.cshtml" />
     <Content Include="Views\Usuario\Index.cshtml" />
-    <Content Include="Views\Usuario\Details.cshtml" />
     <Content Include="Views\Usuario\Create.cshtml" />
     <Content Include="Views\Usuario\Edit.cshtml" />
     <Content Include="Views\Usuario\Delete.cshtml" />
@@ -842,43 +848,31 @@
     <Content Include="Views\Local\Edit.cshtml" />
     <Content Include="Views\Local\Delete.cshtml" />
     <Content Include="Views\Cidade\Index.cshtml" />
-    <Content Include="Views\Cidade\Details.cshtml" />
     <Content Include="Views\Cidade\Create.cshtml" />
     <Content Include="Views\Cidade\Edit.cshtml" />
     <Content Include="Views\Cidade\Delete.cshtml" />
     <Content Include="Views\Refeicao\Index.cshtml" />
-    <Content Include="Views\Refeicao\Details.cshtml" />
     <Content Include="Views\Refeicao\Create.cshtml" />
     <Content Include="Views\Refeicao\Edit.cshtml" />
     <Content Include="Views\Refeicao\Delete.cshtml" />
     <Content Include="Views\Item\Index.cshtml" />
-    <Content Include="Views\Item\Details.cshtml" />
     <Content Include="Views\Item\Create.cshtml" />
     <Content Include="Views\Item\Edit.cshtml" />
     <Content Include="Views\Item\Delete.cshtml" />
     <Content Include="Views\Cardapio\Index.cshtml" />
-    <Content Include="Views\Cardapio\Details.cshtml" />
     <Content Include="Views\Cardapio\Create.cshtml" />
     <Content Include="Views\Cardapio\Edit.cshtml" />
     <Content Include="Views\Cardapio\Delete.cshtml" />
     <Content Include="Views\Adicional\Index.cshtml" />
-    <Content Include="Views\Adicional\Details.cshtml" />
     <Content Include="Views\Adicional\Create.cshtml" />
     <Content Include="Views\Adicional\Edit.cshtml" />
     <Content Include="Views\Adicional\Delete.cshtml" />
     <Content Include="Views\Evento\Index.cshtml" />
-    <Content Include="Views\Evento\Details.cshtml" />
     <Content Include="Views\Evento\Create.cshtml" />
     <Content Include="Views\Evento\Edit.cshtml" />
-    <Content Include="Views\Evento\Delete.cshtml" />
-    <Content Include="Views\Imagem\Create.cshtml" />
-    <Content Include="Views\Imagem\Delete.cshtml" />
-    <Content Include="Views\Imagem\Details.cshtml" />
-    <Content Include="Views\Imagem\Edit.cshtml" />
     <Content Include="Views\Imagem\Index.cshtml" />
     <Content Include="Views\Orcamento\Index.cshtml" />
     <Content Include="Views\Orcamento\Details.cshtml" />
-    <Content Include="Views\Orcamento\Create.cshtml" />
     <Content Include="Views\Orcamento\Edit.cshtml" />
     <Content Include="Views\Orcamento\Delete.cshtml" />
   </ItemGroup>

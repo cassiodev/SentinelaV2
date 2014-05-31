@@ -16,7 +16,7 @@ namespace Sentinela.Models
     {
         public int ImagemId { get; set; }
         public Nullable<int> LocalId { get; set; }
-        public Nullable<int> ProdutoId { get; set; }
+        public Nullable<int> CardapioId { get; set; }
         public string Url { get; set; }
         public bool Principal { get; set; }
     

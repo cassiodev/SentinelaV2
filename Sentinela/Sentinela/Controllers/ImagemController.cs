@@ -39,7 +39,6 @@ namespace Sentinela.Controllers
                 default:
                     return new EmptyResult();
             }
-            return View();
         }
 
         //
@@ -61,7 +60,7 @@ namespace Sentinela.Controllers
                         
                         break;
                     case "cardapio":
-                        amostra.ProdutoId = id;
+                        amostra.CardapioId = id;
                         break;
                     default:
                         break;
