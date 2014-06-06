@@ -282,6 +282,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Home.css" />
     <Content Include="Content\jquery.fileupload-ui.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Select2\.gitignore" />

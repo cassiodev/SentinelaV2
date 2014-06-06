@@ -486,16 +486,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SentinelaV2Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-        <EntityType Name="Adicional">
-          <Key>
-            <PropertyRef Name="AdicionalId" />
-          </Key>
-          <Property Name="AdicionalId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nome" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Ativo" Type="Boolean" Nullable="false" />
-          <Property Name="Descricao" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Orcamento" Relationship="Self.AdicionalOrcamento" FromRole="Adicional" ToRole="Orcamento" />
-        </EntityType>
         <EntityType Name="Cardapio">
           <Key>
             <PropertyRef Name="CardapioId" />
@@ -628,7 +618,7 @@
           <NavigationProperty Name="Cliente" Relationship="Self.FKOrcamento699439" FromRole="Orcamento" ToRole="Cliente" />
           <NavigationProperty Name="Evento" Relationship="Self.FKEvento322707" FromRole="Orcamento" ToRole="Evento" />
           <NavigationProperty Name="Local" Relationship="Self.FKOrcamento13934" FromRole="Orcamento" ToRole="Local" />
-          <NavigationProperty Name="Adicional" Relationship="Self.AdicionalOrcamento" FromRole="Orcamento" ToRole="Adicional" />
+          <NavigationProperty Name="Adicional" Relationship="SentinelaV2Model.AdicionalOrcamento" FromRole="Orcamento" ToRole="Adicional" />
           <NavigationProperty Name="TipoEvento" Relationship="SentinelaV2Model.FKOrcamento67880" FromRole="Orcamento" ToRole="TipoEvento" />
         </EntityType>
         <EntityType Name="Pessoa">
@@ -840,12 +830,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="AdicionalOrcamento">
-          <End Role="Adicional" Type="Self.Adicional" Multiplicity="*" />
-          <End Role="Orcamento" Type="Self.Orcamento" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="Contexto" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Adicional" EntityType="Self.Adicional" />
           <EntitySet Name="Cardapio" EntityType="Self.Cardapio" />
           <EntitySet Name="CardapioRefeicaoItem" EntityType="Self.CardapioRefeicaoItem" />
           <EntitySet Name="Cidade" EntityType="Self.Cidade" />
@@ -919,7 +904,8 @@
             <End Role="Pessoa" EntitySet="Pessoa" />
             <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
-          <AssociationSet Name="AdicionalOrcamento" Association="Self.AdicionalOrcamento">
+          <EntitySet Name="Adicional" EntityType="SentinelaV2Model.Adicional" />
+          <AssociationSet Name="AdicionalOrcamento" Association="SentinelaV2Model.AdicionalOrcamento">
             <End Role="Adicional" EntitySet="Adicional" />
             <End Role="Orcamento" EntitySet="Orcamento" />
           </AssociationSet>
@@ -933,6 +919,20 @@
             <End Role="Orcamento" EntitySet="Orcamento" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Adicional">
+          <Key>
+            <PropertyRef Name="AdicionalId" />
+          </Key>
+          <Property Name="AdicionalId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Ativo" Type="Boolean" Nullable="false" />
+          <Property Name="Descricao" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Orcamento" Relationship="SentinelaV2Model.AdicionalOrcamento" FromRole="Adicional" ToRole="Orcamento" />
+        </EntityType>
+        <Association Name="AdicionalOrcamento">
+          <End Type="SentinelaV2Model.Adicional" Role="Adicional" Multiplicity="*" />
+          <End Type="SentinelaV2Model.Orcamento" Role="Orcamento" Multiplicity="*" />
+        </Association>
         <EntityType Name="TipoEvento">
           <Key>
             <PropertyRef Name="TipoEventoId" />
@@ -972,16 +972,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SentinelaV2ModelStoreContainer" CdmEntityContainer="Contexto">
-          <EntitySetMapping Name="Adicional">
-            <EntityTypeMapping TypeName="SentinelaV2Model.Adicional">
-              <MappingFragment StoreEntitySet="Adicional">
-                <ScalarProperty Name="AdicionalId" ColumnName="AdicionalId" />
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
-                <ScalarProperty Name="Ativo" ColumnName="Ativo" />
-                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Cardapio">
             <EntityTypeMapping TypeName="SentinelaV2Model.Cardapio">
               <MappingFragment StoreEntitySet="Cardapio">
@@ -1124,12 +1114,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Adicional">
+            <EntityTypeMapping TypeName="SentinelaV2Model.Adicional">
+              <MappingFragment StoreEntitySet="Adicional">
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+                <ScalarProperty Name="Ativo" ColumnName="Ativo" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="AdicionalId" ColumnName="AdicionalId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <AssociationSetMapping Name="AdicionalOrcamento" TypeName="SentinelaV2Model.AdicionalOrcamento" StoreEntitySet="AdicionalOrcamento">
-            <EndProperty Name="Adicional">
-              <ScalarProperty Name="AdicionalId" ColumnName="AdicionalId" />
-            </EndProperty>
             <EndProperty Name="Orcamento">
               <ScalarProperty Name="OrcamentoId" ColumnName="OrcamentoId" />
+            </EndProperty>
+            <EndProperty Name="Adicional">
+              <ScalarProperty Name="AdicionalId" ColumnName="AdicionalId" />
             </EndProperty>
           </AssociationSetMapping>
           <EntitySetMapping Name="TipoEvento">

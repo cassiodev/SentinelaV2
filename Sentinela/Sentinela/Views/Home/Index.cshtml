@@ -1,12 +1,13 @@
-﻿@{
+﻿@model Sentinela.Models.Orcamento
+@{
     Layout = null;
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @*<meta name="viewport" content="width=device-width, initial-scale=1">*@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="/favicon.ico">
@@ -18,9 +19,32 @@
     <!-- Bootstrap theme -->
 
     <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="~/Content/Home.css" rel="stylesheet" />
 
-   
+    <style>
+        .adicional label {
+            border: 1px solid black;
+            display: inline-block;
+            width: 175px;
+            padding: 6px;
+            cursor: pointer;
+        }
+            .adicional label:hover, .cardapio label:hover {
+                background-color: aliceblue;
+            }
 
+        .cardapio label {
+            border: 1px solid black;
+            display: inline-block;
+            width: 215px;
+            height: 215px; 
+            padding: 6px;
+            cursor: pointer;
+            float: left;
+            margin-right: 6px;
+        }
+        
+    </style>
 </head>
 
 <body role="document">
@@ -32,46 +56,86 @@
                 
                 <a class="navbar-brand" href="~/">Sentinela Eventos</a>
             </div>
-            <div class="navbar-collapse collapse" style="height: 1px;">
-                
-            </div><!--/.nav-collapse -->
+            
         </div>
     </div>
 
     <div class="container theme-showcase" role="main">
 
-        <!-- Main jumbotron for a primary marketing message or call to action -->
-        <div class="jumbotron">
-            <h1>Monte seu orçamento!</h1>
-            <p>Volumus accusam fabellas at sit. Quot facer virtute cum ut. Ea duo wisi pertinax iudicabit. Sea cibo fierent adipisci no, vix no nihil possim imperdiet.</p>
-            <p><a href="#local-evento" class="btn btn-primary btn-lg" role="button">Começe agora »</a></p>
-        </div>
+        
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <h1>Monte seu orçamento!</h1>
+        <p>Volumus accusam fabellas at sit. Quot facer virtute cum ut. Ea duo wisi pertinax iudicabit. Sea cibo fierent adipisci no, vix no nihil possim imperdiet.</p>
+        <p><a href="#local-evento" class="btn btn-primary btn-lg" role="button">Começe agora »</a></p>
+    </div>
 
 
-
+    @using (Html.BeginForm())
+    {
         <div class="page-header">
             <h1 id="local-evento">Local</h1>
         </div>
         
-        <div class="page-header">
-            <h1 id="data-evento">Data</h1>
-        </div>
 
         <div class="page-header">
             <h1>Cardápio</h1>
+        </div>
+        <div class="cardapio">
+            @foreach (Sentinela.Models.Cardapio item in ViewBag.Cardapios)
+	        {
+		        <label>
+                    @Html.RadioButtonFor(m => m.CardapioId,item.CardapioId) @item.Nome
+                    <br />
+                    <span style="margin-top: 6px; display: block; font-weight: normal">@item.Descricao</span>
+                    <p><a type="button" href="javascript:;" class="btn-detalhes-cardapio" style="text-decoration: underline; float: right; font-weight: normal">Detalhes</a></p>
+                    
+                </label>
+	        }
         </div>
         
         <div class="page-header">
             <h1>Adicionais</h1>
         </div>
-
+        <div class="adicional">
+            @foreach (Sentinela.Models.Adicional item in ViewBag.Adicionais)
+            {
+                <label class="poph" data-trigger="hover" data-title="Descrição" data-toggle="popover" data-placement="top" data-container="body" data-content="@item.Descricao">
+                    <input type="checkbox" value="@item.AdicionalId" name="adicional" />  @item.Nome
+                </label>
+            }
+        </div>
         <div class="page-header">
             <h1>Dados Gerais do Evento  </h1>
         </div>
-        <p>Tipo de evento</p>
-        <p>Convidados Adultos</p>
-        <p>Convidados Criancas</p>
-        <p>Duração</p>
+        <div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.DataEvento, "Data Pretendida")
+                @Html.EditorFor(m => m.DataEvento)
+                @Html.ValidationMessageFor(model => model.DataEvento)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.TipoEventoId, "Tipo de Evento")
+                @Html.DropDownList("TipoEventoId", "[Selecione]")
+                @Html.ValidationMessageFor(model => model.TipoEventoId)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Convidados, "Número de convidados adultos")
+                @Html.EditorFor(m => m.Convidados)
+                @Html.ValidationMessageFor(model => model.Convidados)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Criancas, "Número de convidados crianças")
+                @Html.EditorFor(m => m.Criancas)
+                @Html.ValidationMessageFor(model => model.Criancas)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Periodo, "Duração do evento")
+                @Html.EditorFor(m => m.Periodo)
+                @Html.ValidationMessageFor(model => model.Periodo)
+            </div>
+        </div>
+        
 
         
 
@@ -79,6 +143,54 @@
         <div class="page-header">
             <h1>Dados para contato</h1>
         </div>
+        <div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Cliente.Pessoa.Nome)
+                @Html.EditorFor(m => m.Cliente.Pessoa.Nome, new { @class = "form-control", @placeholder = "Digite seu nome" })
+                @Html.ValidationMessageFor(model => model.Cliente.Pessoa.Nome)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Cliente.Pessoa.Email)
+                @Html.EditorFor(m => m.Cliente.Pessoa.Email, new { @class = "form-control", @type = "email", @placeholder = "Digite seu e-mail" })
+                @Html.ValidationMessageFor(model => model.Cliente.Pessoa.Email)
+            </div>
+            <div class="form-group">
+                <label for="Cliente_Logradouro" style="display: block;">Logradouro</label>
+                @Html.EditorFor(m => m.Cliente.Logradouro, new { @class = "form-control", @placeholder = "Digite o nome da rua" })
+                @Html.EditorFor(m => m.Cliente.Numero, new { @class = "form-control", @placeholder = "Nº" })
+                @Html.ValidationMessageFor(model => model.Cliente.Numero)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Cliente.Celular)
+                @Html.EditorFor(m => m.Cliente.Celular, new { @class = "form-control", @placeholder = "Digite seu celular" })
+                @Html.ValidationMessageFor(model => model.Cliente.Celular)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Cliente.Telefone)
+                @Html.EditorFor(m => m.Cliente.Telefone, new { @class = "form-control",  @placeholder = "Digite seu telefone fixo" })
+                @Html.ValidationMessageFor(model => model.Cliente.Telefone)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Cliente.Cidade.Estado)
+                @Html.DropDownList("EstadoId", "[Selecione]")
+                @Html.ValidationMessageFor(model => model.Cliente.Cidade.Estado)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Cliente.CidadeId, "Cidade")
+                @Html.DropDownListFor(m => m.Cliente.CidadeId, new List<SelectListItem>())
+                @Html.ValidationMessageFor(model => model.Cliente.CidadeId)
+            </div>
+
+        </div>
+        
+        
+        <div class="page-header" style="max-width: 400px; margin: 0 auto 10px;">
+            <button type="button" class="btn btn-success btn-lg btn-block">Enviar</button>
+        </div>
+        }
+        
         
         <footer>
             <p>© Company 2014</p>
@@ -88,10 +200,37 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-
     <script src="~/Scripts/jquery.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/bootbox.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
 
+            $('.poph').popover();
+
+            $('#EstadoId').change(function () {
+                $.get('/Cidade/GetCidades', { estadoId: $(this).val() }, function (data) {
+                    $("#CidadeId").html('');
+                    $("#CidadeId").append($("<option></option>").val(null).html('[Selecione]'))
+                    for (var i in data) {
+                        $("#Cliente_CidadeId").append($("<option></option>").val(data[i].id).html(data[i].text))
+                    }
+                }, 'json');
+            });
+
+            $('.form-group').children('input,select').addClass('form-control');
+
+            $('#Cliente_Numero').attr('placeholder', 'Número');
+
+            $("#Cliente_Logradouro").css("display", "inline-block").css("width", "79%");
+
+            $("#Cliente_Numero").css("display", "inline-block").css("width", "20%");
+        });
+
+    </script>
+
+
+    
 </body>
 </html>

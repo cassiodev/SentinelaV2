@@ -52,7 +52,7 @@ namespace Sentinela.Controllers
         {
             ViewBag.CidadeId = new SelectList(_Contexto.Cidade, "CidadeId", "Nome");
             ViewBag.EstadoId = new SelectList(_Contexto.Estado, "EstadoId", "UF");
-            ViewBag.ClienteId = new SelectList(_Contexto.Pessoa, "PessoaId", "Email");
+
             return View();
         }
 
@@ -71,7 +71,6 @@ namespace Sentinela.Controllers
             }
 
             ViewBag.CidadeId = new SelectList(_Contexto.Cidade, "CidadeId", "Nome", cliente.CidadeId);
-            ViewBag.ClienteId = new SelectList(_Contexto.Pessoa, "PessoaId", "Email", cliente.ClienteId);
             return View(cliente);
         }
 

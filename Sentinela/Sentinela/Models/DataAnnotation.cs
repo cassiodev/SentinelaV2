@@ -68,7 +68,7 @@ namespace Sentinela.Models
         [StringLength(200, ErrorMessage="Máximo de caracteres permitido: 200.")]
         public string Logradouro { get; set; }
 
-        [DataType(DataType.Currency, ErrorMessage = "Número inválido")]
+        [Range(0, int.MaxValue)]
         public Nullable<int> Numero { get; set; }
 
         [DataType(DataType.PhoneNumber, ErrorMessage = "Número inválido")]
@@ -189,12 +189,12 @@ namespace Sentinela.Models
         public string Logradouro { get; set; }
 
         [Required(AllowEmptyStrings = false,ErrorMessage = "Campo número é obrigatorio")]
-        [DataType(DataType.Currency, ErrorMessage = "Tipo de dados incorreto.")]
+        [Range(0, int.MaxValue)]
         public int Numero { get; set; }
         public bool Ativo { get; set; }
 
         [Required(AllowEmptyStrings = false,ErrorMessage = "Campo capacidade é obrigatorio")]
-        [DataType(DataType.Currency, ErrorMessage = "Tipo de dados incorreto.")]
+        [Range(0, int.MaxValue)]
         public int Capacidade { get; set; }
 
     }
@@ -222,18 +222,19 @@ namespace Sentinela.Models
         public int TipoEventoId { get; set; }
 
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo Data Evento é obrigatorio")]
+        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo Data é obrigatorio")]
+        [DataType(DataType.Date, ErrorMessage="O valor deve ser uma data")]
         public System.DateTime DataEvento { get; set; }
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo tamanho é obrigatorio")]
-        [DataType(DataType.Currency, ErrorMessage = "Tipo de dados incorreto.")]
+        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo convidados é obrigatorio")]
+        [Range(0, int.MaxValue)]
         public int Convidados { get; set; }
 
         [Required(AllowEmptyStrings = false,ErrorMessage = "Campo período é obrigatorio")]
         [DataType(DataType.Time, ErrorMessage = "Tipo de dados incorreto.")]
         public System.TimeSpan Periodo { get; set; }
 
-        [DataType(DataType.Time, ErrorMessage = "Tipo de dados incorreto.")]
+        [Range(0, int.MaxValue)]
         public Nullable<int> Criancas { get; set; }
 
     }

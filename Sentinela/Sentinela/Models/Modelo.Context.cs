@@ -25,7 +25,6 @@ namespace Sentinela.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<Adicional> Adicional { get; set; }
         public DbSet<Cardapio> Cardapio { get; set; }
         public DbSet<CardapioRefeicaoItem> CardapioRefeicaoItem { get; set; }
         public DbSet<Cidade> Cidade { get; set; }
@@ -39,6 +38,7 @@ namespace Sentinela.Models
         public DbSet<Pessoa> Pessoa { get; set; }
         public DbSet<Refeicao> Refeicao { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<Adicional> Adicional { get; set; }
         public DbSet<TipoEvento> TipoEvento { get; set; }
     }
 }
