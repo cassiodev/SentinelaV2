@@ -32,5 +32,26 @@ namespace Sentinela.Controllers
 
             return View();
         }
+
+        public ActionResult DetalhesCardapio(int? id)
+        {
+            Cardapio cardapio = _Contexto.Cardapio.Find(id);
+            if (cardapio == null || !cardapio.Ativo)
+            {
+                return HttpNotFound();
+            }
+
+            var Itens = cardapio.CardapioRefeicaoItem.GroupBy(r => r.Refeicao).Select(r => new ViewRefeicao { Refeicao = r.Key.Nome, Itens = String.Join(", ",cardapio.CardapioRefeicaoItem.Where(re => re.RefeicaoId == r.Key.RefeicaoId).Select(i => i.Item.Nome)) });
+
+            ViewBag.Refeicoes = Itens.ToList();
+
+            return PartialView("_DetalhesCardapio",cardapio);
+        }
+    }
+    public class ViewRefeicao
+    {
+        public string Refeicao { get; set; }
+        public string Itens { get; set; }
+
     }
 }
