@@ -59,9 +59,14 @@
         <div class="display-field">
             @Html.DisplayFor(model => model.Convidados)
         </div>
-
         <div class="display-label">
-            Período
+            @Html.DisplayNameFor(model => model.Criancas)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Criancas)
+        </div>
+        <div class="display-label">
+            Duração
         </div>
         <div class="display-field">
             @Html.DisplayFor(model => model.Periodo)
@@ -74,6 +79,27 @@
             @Html.DisplayFor(model => model.TipoEvento.Nome)
         </div>
 
+        <div class="display-label">
+            Cardápio
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Cardapio.Nome)
+        </div>
+
+        <div class="display-label">
+            Local
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Local.Nome)
+        </div>
+
+        <div class="display-label">
+            Adicionais
+        </div>
+        <div class="display-field">
+            @String.Format("{0}", Model.Adicional.Any() ? String.Join(",", Model.Adicional.Select(adc => adc.Nome).ToArray()) : "Sem Adicionais")
+
+        </div>
 
     </fieldset>
 
@@ -112,7 +138,7 @@
         </div>
 
         <div class="display-label">
-            @Html.DisplayNameFor(model => model.Cliente.Logradouro)
+            Endereço
         </div>
         <div class="display-field">
             @Html.DisplayFor(model => model.Cliente.Logradouro), @Model.Cliente.Numero

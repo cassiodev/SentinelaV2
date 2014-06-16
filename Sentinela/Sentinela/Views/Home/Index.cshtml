@@ -26,6 +26,16 @@
  
 
     <style>
+        .field-validation-error{
+            color:red;
+        } .local label {
+            border: 1px solid #eee;
+            display: inline-block;
+            width: 215px;
+            padding: 6px;
+            cursor: pointer;
+        }
+
         .adicional label {
             border: 1px solid #eee;
             display: inline-block;
@@ -33,7 +43,7 @@
             padding: 6px;
             cursor: pointer;
         }
-            .adicional label:hover, .cardapio label:hover {
+            .adicional label:hover, .cardapio label:hover, .local label:hover {
                 background-color: aliceblue;
             }
 
@@ -41,10 +51,8 @@
             border: 1px solid #eee;
             display: inline-block;
             width: 215px;
-            height: 215px;
             padding: 6px;
             cursor: pointer;
-            /*float: left;*/
         }
         #loader {
             z-index: 9999;
@@ -103,7 +111,7 @@
         
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
-        <h1>Monte seu orçamento!</h1>
+        <h1>Monte seu evento!</h1>
         <p>Volumus accusam fabellas at sit. Quot facer virtute cum ut. Ea duo wisi pertinax iudicabit. Sea cibo fierent adipisci no, vix no nihil possim imperdiet.</p>
         <p><a href="#local-evento" class="btn btn-primary btn-lg" role="button">Começe agora »</a></p>
     </div>
@@ -112,9 +120,23 @@
     @using (Html.BeginForm())
     {
         <div class="page-header">
-            <h1 id="local-evento">Local</h1>
+            <h1 id="local-evento">Espaços</h1>
         </div>
-        
+        <div class="local">
+            @foreach (Sentinela.Models.Local item in ViewBag.Local)
+            {
+                <div style="display: inline-block; width: 215px; margin-right: 6px; margin-bottom:20px">
+                    <label>
+                        @Html.RadioButtonFor(m => m.LocalId, item.LocalId) @item.Nome
+
+                    </label>
+                    <div style="width: 215px; display: inline-block; ">
+                        <button data-title="@item.Nome" data-id="@item.LocalId" type="button" class="btn-block detalhes-local btn btn-xs btn-default" style="display: block; margin: 0 auto; font-weight: normal">Detalhes</button>
+                    </div>
+                </div>
+            }
+            @Html.ValidationMessageFor(model => model.LocalId)
+        </div>
 
         <div class="page-header">
             <h1>Cardápio</h1>
@@ -122,18 +144,17 @@
             <div class="cardapio">
                 @foreach (Sentinela.Models.Cardapio item in ViewBag.Cardapios)
                 {
-                    <div style="display: inline-block; width: 215px; float: left; margin-right: 6px; margin-bottom:20px">
+                    <div style="display: inline-block; width: 215px; margin-right: 6px; margin-bottom:20px">
                         <label>
                             @Html.RadioButtonFor(m => m.CardapioId, item.CardapioId) @item.Nome
-                            <br />
-                            <span style="margin-top: 6px; display: block; font-weight: normal">@item.Descricao</span>
 
                         </label>
                         <div style="width: 215px; display: inline-block; ">
-                            <button data-title="@item.Nome" data-id="@item.CardapioId" type="button" class="detalhes-cardapio btn btn-default"  style="display: block; margin: 0 auto; font-weight: normal">Detalhes</button>
+                            <button data-title="@item.Nome" data-id="@item.CardapioId" type="button" class="btn-block detalhes-cardapio btn btn-xs btn-default" style="display: block; margin: 0 auto; font-weight: normal">Detalhes</button>
                         </div>
                     </div>
                 }
+                @Html.ValidationMessageFor(model => model.CardapioId)
         </div>
         
         <div class="page-header">
@@ -143,7 +164,7 @@
             @foreach (Sentinela.Models.Adicional item in ViewBag.Adicionais)
             {
                 <label class="poph" data-trigger="hover" data-title="Descrição" data-toggle="popover" data-placement="top" data-container="body" data-content="@item.Descricao">
-                    <input type="checkbox" value="@item.AdicionalId" name="adicional" />  @item.Nome
+                    <input type="checkbox" value="@item.AdicionalId" name="Adicionais" />  @item.Nome
                 </label>
             }
         </div>
@@ -217,7 +238,7 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.Cliente.Cidade.Estado)
                 @Html.DropDownList("EstadoId", "[Selecione]")
-                @Html.ValidationMessageFor(model => model.Cliente.Cidade.Estado)
+                @Html.ValidationMessageFor(model => model.Cliente.Cidade.EstadoId)
             </div>
 
             <div class="form-group">
@@ -230,7 +251,7 @@
         
         
         <div class="page-header" style="max-width: 400px; margin: 0 auto 10px;">
-            <button type="button" class="btn btn-success btn-lg btn-block">Enviar</button>
+            <button type="submit" class="btn btn-success btn-lg btn-block">Enviar</button>
         </div>
         }
         
@@ -270,6 +291,16 @@
     <script src="~/Scripts/jquery.fancybox-buttons.js"></script>
     <script src="~/Scripts/jquery.fancybox-thumbs.js"></script>
     @Scripts.Render("~/bundles/jqueryval")
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+                      @*alert(@Html.Raw(Json.Encode(TempData["message"])));*@
+
+                bootbox.alert(@Html.Raw(Json.Encode(TempData["message"])));
+
+
+        </script>
+    }
     <script>
         function hideLoader() {
             $('#loader').fadeOut('fast');
@@ -283,6 +314,28 @@
         }
         $(document).ready(function () {
             
+            $('.detalhes-local').click(function () {
+                $(".modal-title").text("Local: " + $(this).attr("data-title"));
+
+                showLoader();
+                $.get(
+                    "/Home/DetalhesLocal",
+                    { id: $(this).attr("data-id") },
+                    function (data) {
+                        $(".modal-body").html(data);
+                        $('#myModal').modal('show');
+                    },
+                    "html")
+                .fail(function () {
+                    alert('Erro de conexão');
+                })
+                .always(function () {
+                    hideLoader();
+                });
+
+
+
+            });
             $('.detalhes-cardapio').click(function () {
                 $(".modal-title").text("Cardápio: "+$(this).attr("data-title"));
                 

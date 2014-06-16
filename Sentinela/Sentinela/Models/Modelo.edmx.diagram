@@ -8,36 +8,36 @@
         <EntityTypeShape EntityType="SentinelaV2Model.Cardapio" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SentinelaV2Model.CardapioRefeicaoItem" Width="1.5" PointX="3" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SentinelaV2Model.Cidade" Width="1.5" PointX="1.5" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SentinelaV2Model.Cliente" Width="1.5" PointX="3.75" PointY="22.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SentinelaV2Model.Estado" Width="1.5" PointX="1.5" PointY="14" IsExpanded="true" />
         <EntityTypeShape EntityType="SentinelaV2Model.Evento" Width="1.5" PointX="8.25" PointY="6.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SentinelaV2Model.Imagem" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SentinelaV2Model.Item" Width="1.5" PointX="0.75" PointY="16.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SentinelaV2Model.Local" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SentinelaV2Model.Orcamento" Width="1.5" PointX="6" PointY="5.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SentinelaV2Model.Pessoa" Width="1.5" PointX="1.5" PointY="23" IsExpanded="true" />
         <EntityTypeShape EntityType="SentinelaV2Model.Refeicao" Width="1.5" PointX="0.75" PointY="19.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SentinelaV2Model.Usuario" Width="1.5" PointX="3.75" PointY="27" IsExpanded="true" />
         <AssociationConnector Association="SentinelaV2Model.FKCardapioRe378630" ManuallyRouted="false" />
         <AssociationConnector Association="SentinelaV2Model.FKImagem136107" ManuallyRouted="false" />
-        <AssociationConnector Association="SentinelaV2Model.FKOrcamento459744" ManuallyRouted="false" />
         <AssociationConnector Association="SentinelaV2Model.FKCardapioRe10627" ManuallyRouted="false" />
         <AssociationConnector Association="SentinelaV2Model.FKCardapioRe742390" ManuallyRouted="false" />
         <AssociationConnector Association="SentinelaV2Model.FKCidade809013" ManuallyRouted="false" />
-        <AssociationConnector Association="SentinelaV2Model.FKCliente218626" ManuallyRouted="false" />
         <AssociationConnector Association="SentinelaV2Model.FKLocal431968" ManuallyRouted="false" />
-        <AssociationConnector Association="SentinelaV2Model.FKCliente729885" ManuallyRouted="false" />
-        <AssociationConnector Association="SentinelaV2Model.FKOrcamento699439" ManuallyRouted="false" />
         <AssociationConnector Association="SentinelaV2Model.FKEvento258908" ManuallyRouted="false" />
-        <AssociationConnector Association="SentinelaV2Model.FKEvento322707" ManuallyRouted="false" />
         <AssociationConnector Association="SentinelaV2Model.FKImagem337571" ManuallyRouted="false" />
-        <AssociationConnector Association="SentinelaV2Model.FKOrcamento13934" ManuallyRouted="false" />
         <AssociationConnector Association="SentinelaV2Model.FKUsuario374417" ManuallyRouted="false" />
         <EntityTypeShape EntityType="SentinelaV2Model.Adicional" Width="1.5" PointX="8.375" PointY="0.875" />
-        <AssociationConnector Association="SentinelaV2Model.AdicionalOrcamento" />
         <EntityTypeShape EntityType="SentinelaV2Model.TipoEvento" Width="1.5" PointX="3.375" PointY="0.875" />
         <AssociationConnector Association="SentinelaV2Model.FKEvento177094" />
+        <EntityTypeShape EntityType="SentinelaV2Model.Orcamento" Width="1.5" PointX="10.625" PointY="10.875" />
+        <AssociationConnector Association="SentinelaV2Model.FKOrcamento459744" />
+        <AssociationConnector Association="SentinelaV2Model.FKEvento322707" />
+        <AssociationConnector Association="SentinelaV2Model.FKOrcamento13934" />
         <AssociationConnector Association="SentinelaV2Model.FKOrcamento67880" />
+        <AssociationConnector Association="SentinelaV2Model.AdicionalOrcamento" />
+        <EntityTypeShape EntityType="SentinelaV2Model.Cliente" Width="1.5" PointX="3.75" PointY="16.375" />
+        <AssociationConnector Association="SentinelaV2Model.FKCliente218626" />
+        <AssociationConnector Association="SentinelaV2Model.FKCliente729885" />
+        <AssociationConnector Association="SentinelaV2Model.FKOrcamento699439" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

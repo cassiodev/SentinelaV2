@@ -22,7 +22,7 @@ namespace Sentinela.Models
         public string Observacao { get; set; }
     
         public virtual Local Local { get; set; }
-        public virtual Orcamento Orcamento { get; set; }
         public virtual TipoEvento TipoEvento { get; set; }
+        public virtual Orcamento Orcamento { get; set; }
     }
 }

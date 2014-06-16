@@ -496,7 +496,7 @@
           <Property Name="Ativo" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CardapioRefeicaoItem" Relationship="Self.FKCardapioRe378630" FromRole="Cardapio" ToRole="CardapioRefeicaoItem" />
           <NavigationProperty Name="Imagem" Relationship="Self.FKImagem136107" FromRole="Cardapio" ToRole="Imagem" />
-          <NavigationProperty Name="Orcamento" Relationship="Self.FKOrcamento459744" FromRole="Cardapio" ToRole="Orcamento" />
+          <NavigationProperty Name="Orcamento" Relationship="SentinelaV2Model.FKOrcamento459744" FromRole="Cardapio" ToRole="Orcamento" />
         </EntityType>
         <EntityType Name="CardapioRefeicaoItem">
           <Key>
@@ -519,23 +519,8 @@
           <Property Name="Nome" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="EstadoId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Estado" Relationship="Self.FKCidade809013" FromRole="Cidade" ToRole="Estado" />
-          <NavigationProperty Name="Cliente" Relationship="Self.FKCliente218626" FromRole="Cidade" ToRole="Cliente" />
           <NavigationProperty Name="Local" Relationship="Self.FKLocal431968" FromRole="Cidade" ToRole="Local" />
-        </EntityType>
-        <EntityType Name="Cliente">
-          <Key>
-            <PropertyRef Name="ClienteId" />
-          </Key>
-          <Property Name="ClienteId" Type="Int32" Nullable="false" />
-          <Property Name="CidadeId" Type="Int32" Nullable="false" />
-          <Property Name="Logradouro" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Numero" Type="Int32" />
-          <Property Name="Cpf" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="Celular" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
-          <Property Name="Telefone" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Cidade" Relationship="Self.FKCliente218626" FromRole="Cliente" ToRole="Cidade" />
-          <NavigationProperty Name="Pessoa" Relationship="Self.FKCliente729885" FromRole="Cliente" ToRole="Pessoa" />
-          <NavigationProperty Name="Orcamento" Relationship="Self.FKOrcamento699439" FromRole="Cliente" ToRole="Orcamento" />
+          <NavigationProperty Name="Cliente" Relationship="SentinelaV2Model.FKCliente218626" FromRole="Cidade" ToRole="Cliente" />
         </EntityType>
         <EntityType Name="Estado">
           <Key>
@@ -557,8 +542,8 @@
           <Property Name="Data" Type="DateTime" Nullable="false" />
           <Property Name="Observacao" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Local" Relationship="Self.FKEvento258908" FromRole="Evento" ToRole="Local" />
-          <NavigationProperty Name="Orcamento" Relationship="Self.FKEvento322707" FromRole="Evento" ToRole="Orcamento" />
           <NavigationProperty Name="TipoEvento" Relationship="SentinelaV2Model.FKEvento177094" FromRole="Evento" ToRole="TipoEvento" />
+          <NavigationProperty Name="Orcamento" Relationship="SentinelaV2Model.FKEvento322707" FromRole="Evento" ToRole="Orcamento" />
         </EntityType>
         <EntityType Name="Imagem">
           <Key>
@@ -596,30 +581,7 @@
           <NavigationProperty Name="Cidade" Relationship="Self.FKLocal431968" FromRole="Local" ToRole="Cidade" />
           <NavigationProperty Name="Evento" Relationship="Self.FKEvento258908" FromRole="Local" ToRole="Evento" />
           <NavigationProperty Name="Imagem" Relationship="Self.FKImagem337571" FromRole="Local" ToRole="Imagem" />
-          <NavigationProperty Name="Orcamento" Relationship="Self.FKOrcamento13934" FromRole="Local" ToRole="Orcamento" />
-        </EntityType>
-        <EntityType Name="Orcamento">
-          <Key>
-            <PropertyRef Name="OrcamentoId" />
-          </Key>
-          <Property Name="OrcamentoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClienteId" Type="Int32" Nullable="false" />
-          <Property Name="LocalId" Type="Int32" Nullable="false" />
-          <Property Name="CardapioId" Type="Int32" Nullable="false" />
-          <Property Name="TipoEventoId" Type="Int32" Nullable="false" />
-          <Property Name="DataOrcamento" Type="DateTime" Nullable="false" />
-          <Property Name="DataEvento" Type="DateTime" Nullable="false" />
-          <Property Name="DataAlteracao" Type="DateTime" Nullable="false" />
-          <Property Name="Situacao" Type="Int32" Nullable="false" />
-          <Property Name="Convidados" Type="Int32" Nullable="false" />
-          <Property Name="Periodo" Type="Time" Nullable="false" />
-          <Property Name="Criancas" Type="Int32" />
-          <NavigationProperty Name="Cardapio" Relationship="Self.FKOrcamento459744" FromRole="Orcamento" ToRole="Cardapio" />
-          <NavigationProperty Name="Cliente" Relationship="Self.FKOrcamento699439" FromRole="Orcamento" ToRole="Cliente" />
-          <NavigationProperty Name="Evento" Relationship="Self.FKEvento322707" FromRole="Orcamento" ToRole="Evento" />
-          <NavigationProperty Name="Local" Relationship="Self.FKOrcamento13934" FromRole="Orcamento" ToRole="Local" />
-          <NavigationProperty Name="Adicional" Relationship="SentinelaV2Model.AdicionalOrcamento" FromRole="Orcamento" ToRole="Adicional" />
-          <NavigationProperty Name="TipoEvento" Relationship="SentinelaV2Model.FKOrcamento67880" FromRole="Orcamento" ToRole="TipoEvento" />
+          <NavigationProperty Name="Orcamento" Relationship="SentinelaV2Model.FKOrcamento13934" FromRole="Local" ToRole="Orcamento" />
         </EntityType>
         <EntityType Name="Pessoa">
           <Key>
@@ -628,8 +590,8 @@
           <Property Name="PessoaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Nome" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Cliente" Relationship="Self.FKCliente729885" FromRole="Pessoa" ToRole="Cliente" />
           <NavigationProperty Name="Usuario" Relationship="Self.FKUsuario374417" FromRole="Pessoa" ToRole="Usuario" />
+          <NavigationProperty Name="Cliente" Relationship="SentinelaV2Model.FKCliente729885" FromRole="Pessoa" ToRole="Cliente" />
         </EntityType>
         <EntityType Name="Refeicao">
           <Key>
@@ -674,18 +636,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FKOrcamento459744">
-          <End Role="Cardapio" Type="Self.Cardapio" Multiplicity="1" />
-          <End Role="Orcamento" Type="Self.Orcamento" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cardapio">
-              <PropertyRef Name="CardapioId" />
-            </Principal>
-            <Dependent Role="Orcamento">
-              <PropertyRef Name="CardapioId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FKCardapioRe10627">
           <End Role="Item" Type="Self.Item" Multiplicity="1" />
           <End Role="CardapioRefeicaoItem" Type="Self.CardapioRefeicaoItem" Multiplicity="*" />
@@ -722,18 +672,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FKCliente218626">
-          <End Role="Cidade" Type="Self.Cidade" Multiplicity="1" />
-          <End Role="Cliente" Type="Self.Cliente" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cidade">
-              <PropertyRef Name="CidadeId" />
-            </Principal>
-            <Dependent Role="Cliente">
-              <PropertyRef Name="CidadeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FKLocal431968">
           <End Role="Cidade" Type="Self.Cidade" Multiplicity="1" />
           <End Role="Local" Type="Self.Local" Multiplicity="*" />
@@ -743,30 +681,6 @@
             </Principal>
             <Dependent Role="Local">
               <PropertyRef Name="CidadeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FKCliente729885">
-          <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="1" />
-          <End Role="Cliente" Type="Self.Cliente" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Pessoa">
-              <PropertyRef Name="PessoaId" />
-            </Principal>
-            <Dependent Role="Cliente">
-              <PropertyRef Name="ClienteId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FKOrcamento699439">
-          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
-          <End Role="Orcamento" Type="Self.Orcamento" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cliente">
-              <PropertyRef Name="ClienteId" />
-            </Principal>
-            <Dependent Role="Orcamento">
-              <PropertyRef Name="ClienteId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -782,18 +696,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FKEvento322707">
-          <End Role="Orcamento" Type="Self.Orcamento" Multiplicity="0..1" />
-          <End Role="Evento" Type="Self.Evento" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Orcamento">
-              <PropertyRef Name="OrcamentoId" />
-            </Principal>
-            <Dependent Role="Evento">
-              <PropertyRef Name="OrcamentoId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FKImagem337571">
           <End Role="Local" Type="Self.Local" Multiplicity="0..1" />
           <End Role="Imagem" Type="Self.Imagem" Multiplicity="*" />
@@ -802,18 +704,6 @@
               <PropertyRef Name="LocalId" />
             </Principal>
             <Dependent Role="Imagem">
-              <PropertyRef Name="LocalId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FKOrcamento13934">
-          <End Role="Local" Type="Self.Local" Multiplicity="1" />
-          <End Role="Orcamento" Type="Self.Orcamento" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Local">
-              <PropertyRef Name="LocalId" />
-            </Principal>
-            <Dependent Role="Orcamento">
               <PropertyRef Name="LocalId" />
             </Dependent>
           </ReferentialConstraint>
@@ -834,13 +724,11 @@
           <EntitySet Name="Cardapio" EntityType="Self.Cardapio" />
           <EntitySet Name="CardapioRefeicaoItem" EntityType="Self.CardapioRefeicaoItem" />
           <EntitySet Name="Cidade" EntityType="Self.Cidade" />
-          <EntitySet Name="Cliente" EntityType="Self.Cliente" />
           <EntitySet Name="Estado" EntityType="Self.Estado" />
           <EntitySet Name="Evento" EntityType="Self.Evento" />
           <EntitySet Name="Imagem" EntityType="Self.Imagem" />
           <EntitySet Name="Item" EntityType="Self.Item" />
           <EntitySet Name="Local" EntityType="Self.Local" />
-          <EntitySet Name="Orcamento" EntityType="Self.Orcamento" />
           <EntitySet Name="Pessoa" EntityType="Self.Pessoa" />
           <EntitySet Name="Refeicao" EntityType="Self.Refeicao" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" />
@@ -851,10 +739,6 @@
           <AssociationSet Name="FKImagem136107" Association="Self.FKImagem136107">
             <End Role="Cardapio" EntitySet="Cardapio" />
             <End Role="Imagem" EntitySet="Imagem" />
-          </AssociationSet>
-          <AssociationSet Name="FKOrcamento459744" Association="Self.FKOrcamento459744">
-            <End Role="Cardapio" EntitySet="Cardapio" />
-            <End Role="Orcamento" EntitySet="Orcamento" />
           </AssociationSet>
           <AssociationSet Name="FKCardapioRe10627" Association="Self.FKCardapioRe10627">
             <End Role="Item" EntitySet="Item" />
@@ -868,54 +752,60 @@
             <End Role="Estado" EntitySet="Estado" />
             <End Role="Cidade" EntitySet="Cidade" />
           </AssociationSet>
-          <AssociationSet Name="FKCliente218626" Association="Self.FKCliente218626">
-            <End Role="Cidade" EntitySet="Cidade" />
-            <End Role="Cliente" EntitySet="Cliente" />
-          </AssociationSet>
           <AssociationSet Name="FKLocal431968" Association="Self.FKLocal431968">
             <End Role="Cidade" EntitySet="Cidade" />
             <End Role="Local" EntitySet="Local" />
           </AssociationSet>
-          <AssociationSet Name="FKCliente729885" Association="Self.FKCliente729885">
-            <End Role="Pessoa" EntitySet="Pessoa" />
-            <End Role="Cliente" EntitySet="Cliente" />
-          </AssociationSet>
-          <AssociationSet Name="FKOrcamento699439" Association="Self.FKOrcamento699439">
-            <End Role="Cliente" EntitySet="Cliente" />
-            <End Role="Orcamento" EntitySet="Orcamento" />
-          </AssociationSet>
           <AssociationSet Name="FKEvento258908" Association="Self.FKEvento258908">
             <End Role="Local" EntitySet="Local" />
-            <End Role="Evento" EntitySet="Evento" />
-          </AssociationSet>
-          <AssociationSet Name="FKEvento322707" Association="Self.FKEvento322707">
-            <End Role="Orcamento" EntitySet="Orcamento" />
             <End Role="Evento" EntitySet="Evento" />
           </AssociationSet>
           <AssociationSet Name="FKImagem337571" Association="Self.FKImagem337571">
             <End Role="Local" EntitySet="Local" />
             <End Role="Imagem" EntitySet="Imagem" />
           </AssociationSet>
-          <AssociationSet Name="FKOrcamento13934" Association="Self.FKOrcamento13934">
-            <End Role="Local" EntitySet="Local" />
-            <End Role="Orcamento" EntitySet="Orcamento" />
-          </AssociationSet>
           <AssociationSet Name="FKUsuario374417" Association="Self.FKUsuario374417">
             <End Role="Pessoa" EntitySet="Pessoa" />
             <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
           <EntitySet Name="Adicional" EntityType="SentinelaV2Model.Adicional" />
-          <AssociationSet Name="AdicionalOrcamento" Association="SentinelaV2Model.AdicionalOrcamento">
-            <End Role="Adicional" EntitySet="Adicional" />
-            <End Role="Orcamento" EntitySet="Orcamento" />
-          </AssociationSet>
           <EntitySet Name="TipoEvento" EntityType="SentinelaV2Model.TipoEvento" />
           <AssociationSet Name="FKEvento177094" Association="SentinelaV2Model.FKEvento177094">
             <End Role="TipoEvento" EntitySet="TipoEvento" />
             <End Role="Evento" EntitySet="Evento" />
           </AssociationSet>
+          <EntitySet Name="Orcamento" EntityType="SentinelaV2Model.Orcamento" />
+          <AssociationSet Name="FKOrcamento459744" Association="SentinelaV2Model.FKOrcamento459744">
+            <End Role="Cardapio" EntitySet="Cardapio" />
+            <End Role="Orcamento" EntitySet="Orcamento" />
+          </AssociationSet>
+          <AssociationSet Name="FKEvento322707" Association="SentinelaV2Model.FKEvento322707">
+            <End Role="Orcamento" EntitySet="Orcamento" />
+            <End Role="Evento" EntitySet="Evento" />
+          </AssociationSet>
+          <AssociationSet Name="FKOrcamento13934" Association="SentinelaV2Model.FKOrcamento13934">
+            <End Role="Local" EntitySet="Local" />
+            <End Role="Orcamento" EntitySet="Orcamento" />
+          </AssociationSet>
           <AssociationSet Name="FKOrcamento67880" Association="SentinelaV2Model.FKOrcamento67880">
             <End Role="TipoEvento" EntitySet="TipoEvento" />
+            <End Role="Orcamento" EntitySet="Orcamento" />
+          </AssociationSet>
+          <AssociationSet Name="AdicionalOrcamento" Association="SentinelaV2Model.AdicionalOrcamento">
+            <End Role="Adicional" EntitySet="Adicional" />
+            <End Role="Orcamento" EntitySet="Orcamento" />
+          </AssociationSet>
+          <EntitySet Name="Cliente" EntityType="SentinelaV2Model.Cliente" />
+          <AssociationSet Name="FKCliente218626" Association="SentinelaV2Model.FKCliente218626">
+            <End Role="Cidade" EntitySet="Cidade" />
+            <End Role="Cliente" EntitySet="Cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FKCliente729885" Association="SentinelaV2Model.FKCliente729885">
+            <End Role="Pessoa" EntitySet="Pessoa" />
+            <End Role="Cliente" EntitySet="Cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FKOrcamento699439" Association="SentinelaV2Model.FKOrcamento699439">
+            <End Role="Cliente" EntitySet="Cliente" />
             <End Role="Orcamento" EntitySet="Orcamento" />
           </AssociationSet>
         </EntityContainer>
@@ -929,10 +819,6 @@
           <Property Name="Descricao" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Orcamento" Relationship="SentinelaV2Model.AdicionalOrcamento" FromRole="Adicional" ToRole="Orcamento" />
         </EntityType>
-        <Association Name="AdicionalOrcamento">
-          <End Type="SentinelaV2Model.Adicional" Role="Adicional" Multiplicity="*" />
-          <End Type="SentinelaV2Model.Orcamento" Role="Orcamento" Multiplicity="*" />
-        </Association>
         <EntityType Name="TipoEvento">
           <Key>
             <PropertyRef Name="TipoEventoId" />
@@ -954,6 +840,65 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Orcamento">
+          <Key>
+            <PropertyRef Name="OrcamentoId" />
+          </Key>
+          <Property Name="OrcamentoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClienteId" Type="Int32" Nullable="false" />
+          <Property Name="LocalId" Type="Int32" Nullable="false" />
+          <Property Name="CardapioId" Type="Int32" Nullable="false" />
+          <Property Name="TipoEventoId" Type="Int32" Nullable="false" />
+          <Property Name="DataOrcamento" Type="DateTime" Nullable="false" />
+          <Property Name="DataEvento" Type="DateTime" Nullable="false" />
+          <Property Name="DataAlteracao" Type="DateTime" Nullable="false" />
+          <Property Name="Situacao" Type="Int32" Nullable="false" />
+          <Property Name="Convidados" Type="Int32" Nullable="false" />
+          <Property Name="Periodo" Type="Time" Nullable="false" />
+          <Property Name="Criancas" Type="Int32" />
+          <NavigationProperty Name="Cardapio" Relationship="SentinelaV2Model.FKOrcamento459744" FromRole="Orcamento" ToRole="Cardapio" />
+          <NavigationProperty Name="Evento" Relationship="SentinelaV2Model.FKEvento322707" FromRole="Orcamento" ToRole="Evento" />
+          <NavigationProperty Name="Local" Relationship="SentinelaV2Model.FKOrcamento13934" FromRole="Orcamento" ToRole="Local" />
+          <NavigationProperty Name="TipoEvento" Relationship="SentinelaV2Model.FKOrcamento67880" FromRole="Orcamento" ToRole="TipoEvento" />
+          <NavigationProperty Name="Adicional" Relationship="SentinelaV2Model.AdicionalOrcamento" FromRole="Orcamento" ToRole="Adicional" />
+          <NavigationProperty Name="Cliente" Relationship="SentinelaV2Model.FKOrcamento699439" FromRole="Orcamento" ToRole="Cliente" />
+        </EntityType>
+        <Association Name="FKOrcamento459744">
+          <End Type="SentinelaV2Model.Cardapio" Role="Cardapio" Multiplicity="1" />
+          <End Type="SentinelaV2Model.Orcamento" Role="Orcamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cardapio">
+              <PropertyRef Name="CardapioId" />
+            </Principal>
+            <Dependent Role="Orcamento">
+              <PropertyRef Name="CardapioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKEvento322707">
+          <End Type="SentinelaV2Model.Orcamento" Role="Orcamento" Multiplicity="0..1" />
+          <End Type="SentinelaV2Model.Evento" Role="Evento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orcamento">
+              <PropertyRef Name="OrcamentoId" />
+            </Principal>
+            <Dependent Role="Evento">
+              <PropertyRef Name="OrcamentoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKOrcamento13934">
+          <End Type="SentinelaV2Model.Local" Role="Local" Multiplicity="1" />
+          <End Type="SentinelaV2Model.Orcamento" Role="Orcamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Local">
+              <PropertyRef Name="LocalId" />
+            </Principal>
+            <Dependent Role="Orcamento">
+              <PropertyRef Name="LocalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FKOrcamento67880">
           <End Type="SentinelaV2Model.TipoEvento" Role="TipoEvento" Multiplicity="1" />
           <End Type="SentinelaV2Model.Orcamento" Role="Orcamento" Multiplicity="*" />
@@ -963,6 +908,61 @@
             </Principal>
             <Dependent Role="Orcamento">
               <PropertyRef Name="TipoEventoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AdicionalOrcamento">
+          <End Type="SentinelaV2Model.Adicional" Role="Adicional" Multiplicity="*" />
+          <End Type="SentinelaV2Model.Orcamento" Role="Orcamento" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="ClienteId" />
+          </Key>
+          <Property Name="ClienteId" Type="Int32" Nullable="false" />
+          <Property Name="CidadeId" Type="Int32" Nullable="false" />
+          <Property Name="Logradouro" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Numero" Type="Int32" />
+          <Property Name="Cpf" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="Celular" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="Telefone" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cidade" Relationship="SentinelaV2Model.FKCliente218626" FromRole="Cliente" ToRole="Cidade" />
+          <NavigationProperty Name="Pessoa" Relationship="SentinelaV2Model.FKCliente729885" FromRole="Cliente" ToRole="Pessoa" />
+          <NavigationProperty Name="Orcamento" Relationship="SentinelaV2Model.FKOrcamento699439" FromRole="Cliente" ToRole="Orcamento" />
+        </EntityType>
+        <Association Name="FKCliente218626">
+          <End Type="SentinelaV2Model.Cidade" Role="Cidade" Multiplicity="1" />
+          <End Type="SentinelaV2Model.Cliente" Role="Cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cidade">
+              <PropertyRef Name="CidadeId" />
+            </Principal>
+            <Dependent Role="Cliente">
+              <PropertyRef Name="CidadeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKCliente729885">
+          <End Type="SentinelaV2Model.Pessoa" Role="Pessoa" Multiplicity="1" />
+          <End Type="SentinelaV2Model.Cliente" Role="Cliente" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Pessoa">
+              <PropertyRef Name="PessoaId" />
+            </Principal>
+            <Dependent Role="Cliente">
+              <PropertyRef Name="ClienteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKOrcamento699439">
+          <End Type="SentinelaV2Model.Cliente" Role="Cliente" Multiplicity="1" />
+          <End Type="SentinelaV2Model.Orcamento" Role="Orcamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="ClienteId" />
+            </Principal>
+            <Dependent Role="Orcamento">
+              <PropertyRef Name="ClienteId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -997,19 +997,6 @@
                 <ScalarProperty Name="CidadeId" ColumnName="CidadeId" />
                 <ScalarProperty Name="Nome" ColumnName="Nome" />
                 <ScalarProperty Name="EstadoId" ColumnName="EstadoId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Cliente">
-            <EntityTypeMapping TypeName="SentinelaV2Model.Cliente">
-              <MappingFragment StoreEntitySet="Cliente">
-                <ScalarProperty Name="ClienteId" ColumnName="ClienteId" />
-                <ScalarProperty Name="CidadeId" ColumnName="CidadeId" />
-                <ScalarProperty Name="Logradouro" ColumnName="Logradouro" />
-                <ScalarProperty Name="Numero" ColumnName="Numero" />
-                <ScalarProperty Name="Cpf" ColumnName="Cpf" />
-                <ScalarProperty Name="Celular" ColumnName="Celular" />
-                <ScalarProperty Name="Telefone" ColumnName="Telefone" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1068,24 +1055,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Orcamento">
-            <EntityTypeMapping TypeName="SentinelaV2Model.Orcamento">
-              <MappingFragment StoreEntitySet="Orcamento">
-                <ScalarProperty Name="OrcamentoId" ColumnName="OrcamentoId" />
-                <ScalarProperty Name="ClienteId" ColumnName="ClienteId" />
-                <ScalarProperty Name="LocalId" ColumnName="LocalId" />
-                <ScalarProperty Name="CardapioId" ColumnName="CardapioId" />
-                <ScalarProperty Name="TipoEventoId" ColumnName="TipoEventoId" />
-                <ScalarProperty Name="DataOrcamento" ColumnName="DataOrcamento" />
-                <ScalarProperty Name="DataEvento" ColumnName="DataEvento" />
-                <ScalarProperty Name="DataAlteracao" ColumnName="DataAlteracao" />
-                <ScalarProperty Name="Situacao" ColumnName="Situacao" />
-                <ScalarProperty Name="Convidados" ColumnName="Convidados" />
-                <ScalarProperty Name="Periodo" ColumnName="Periodo" />
-                <ScalarProperty Name="Criancas" ColumnName="Criancas" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Pessoa">
             <EntityTypeMapping TypeName="SentinelaV2Model.Pessoa">
               <MappingFragment StoreEntitySet="Pessoa">
@@ -1124,6 +1093,32 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="TipoEvento">
+            <EntityTypeMapping TypeName="SentinelaV2Model.TipoEvento">
+              <MappingFragment StoreEntitySet="TipoEvento">
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="TipoEventoId" ColumnName="TipoEventoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orcamento">
+            <EntityTypeMapping TypeName="SentinelaV2Model.Orcamento">
+              <MappingFragment StoreEntitySet="Orcamento">
+                <ScalarProperty Name="Criancas" ColumnName="Criancas" />
+                <ScalarProperty Name="Periodo" ColumnName="Periodo" />
+                <ScalarProperty Name="Convidados" ColumnName="Convidados" />
+                <ScalarProperty Name="Situacao" ColumnName="Situacao" />
+                <ScalarProperty Name="DataAlteracao" ColumnName="DataAlteracao" />
+                <ScalarProperty Name="DataEvento" ColumnName="DataEvento" />
+                <ScalarProperty Name="DataOrcamento" ColumnName="DataOrcamento" />
+                <ScalarProperty Name="TipoEventoId" ColumnName="TipoEventoId" />
+                <ScalarProperty Name="CardapioId" ColumnName="CardapioId" />
+                <ScalarProperty Name="LocalId" ColumnName="LocalId" />
+                <ScalarProperty Name="ClienteId" ColumnName="ClienteId" />
+                <ScalarProperty Name="OrcamentoId" ColumnName="OrcamentoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <AssociationSetMapping Name="AdicionalOrcamento" TypeName="SentinelaV2Model.AdicionalOrcamento" StoreEntitySet="AdicionalOrcamento">
             <EndProperty Name="Orcamento">
               <ScalarProperty Name="OrcamentoId" ColumnName="OrcamentoId" />
@@ -1132,11 +1127,16 @@
               <ScalarProperty Name="AdicionalId" ColumnName="AdicionalId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="TipoEvento">
-            <EntityTypeMapping TypeName="SentinelaV2Model.TipoEvento">
-              <MappingFragment StoreEntitySet="TipoEvento">
-                <ScalarProperty Name="Nome" ColumnName="Nome" />
-                <ScalarProperty Name="TipoEventoId" ColumnName="TipoEventoId" />
+          <EntitySetMapping Name="Cliente">
+            <EntityTypeMapping TypeName="SentinelaV2Model.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="Telefone" ColumnName="Telefone" />
+                <ScalarProperty Name="Celular" ColumnName="Celular" />
+                <ScalarProperty Name="Cpf" ColumnName="Cpf" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Logradouro" ColumnName="Logradouro" />
+                <ScalarProperty Name="CidadeId" ColumnName="CidadeId" />
+                <ScalarProperty Name="ClienteId" ColumnName="ClienteId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

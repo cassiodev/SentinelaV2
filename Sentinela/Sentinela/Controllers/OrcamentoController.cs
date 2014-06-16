@@ -29,7 +29,7 @@ namespace Sentinela.Controllers
 
 
 
-            var orcamento = _Contexto.Orcamento.OrderBy(o => o.OrcamentoId).Include(o => o.Cliente).Include(o => o.Local).Include(o => o.TipoEvento);
+            var orcamento = _Contexto.Orcamento.OrderByDescending(o => o.OrcamentoId).Include(o => o.Cliente).Include(o => o.Local).Include(o => o.TipoEvento);
             return View(orcamento.ToPagedList(pageNumber,pageSize));
         }
 
@@ -60,7 +60,7 @@ namespace Sentinela.Controllers
             ViewBag.LocalId = new SelectList(_Contexto.Local, "LocalId", "Nome", orcamento.LocalId);
             ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento, "TipoEventoId", "Nome", orcamento.TipoEventoId);
             ViewBag.CardapioId = new SelectList(_Contexto.Cardapio, "CardapioId", "Nome", orcamento.CardapioId);
-            ViewBag.Adicional = new MultiSelectList(_Contexto.Adicional, "AdicionalId", "Nome", orcamento.Adicional.Select(a => a.AdicionalId));
+            ViewBag.Adicionais = new MultiSelectList(_Contexto.Adicional, "AdicionalId", "Nome", orcamento.Adicional.Select(a => a.AdicionalId));
             return View(orcamento);
         }
 
@@ -69,18 +69,18 @@ namespace Sentinela.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Orcamento orcamento, IEnumerable<int> Adicional, FormCollection form)
+        public ActionResult Edit(Orcamento orcamento, IEnumerable<int> Adicionais, FormCollection form)
         {
                 var _orcamento = _Contexto.Orcamento.Find(orcamento.OrcamentoId);
 
-            ModelState["Adicional"].Errors.Clear();
             if (ModelState.IsValid && _orcamento != null)
             {
 
                 _orcamento.Adicional.Clear();
-                if (Adicional != null)
-                    foreach (var item in Adicional)
+                if (Adicionais != null)
+                    foreach (var item in Adicionais)
                         _orcamento.Adicional.Add(_Contexto.Adicional.Find(item));
+
                 _orcamento.ClienteId = orcamento.ClienteId;
                 _orcamento.LocalId = orcamento.LocalId;
                 _orcamento.DataEvento = orcamento.DataEvento;

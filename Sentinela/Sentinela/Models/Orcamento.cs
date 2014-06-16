@@ -34,10 +34,10 @@ namespace Sentinela.Models
         public Nullable<int> Criancas { get; set; }
     
         public virtual Cardapio Cardapio { get; set; }
-        public virtual Cliente Cliente { get; set; }
         public virtual ICollection<Evento> Evento { get; set; }
         public virtual Local Local { get; set; }
-        public virtual ICollection<Adicional> Adicional { get; set; }
         public virtual TipoEvento TipoEvento { get; set; }
+        public virtual ICollection<Adicional> Adicional { get; set; }
+        public virtual Cliente Cliente { get; set; }
     }
 }

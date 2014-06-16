@@ -13,6 +13,11 @@
     }
 </style>
 <fieldset>
+    <legend>Descrição</legend>
+    <p>@Model.Descricao</p>
+</fieldset>
+
+<fieldset>
     <legend>Refeições</legend>
 
     @foreach (Sentinela.Controllers.ViewRefeicao refeicao in ViewBag.Refeicoes)

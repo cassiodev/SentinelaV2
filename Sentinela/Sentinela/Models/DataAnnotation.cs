@@ -60,8 +60,7 @@ namespace Sentinela.Models
         [CPF(ErrorMessage="CPF inválido")]
         public string Cpf { get; set; }
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo cidade é obrigatorio")]
-        [StringLength(200, ErrorMessage = "Máximo de caracteres permitido: 200.")]
+        [Required(ErrorMessage = "Campo cidade é obrigatorio")]
         public int CidadeId { get; set; }
 
         
@@ -72,9 +71,11 @@ namespace Sentinela.Models
         public Nullable<int> Numero { get; set; }
 
         [DataType(DataType.PhoneNumber, ErrorMessage = "Número inválido")]
+        [StringLength(14, ErrorMessage = "Máximo de caracteres permitido: 14.")]
         public string Celular { get; set; }
 
         [DataType(DataType.PhoneNumber, ErrorMessage = "Número inválido")]
+        [StringLength(14, ErrorMessage = "Máximo de caracteres permitido: 14.")]
         public string Telefone { get; set; }
 
     }
@@ -123,7 +124,7 @@ namespace Sentinela.Models
         [StringLength(200, ErrorMessage = "Máximo de caracteres permitido: 200.")]
         public string Nome { get; set; }
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo estado é obrigatorio")]
+        [Required(ErrorMessage = "Campo estado é obrigatorio")]
         public int EstadoId { get; set; }
 
     }
@@ -136,10 +137,10 @@ namespace Sentinela.Models
     }
     public class EventoMetaData
     {
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo tipo é obrigatorio")]
+        [Required(ErrorMessage = "Campo tipo é obrigatorio")]
         public int TipoEventoId { get; set; }
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo local é obrigatorio")]
+        [Required(ErrorMessage = "Campo local é obrigatorio")]
         public int LocalId { get; set; }
 
         [Required(AllowEmptyStrings = false,ErrorMessage = "Campo data é obrigatorio")]
@@ -173,27 +174,27 @@ namespace Sentinela.Models
 
         public int LocalId { get; set; }
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo cidade é obrigatorio")]
+        [Required(ErrorMessage = "Campo cidade é obrigatorio")]
         public int CidadeId { get; set; }
 
         [Required(AllowEmptyStrings = false,ErrorMessage = "Campo nome é obrigatorio")]
         [StringLength(200, ErrorMessage = "Máximo de caracteres permitido: 200.")]
         public string Nome { get; set; }
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo tamanho é obrigatorio")]
-        [DataType(DataType.Currency, ErrorMessage = "Tipo de dados incorreto.")]
+        [Required(ErrorMessage = "Campo tamanho é obrigatorio")]
+        [Range(0, double.MaxValue)]
         public decimal Tamanho { get; set; }
 
         [Required(AllowEmptyStrings = false,ErrorMessage = "Campo logradouro é obrigatorio")]
         [StringLength(200, ErrorMessage = "Máximo de caracteres permitido: 200.")]
         public string Logradouro { get; set; }
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo número é obrigatorio")]
+        [Required(ErrorMessage = "Campo número é obrigatorio")]
         [Range(0, int.MaxValue)]
         public int Numero { get; set; }
         public bool Ativo { get; set; }
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo capacidade é obrigatorio")]
+        [Required(ErrorMessage = "Campo capacidade é obrigatorio")]
         [Range(0, int.MaxValue)]
         public int Capacidade { get; set; }
 
@@ -209,28 +210,28 @@ namespace Sentinela.Models
     {
         public int OrcamentoId { get; set; }
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo cliente é obrigatorio")]
+        [Required(ErrorMessage = "Campo cliente é obrigatorio")]
         public int ClienteId { get; set; }
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo local é obrigatorio")]
+        [Required(ErrorMessage = "Campo local é obrigatorio")]
         public int LocalId { get; set; }
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo cardápio é obrigatorio")]
+        [Required(ErrorMessage = "Campo cardápio é obrigatorio")]
         public int CardapioId { get; set; }
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo tipo é obrigatorio")]
+        [Required(ErrorMessage = "Campo tipo é obrigatorio")]
         public int TipoEventoId { get; set; }
 
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo Data é obrigatorio")]
+        [Required(ErrorMessage = "Campo Data é obrigatorio")]
         [DataType(DataType.Date, ErrorMessage="O valor deve ser uma data")]
         public System.DateTime DataEvento { get; set; }
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo convidados é obrigatorio")]
+        [Required(ErrorMessage = "Campo convidados é obrigatorio")]
         [Range(0, int.MaxValue)]
         public int Convidados { get; set; }
 
-        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo período é obrigatorio")]
+        [Required(ErrorMessage = "Campo período é obrigatorio")]
         [DataType(DataType.Time, ErrorMessage = "Tipo de dados incorreto.")]
         public System.TimeSpan Periodo { get; set; }
 

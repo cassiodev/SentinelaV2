@@ -1,0 +1,81 @@
+﻿@model Sentinela.Models.Local
+
+<style>
+    .fotos-container a img {
+        display: block;
+        margin-bottom: 4px;
+        max-width: 200px;
+        max-height: 100px;
+        vertical-align: top;
+    }
+
+    .fotos-container a {
+        display: inline-block;
+    }
+</style>
+<fieldset>
+    <legend>Dados Gerais</legend>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Tamanho):
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Tamanho) m²
+    </div><br />
+
+    <div class="display-label">
+        Cidade:
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Cidade.Nome)
+    </div><br />
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Capacidade):
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Capacidade) pessoas
+    </div><br />
+
+    <div class="display-label">
+        Endereço:
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Logradouro), @Html.DisplayFor(model => model.Numero)
+    </div><br />
+
+
+    <br />
+</fieldset>
+
+<fieldset>
+    <legend>Fotos</legend>
+    <p class="fotos-container">
+        @foreach (Sentinela.Models.Imagem item in Model.Imagem)
+        {
+            <a class="fancybox-thumb" rel="fancybox-thumb" href="@item.Url" title="">
+                <img src="@item.Url" alt="" />
+            </a>
+        }
+    </p>
+
+</fieldset>
+
+<script>
+    $(document).ready(function () {
+        $(".fancybox-thumb").fancybox({
+            prevEffect: 'none',
+            nextEffect: 'none',
+            helpers: {
+                title: {
+                    type: 'outside'
+                },
+                thumbs: {
+                    width: 50,
+                    height: 50
+                }
+            }
+        });
+        console.log($(".fancybox-thumb"));
+    });
+</script>

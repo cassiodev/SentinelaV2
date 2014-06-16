@@ -860,7 +860,7 @@
     <Content Include="Views\Cliente\Edit.cshtml" />
     <Content Include="Views\Cliente\Delete.cshtml" />
     <Content Include="Views\Local\Index.cshtml" />
-    <Content Include="Views\Local\Details.cshtml" />
+    <Content Include="Views\Local\Detalhes.cshtml" />
     <Content Include="Views\Local\Create.cshtml" />
     <Content Include="Views\Local\Edit.cshtml" />
     <Content Include="Views\Local\Delete.cshtml" />
@@ -893,6 +893,7 @@
     <Content Include="Views\Orcamento\Edit.cshtml" />
     <Content Include="Views\Orcamento\Delete.cshtml" />
     <Content Include="Views\Home\_DetalhesCardapio.cshtml" />
+    <Content Include="Views\Home\_DetalhesLocal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

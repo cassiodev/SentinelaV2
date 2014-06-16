@@ -55,20 +55,23 @@
 <fieldset>
     <legend>Orçamentos Cadastrados</legend>
     <h2>Orçamentos Cadastrados</h2>
-    @foreach (var item in Model.Orcamento)
+    @foreach (var item in Model.Orcamento.OrderBy(o => o.DataOrcamento))
     {
-        <div class="display-label">
-            Data Cadastro
-        </div>
-        <div class="display-field">
-            @item.DataOrcamento.ToShortDateString()
-        </div>
-        <div class="display-label">
-            Código
-        </div>
-        <div class="display-field">
-            <a href="/Orcamento/Details/@item.OrcamentoId">@item.OrcamentoId</a>
-        </div>
+        <a style="display: inline-block; border: 1px solid black; color:black; text-decoration: none" href="/Orcamento/Details/@item.OrcamentoId">
+            <div class="display-label">
+                Código
+            </div>
+            <div class="display-field">
+                <p>@item.OrcamentoId</p>
+            </div>
+            <div class="display-label">
+                Data Cadastro
+            </div>
+            <div class="display-field">
+                @item.DataOrcamento.ToShortDateString()
+            </div>
+
+        </a>
     }
 
 </fieldset>

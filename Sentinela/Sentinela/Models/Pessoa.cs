@@ -18,7 +18,7 @@ namespace Sentinela.Models
         public string Email { get; set; }
         public string Nome { get; set; }
     
-        public virtual Cliente Cliente { get; set; }
         public virtual Usuario Usuario { get; set; }
+        public virtual Cliente Cliente { get; set; }
     }
 }
