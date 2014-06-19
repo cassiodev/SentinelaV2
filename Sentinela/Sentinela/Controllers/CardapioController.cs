@@ -13,6 +13,7 @@ using System.IO;
 
 namespace Sentinela.Controllers
 {
+    [Authorize]
     public class CardapioController : MasterController
     {
         

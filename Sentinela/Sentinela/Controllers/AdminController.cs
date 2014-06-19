@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace Sentinela.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         //

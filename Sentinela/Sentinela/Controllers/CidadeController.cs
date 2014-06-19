@@ -12,6 +12,8 @@ using Sentinela.Models;
 
 namespace Sentinela.Controllers
 {
+    [Authorize]
+
     public class CidadeController : MasterController
     {
         

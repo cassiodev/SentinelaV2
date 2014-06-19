@@ -13,6 +13,7 @@ using Sentinela.Models;
 
 namespace Sentinela.Controllers
 {
+    [Authorize]
     public class OrcamentoController : MasterController
     {
         

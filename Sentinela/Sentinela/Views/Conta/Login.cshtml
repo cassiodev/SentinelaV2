@@ -1,37 +1,101 @@
 ﻿@model Sentinela.Models.Usuario
 
 @{
+    Layout = null;
     ViewBag.Title = "Login";
 }
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    @*<meta name="viewport" content="width=device-width, initial-scale=1">*@
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <title>Sentinela Eventos</title>
+    <!-- Bootstrap core CSS -->
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <!-- Bootstrap theme -->
+    <style>
+        body {
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #eee;
+        }
+
+        .form-signin {
+            max-width: 330px;
+            padding: 15px;
+            margin: 0 auto;
+        }
+
+            .form-signin .form-signin-heading,
+            .form-signin .checkbox {
+                margin-bottom: 10px;
+            }
+
+            .form-signin .checkbox {
+                font-weight: normal;
+            }
+
+            .form-signin .form-control {
+                position: relative;
+                height: auto;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                padding: 10px;
+                font-size: 16px;
+            }
+
+                .form-signin .form-control:focus {
+                    z-index: 2;
+                }
+
+            .form-signin input[name="Login"] {
+                margin-bottom: -1px;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+
+            .form-signin input[name="Senha"] {
+                margin-bottom: 10px;
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+            }
+
+    </style>
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="container">
+
+        @using (Html.BeginForm("Login", "Conta",new { ReturnUrl = ViewBag.returnUrl }, FormMethod.Post, new { @class = "form-signin" }))
+        { 
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <h2 class="form-signin-heading">Autenticação</h2>
+            @Html.LabelFor(m => m.Login)
+            @Html.TextBoxFor(m => m.Login, new { @class = "form-control" })
+            @Html.LabelFor(m => m.Senha)
+            @Html.PasswordFor(m => m.Senha,new { @class = "form-control" })
+            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Entrar" />
+        }
+
+    </div> <!-- /container -->
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
 
 
-<hgroup class="title">
-    <h1>Autenticação Necessária!</h1>
-</hgroup>
-
-<section id="loginForm">
-    @using (Html.BeginForm(new { ReturnUrl = ViewBag.returnUrl }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true)
-        <fieldset>
-            <legend>Log in Form</legend>
-            <ol>
-                <li>
-                    @Html.LabelFor(m => m.Login)
-                    @Html.TextBoxFor(m => m.Login)
-                </li>
-                <li>
-                    @Html.LabelFor(m => m.Senha)
-                    @Html.PasswordFor(m => m.Senha)
-                </li>
-            </ol>
-            <input type="submit" value="Entrar" />
-        </fieldset>
-    }
-</section>
-
-
+</body>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+
+</html>
+

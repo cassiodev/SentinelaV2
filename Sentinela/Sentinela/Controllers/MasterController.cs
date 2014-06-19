@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 
 namespace Sentinela.Controllers
 {
-    public class MasterController : Controller
+    public abstract class MasterController : Controller
     {
         //
         // GET: /Master/

@@ -212,6 +212,7 @@
     <Compile Include="Controllers\OrcamentoController.cs" />
     <Compile Include="Controllers\RefeicaoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
+    <Compile Include="Core\FiltroGenerico.cs" />
     <Compile Include="CPFAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
