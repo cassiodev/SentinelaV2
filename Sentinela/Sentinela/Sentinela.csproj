@@ -895,6 +895,7 @@
     <Content Include="Views\Orcamento\Delete.cshtml" />
     <Content Include="Views\Home\_DetalhesCardapio.cshtml" />
     <Content Include="Views\Home\_DetalhesLocal.cshtml" />
+    <Content Include="Views\Shared\_Filter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

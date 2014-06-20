@@ -9,6 +9,7 @@ using PagedList.Mvc;
 using PagedList;
 using System.Configuration;
 using Sentinela.Models;
+using Sentinela.Core;
 
 
 namespace Sentinela.Controllers
@@ -28,10 +29,17 @@ namespace Sentinela.Controllers
             int pageSize =  Convert.ToInt32(ConfigurationManager.AppSettings["PageSize"]);
             int pageNumber = (page ?? 1);
 
+            FiltroGenerico<Orcamento> filtro = new FiltroGenerico<Orcamento>();
 
+            filtro.AddCampo("Nome","Nome Cliente", Tipo.String, (arg1, arg2) => campo => campo.Cliente.Pessoa.Nome.Contains((string)arg1));
+            
+            var orcamentos = _Contexto.Orcamento.OrderByDescending(o => o.OrcamentoId).Include(o => o.Cliente).Include(o => o.Local).Include(o => o.TipoEvento);
+            
+            orcamentos = filtro.AplicarFiltro(orcamentos, Request);
 
-            var orcamento = _Contexto.Orcamento.OrderByDescending(o => o.OrcamentoId).Include(o => o.Cliente).Include(o => o.Local).Include(o => o.TipoEvento);
-            return View(orcamento.ToPagedList(pageNumber,pageSize));
+            ViewBag.Filtro = filtro.GetHtml("/Orcamento/Index");
+            
+            return View(orcamentos.ToPagedList(pageNumber,pageSize));
         }
 
         //

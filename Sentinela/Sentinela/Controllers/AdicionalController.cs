@@ -9,6 +9,7 @@ using PagedList.Mvc;
 using PagedList;
 using System.Configuration;
 using Sentinela.Models;
+using Sentinela.Core;
 
 namespace Sentinela.Controllers
 {
@@ -22,11 +23,10 @@ namespace Sentinela.Controllers
 
         public ActionResult Index(int? page)
         {
-
+            
 
             int pageSize =  Convert.ToInt32(ConfigurationManager.AppSettings["PageSize"]);
             int pageNumber = (page ?? 1);
-
 
 
             return View(_Contexto.Adicional.OrderBy(a => a.AdicionalId).ToPagedList(pageNumber,pageSize));
