@@ -1,8 +1,9 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
     <head>
         <meta charset="utf-8" />
         <style>
+
             #loader {
                 z-index: 9999;
                 width: 100%;
@@ -46,6 +47,7 @@
         @Styles.Render("~/Content/css")
         @Styles.Render("~/Content/bootstrap.css")
         @Styles.Render("~/Content/bootstrap-theme.css")
+        <link href="~/Scripts/jqueryui/css/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" />
 
     </head>
     <body>
@@ -66,6 +68,7 @@
                                     <li>@Html.ActionLink("Adicionais", "Index", "Adicional")</li>
                                     <li>@Html.ActionLink("Clientes", "Index", "Cliente")</li>
                                     <li>@Html.ActionLink("Locais", "Index", "Local")</li>
+                                    <li>@Html.ActionLink("Tipos de Evento", "Index", "TipoEvento")</li>
                                 </ul>
                             </li>
                             
@@ -121,6 +124,8 @@
 
         <script src="~/Scripts/bootstrap.min.js"></script>
         <script src="~/Scripts/bootbox.js"></script>
+        <script src="~/Scripts/jqueryui/js/jquery-ui-1.10.4.custom.min.js"></script>
+        <script src="~/Scripts/meiomask.js"></script>
         @RenderSection("scripts", required: false)
         @if (TempData["message"] != null)
         {
@@ -152,8 +157,29 @@
                     $(this).children(".minhaLista").hide();
                 });
                 $(".topLista").hover(function () { $(this).children(".minhaLista").show(); }, function () { $(this).children(".minhaLista").hide(); });
-                
+
+                $(".data").datepicker({
+                    dateFormat: 'dd/mm/yy',
+                    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                    dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
+                    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+                    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    nextText: 'Próximo',
+                    prevText: 'Anterior'
+                })
+                .attr("data-val-date", "Data inválida")
+                .attr('readonly', 'true')
+                .css('background', 'white')
+                .css('cursor', 'text')
+                .each(function () {
+                    $(this).val($(this).val().split(' ')[0]);
+                });
             });
+            $('.integer').setMask('int');
+            $('.decimal').setMask('moeda');
+            $('input[type=tel]').setMask('phone');
+
         </script>
         <div id="loader"><div class="icon"></div><div class="msg">Carregando...</div></div>
     </body>

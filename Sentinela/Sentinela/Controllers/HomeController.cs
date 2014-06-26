@@ -13,7 +13,7 @@ namespace Sentinela.Controllers
         public ActionResult Index()
         {
             ViewBag.EstadoId = new SelectList(_Contexto.Estado.ToList(), "EstadoId", "UF");
-            ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento.ToList(), "TipoEventoId", "Nome");
+            ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento.Where(t => t.Ativo).ToList(), "TipoEventoId", "Nome");
             ViewBag.Adicionais = _Contexto.Adicional.Where(a => a.Ativo).ToList();
             ViewBag.Cardapios = _Contexto.Cardapio.Where(c => c.Ativo).ToList();
             ViewBag.Local = _Contexto.Local.Where(l => l.Ativo).ToList();
@@ -24,6 +24,8 @@ namespace Sentinela.Controllers
         [HttpPost]
         public ActionResult Index(Orcamento orcamento, FormCollection frm)
         {
+            orcamento.Cliente.Telefone = orcamento.Cliente.Telefone.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+            orcamento.Cliente.Celular = orcamento.Cliente.Celular.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
 
             foreach (ModelState modelState in ViewData.ModelState.Values)
             {
@@ -92,8 +94,14 @@ namespace Sentinela.Controllers
                 return HttpNotFound();
             }
 
-            var Itens = cardapio.CardapioRefeicaoItem.GroupBy(r => r.Refeicao)
-                .Select(r => new ViewRefeicao { Refeicao = r.Key.Nome, Itens = String.Join(", ",cardapio.CardapioRefeicaoItem.Where(re => re.RefeicaoId == r.Key.RefeicaoId && re.Item.Ativo).OrderBy(re => re.Item.Nome).Select(i => i.Item.Nome)) });
+            var Itens = cardapio.CardapioRefeicaoItem
+                .Where(r=>r.Refeicao.Ativo)
+                .GroupBy(r => r.Refeicao)
+                .Select(r => new ViewRefeicao 
+                { 
+                    Refeicao = r.Key.Nome, 
+                    Itens = String.Join(", ",cardapio.CardapioRefeicaoItem.Where(re => re.RefeicaoId == r.Key.RefeicaoId && re.Item.Ativo).OrderBy(re => re.Item.Nome).Select(i => i.Item.Nome)) 
+                });
 
             ViewBag.Refeicoes = Itens.ToList();
 
@@ -110,6 +118,14 @@ namespace Sentinela.Controllers
 
             
             return PartialView("_DetalhesLocal",local);
+        }
+        [HttpGet]
+        public ActionResult GetCidades(int? estadoId)
+        {
+            if (!estadoId.HasValue)
+                return new EmptyResult();
+            else
+                return Json(_Contexto.Cidade.Where(e => e.EstadoId == estadoId.Value).Select(e => new { id = e.CidadeId, text = e.Nome }).ToList(), JsonRequestBehavior.AllowGet);
         }
     }
     public class ViewRefeicao

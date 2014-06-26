@@ -318,23 +318,23 @@ $.extend($.validator, {
 	},
 
 	messages: {
-		required: "This field is required.",
+		required: "Campo obrigatório.",
 		remote: "Please fix this field.",
-		email: "Please enter a valid email address.",
+		email: "E-mail inválido.",
 		url: "Please enter a valid URL.",
-		date: "Please enter a valid date.",
-		dateISO: "Please enter a valid date (ISO).",
-		number: "Please enter a valid number.",
+		date: "Data inválida.",
+		dateISO: "Data inválida.",
+		number: "Número inválido.",
 		digits: "Please enter only digits.",
 		creditcard: "Please enter a valid credit card number.",
 		equalTo: "Please enter the same value again.",
 		accept: "Please enter a value with a valid extension.",
-		maxlength: $.validator.format("Please enter no more than {0} characters."),
-		minlength: $.validator.format("Please enter at least {0} characters."),
+		maxlength: $.validator.format("Máximo de caracteres permitido: {0}."),
+		minlength: $.validator.format("Mínimo de caracteres permitido: {0}."),
 		rangelength: $.validator.format("Please enter a value between {0} and {1} characters long."),
 		range: $.validator.format("Please enter a value between {0} and {1}."),
-		max: $.validator.format("Please enter a value less than or equal to {0}."),
-		min: $.validator.format("Please enter a value greater than or equal to {0}.")
+		max: $.validator.format("Insira um valor menor ou igual á {0}."),
+		min: $.validator.format("Insira um valor maior ou igual á {0}.")
 	},
 	
 	autoCreateRanges: false,

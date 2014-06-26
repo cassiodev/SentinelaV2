@@ -18,8 +18,12 @@ namespace Sentinela.Models
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Senha é obrigatório")]
         [DataType(DataType.Password, ErrorMessage = "Digite uma senha válida")]
-        [StringLength(200, MinimumLength = 6, ErrorMessage = "A senha deverá possuir 6 ou mais caracteres.")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "A senha deverá possuir no minimo 6 e no máximo 100 caracteres.")]
         public string Senha { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Login é obrigatório")]
+        [StringLength(40, MinimumLength = 6, ErrorMessage = "O login deverá possuir no minimo 6 e no máximo 40 caracteres.")]
+        public string Login { get; set; }
         
     }
     [MetadataType(typeof(PessoaMetaData))]
@@ -92,7 +96,7 @@ namespace Sentinela.Models
         [StringLength(200, ErrorMessage = "Máximo de caracteres permitido: 200.")]
         public string Nome { get; set; }
 
-        [StringLength(200, ErrorMessage = "Máximo de caracteres permitido: 8000.")]
+        [StringLength(8000, ErrorMessage = "Máximo de caracteres permitido: 8000.")]
         public string Descricao { get; set; }
     }
 
@@ -252,8 +256,17 @@ namespace Sentinela.Models
         [StringLength(200, ErrorMessage = "Máximo de caracteres permitido: 200.")]
         public string Nome { get; set; }
     }
+    [MetadataType(typeof(TipoEventoMetaData))]
+    public partial class TipoEvento
+    {
 
-
+    }
+    public class TipoEventoMetaData
+    {
+        [Required(AllowEmptyStrings = false,ErrorMessage = "Campo nome é obrigatorio")]
+        [StringLength(200, ErrorMessage = "Máximo de caracteres permitido: 200.")]
+        public string Nome { get; set; }
+    }
 
 
     

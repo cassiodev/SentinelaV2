@@ -24,7 +24,7 @@
             @Html.LabelFor(model => model.Data)
         </div>
         <div class="editor-field">
-            @Html.TextBox("Data",Model.Data.ToShortDateString())
+            @Html.TextBox("Data", Model.Data.ToShortDateString(), new { @class="data" })
             @Html.ValidationMessageFor(model => model.Data)
         </div>
 
@@ -33,7 +33,7 @@
             @Html.LabelFor(model => model.OrcamentoId, "Nº Orcamento")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(m => m.OrcamentoId)
+            @Html.TextBoxFor(m => m.OrcamentoId, new { @class = "integer" })
             @Html.ValidationMessageFor(model => model.OrcamentoId)
         </div>
 
@@ -67,7 +67,24 @@
     
 
     $(document).ready(function () {
-
+        $(".data").datepicker({
+            dateFormat: 'dd/mm/yy',
+            dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+            dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
+            dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+            monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            nextText: 'Próximo',
+            prevText: 'Anterior'
+        })
+                        .attr("data-val-date", "Data inválida")
+                        .attr('readonly', 'true')
+                        .css('background', 'white')
+                        .css('cursor', 'text')
+                        .each(function () {
+                            $(this).val($(this).val().split(' ')[0]);
+                        });
+        $('.integer').setMask('int32');
         $('#LocalEvento').prop('disabled', true).addClass('disabled');
         $('#Data').prop('disabled', true).addClass('disabled');
         $('.btn-submit').click(function (e) {

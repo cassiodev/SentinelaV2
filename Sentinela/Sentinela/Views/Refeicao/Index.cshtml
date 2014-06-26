@@ -17,6 +17,9 @@
         <th>
             @Html.DisplayNameFor(model => model.First() .Nome)
         </th>
+        <th>
+            Ativo
+        </th>
         <th style="text-align: center;">Ações</th>
     </tr>
 
@@ -24,6 +27,9 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(m => item.Ativo)
         </td>
         <td>
             @Html.ActionLink("Editar", "Edit", new { id=item.RefeicaoId }) |

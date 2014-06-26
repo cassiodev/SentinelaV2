@@ -9,28 +9,18 @@ using PagedList.Mvc;
 using PagedList;
 using System.Configuration;
 using Sentinela.Models;
-using Sentinela.Core;
 
 namespace Sentinela.Controllers
 {
-    [Authorize]
-    public class ItemController : MasterController
+    public class TipoEventoController : MasterController
     {
         
 
         //
-        // GET: /Item/
+        // GET: /TipoEvento/
 
         public ActionResult Index(int? page)
         {
-            FiltroGenerico<Item> filtro = new FiltroGenerico<Item>();
-
-            filtro.AddCampo("Nome", "Nome", Tipo.String, (arg1) => campo => campo.Nome.ToLower().Contains(((string)arg1).ToLower()));
-            var itens = _Contexto.Item.OrderByDescending(i => i.ItemId).AsQueryable();
-
-            itens = filtro.Filtrar(itens, Request);
-
-            ViewBag.Filtro = filtro.GetHtml("/Item/Index");
 
 
             int pageSize =  Convert.ToInt32(ConfigurationManager.AppSettings["PageSize"]);
@@ -38,11 +28,24 @@ namespace Sentinela.Controllers
 
 
 
-            return View(itens.ToPagedList(pageNumber, pageSize));
+            return View(_Contexto.TipoEvento.OrderBy(t => t.TipoEventoId).ToPagedList(pageNumber,pageSize));
         }
 
         //
-        // GET: /Item/Create
+        // GET: /TipoEvento/Details/5
+
+        public ActionResult Details(int id = 0)
+        {
+            TipoEvento tipoevento = _Contexto.TipoEvento.Find(id);
+            if (tipoevento == null)
+            {
+                return HttpNotFound();
+            }
+            return View(tipoevento);
+        }
+
+        //
+        // GET: /TipoEvento/Create
 
         public ActionResult Create()
         {
@@ -50,73 +53,73 @@ namespace Sentinela.Controllers
         }
 
         //
-        // POST: /Item/Create
+        // POST: /TipoEvento/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Item item)
+        public ActionResult Create(TipoEvento tipoevento)
         {
             if (ModelState.IsValid)
             {
-                _Contexto.Item.Add(item);
+                _Contexto.TipoEvento.Add(tipoevento);
                 _Contexto.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(item);
+            return View(tipoevento);
         }
 
         //
-        // GET: /Item/Edit/5
+        // GET: /TipoEvento/Edit/5
 
         public ActionResult Edit(int id = 0)
         {
-            Item item = _Contexto.Item.Find(id);
-            if (item == null)
+            TipoEvento tipoevento = _Contexto.TipoEvento.Find(id);
+            if (tipoevento == null)
             {
                 return HttpNotFound();
             }
-            return View(item);
+            return View(tipoevento);
         }
 
         //
-        // POST: /Item/Edit/5
+        // POST: /TipoEvento/Edit/5
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Item item)
+        public ActionResult Edit(TipoEvento tipoevento)
         {
             if (ModelState.IsValid)
             {
-                _Contexto.Entry(item).State = EntityState.Modified;
+                _Contexto.Entry(tipoevento).State = EntityState.Modified;
                 _Contexto.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(item);
+            return View(tipoevento);
         }
 
         //
-        // GET: /Item/Delete/5
+        // GET: /TipoEvento/Delete/5
 
         public ActionResult Delete(int id = 0)
         {
-            Item item = _Contexto.Item.Find(id);
-            if (item == null)
+            TipoEvento tipoevento = _Contexto.TipoEvento.Find(id);
+            if (tipoevento == null)
             {
                 return HttpNotFound();
             }
-            return View(item);
+            return View(tipoevento);
         }
 
         //
-        // POST: /Item/Delete/5
+        // POST: /TipoEvento/Delete/5
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Item item = _Contexto.Item.Find(id);
-            _Contexto.Item.Remove(item);
+            TipoEvento tipoevento = _Contexto.TipoEvento.Find(id);
+            _Contexto.TipoEvento.Remove(tipoevento);
             _Contexto.SaveChanges();
             return RedirectToAction("Index");
         }

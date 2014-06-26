@@ -268,7 +268,7 @@ $.extend($.validator, {
 		email: "Endereço de e-mail inválido.",
 		url: "Please enter a valid URL.",
 		date: "Data inválida",
-		dateISO: "Please enter a valid date (ISO).",
+		dateISO: "Data inválida",
 		number: "Número inválido.",
 		digits: "Please enter only digits.",
 		creditcard: "Please enter a valid credit card number.",

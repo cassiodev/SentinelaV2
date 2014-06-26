@@ -10,6 +10,7 @@ using PagedList;
 using System.Configuration;
 using Sentinela.Models;
 using Sentinela.Core;
+using System.Linq.Expressions;
 
 
 namespace Sentinela.Controllers
@@ -31,11 +32,12 @@ namespace Sentinela.Controllers
 
             FiltroGenerico<Orcamento> filtro = new FiltroGenerico<Orcamento>();
 
-            filtro.AddCampo("Nome","Nome Cliente", Tipo.String, (arg1, arg2) => campo => campo.Cliente.Pessoa.Nome.Contains((string)arg1));
-            
+            filtro.AddCampo("Nome","Nome Cliente", Tipo.String, (arg1) => campo => campo.Cliente.Pessoa.Nome.Contains((string)arg1));
+            filtro.AddCampo("DeDataRecebido", "Data Recebimento(De)", Tipo.DateTime, (arg1) => campo => campo.DataOrcamento >= (DateTime)arg1);
+            filtro.AddCampo("AteDataRecebido", "Data Recebimento(Até)", Tipo.DateTime, (arg1) => campo => campo.DataOrcamento <= (DateTime)arg1);
             var orcamentos = _Contexto.Orcamento.OrderByDescending(o => o.OrcamentoId).Include(o => o.Cliente).Include(o => o.Local).Include(o => o.TipoEvento);
             
-            orcamentos = filtro.AplicarFiltro(orcamentos, Request);
+            orcamentos = filtro.Filtrar(orcamentos, Request);
 
             ViewBag.Filtro = filtro.GetHtml("/Orcamento/Index");
             

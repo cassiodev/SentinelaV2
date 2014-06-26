@@ -37,8 +37,8 @@ namespace Sentinela.Models
         public DbSet<Refeicao> Refeicao { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Adicional> Adicional { get; set; }
-        public DbSet<TipoEvento> TipoEvento { get; set; }
         public DbSet<Orcamento> Orcamento { get; set; }
         public DbSet<Cliente> Cliente { get; set; }
+        public DbSet<TipoEvento> TipoEvento { get; set; }
     }
 }

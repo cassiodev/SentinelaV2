@@ -42,7 +42,7 @@
             @Html.LabelFor(model => model.Numero)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Numero)
+            @Html.TextBoxFor(model => model.Numero, new { @class = "integer" })
             @Html.ValidationMessageFor(model => model.Numero)
         </div>
 

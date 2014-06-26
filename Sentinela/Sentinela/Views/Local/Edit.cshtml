@@ -44,7 +44,7 @@
             @Html.LabelFor(model => model.Tamanho) 
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Tamanho)
+            @Html.TextBoxFor(model => model.Tamanho, new { @class = "decimal" })
             @Html.ValidationMessageFor(model => model.Tamanho)m²
         </div>
 
@@ -60,7 +60,7 @@
             @Html.LabelFor(model => model.Numero)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Numero)
+            @Html.TextBoxFor(model => model.Numero, new { @class = "integer" })
             @Html.ValidationMessageFor(model => model.Numero)
         </div>
 
@@ -76,7 +76,7 @@
             @Html.LabelFor(model => model.Capacidade)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Capacidade)
+            @Html.TextBoxFor(model => model.Capacidade, new { @class = "integer" })
             @Html.ValidationMessageFor(model => model.Capacidade)
         </div>
 

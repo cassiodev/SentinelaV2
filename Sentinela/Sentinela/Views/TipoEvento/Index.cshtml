@@ -1,18 +1,18 @@
-﻿@model PagedList.IPagedList<Sentinela.Models.Adicional>
+﻿@model PagedList.IPagedList<Sentinela.Models.TipoEvento>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" />
 
 @{
-    ViewBag.Title = "Adicionais";
+    ViewBag.Title = "Index";
 }
 
-<h2>Adicionais</h2><br/>
+<h2>Index</h2><br/>
 
 <p>
     @Html.ActionLink("Novo", "Create")
 </p>
 
-<table class>
+<table>
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.First().Nome)
@@ -32,8 +32,8 @@
             @Html.DisplayFor(m => item.Ativo)
         </td>
         <td>
-            @Html.ActionLink("Editar", "Edit", new { id=item.AdicionalId }) |
-            @Html.ActionLink("Excluir", "Delete", new { id=item.AdicionalId })
+            @Html.ActionLink("Editar", "Edit", new { id=item.TipoEventoId }) |
+            @Html.ActionLink("Excluir", "Delete", new { id=item.TipoEventoId })
         </td>
     </tr>
 }

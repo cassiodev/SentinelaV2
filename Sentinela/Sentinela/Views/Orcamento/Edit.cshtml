@@ -33,10 +33,10 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.DataEvento, "Data Evento")
+            @Html.LabelFor(model => model.DataEvento, "Data Pretendida")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.DataEvento)
+            @Html.TextBoxFor(model => model.DataEvento, new { @class = "data" })
             @Html.ValidationMessageFor(model => model.DataEvento)
         </div>
 
@@ -44,7 +44,7 @@
             @Html.LabelFor(model => model.Convidados)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Convidados)
+            @Html.TextBoxFor(model => model.Convidados, new { @class="integer" })
             @Html.ValidationMessageFor(model => model.Convidados)
         </div>
 

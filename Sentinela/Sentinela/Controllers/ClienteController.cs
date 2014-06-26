@@ -9,6 +9,7 @@ using PagedList.Mvc;
 using PagedList;
 using System.Configuration;
 using Sentinela.Models;
+using Sentinela.Core;
 
 namespace Sentinela.Controllers
 {
@@ -28,9 +29,14 @@ namespace Sentinela.Controllers
             int pageSize =  Convert.ToInt32(ConfigurationManager.AppSettings["PageSize"]);
             int pageNumber = (page ?? 1);
 
+            FiltroGenerico<Cliente> filtro = new FiltroGenerico<Cliente>();
 
-
+            filtro.AddCampo("Nome",Tipo.String,arg => prop => prop.Pessoa.Nome.ToLower().Contains(((string)arg).ToLower()));
             var cliente = _Contexto.Cliente.OrderBy(c => c.ClienteId).Include(c => c.Cidade).Include(c => c.Pessoa);
+            cliente = filtro.Filtrar(cliente, Request);
+
+            ViewBag.Filtro = filtro.GetHtml("/Cliente/Index");
+            
             return View(cliente.ToPagedList(pageNumber,pageSize));
         }
 
@@ -65,6 +71,8 @@ namespace Sentinela.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Cliente cliente)
         {
+            cliente.Telefone = cliente.Telefone.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+            cliente.Celular = cliente.Celular.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
             if (ModelState.IsValid)
             {
                 _Contexto.Cliente.Add(cliente);
@@ -98,6 +106,9 @@ namespace Sentinela.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Cliente cliente)
         {
+            cliente.Telefone = cliente.Telefone.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+            cliente.Celular = cliente.Celular.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+
             if (ModelState.IsValid)
             {
                 _Contexto.Entry(cliente).State = EntityState.Modified;

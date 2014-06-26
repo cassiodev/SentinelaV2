@@ -22,6 +22,7 @@ namespace Sentinela.Models
     
         public int TipoEventoId { get; set; }
         public string Nome { get; set; }
+        public bool Ativo { get; set; }
     
         public virtual ICollection<Evento> Evento { get; set; }
         public virtual ICollection<Orcamento> Orcamento { get; set; }

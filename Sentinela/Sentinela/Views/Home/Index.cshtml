@@ -23,7 +23,8 @@
     <link href="~/Content/jquery.fancybox.css" rel="stylesheet" />
     <link href="~/Content/jquery.fancybox-thumbs.css" rel="stylesheet" />
     <link href="~/Content/jquery.fancybox-buttons.css" rel="stylesheet" />
- 
+    <link href="~/Scripts/jqueryui/css/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" />
+
 
     <style>
         .field-validation-error{
@@ -174,7 +175,7 @@
         <div>
             <div class="form-group">
                 @Html.LabelFor(m => m.DataEvento, "Data Pretendida")
-                @Html.EditorFor(m => m.DataEvento)
+                @Html.TextBoxFor(m => m.DataEvento, new { @class = "data" })
                 @Html.ValidationMessageFor(model => model.DataEvento)
             </div>
             <div class="form-group">
@@ -184,12 +185,12 @@
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.Convidados, "Número de convidados adultos")
-                @Html.EditorFor(m => m.Convidados)
+                @Html.TextBoxFor(m => m.Convidados, new { @class = "integer" })
                 @Html.ValidationMessageFor(model => model.Convidados)
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.Criancas, "Número de convidados crianças")
-                @Html.EditorFor(m => m.Criancas)
+                @Html.TextBoxFor(m => m.Criancas, new { @class = "integer" })
                 @Html.ValidationMessageFor(model => model.Criancas)
             </div>
             <div class="form-group">
@@ -221,7 +222,8 @@
             <div class="form-group">
                 <label for="Cliente_Logradouro" style="display: block;">Logradouro</label>
                 @Html.EditorFor(m => m.Cliente.Logradouro, new { @class = "form-control", @placeholder = "Digite o nome da rua" })
-                @Html.EditorFor(m => m.Cliente.Numero, new { @class = "form-control", @placeholder = "Nº" })
+                @Html.TextBoxFor(m => m.Cliente.Numero, new { @class = "form-control integer" })
+                @Html.ValidationMessageFor(model => model.Cliente.Logradouro)
                 @Html.ValidationMessageFor(model => model.Cliente.Numero)
             </div>
             <div class="form-group">
@@ -290,6 +292,9 @@
     <script src="~/Scripts/jquery.fancybox.js"></script>
     <script src="~/Scripts/jquery.fancybox-buttons.js"></script>
     <script src="~/Scripts/jquery.fancybox-thumbs.js"></script>
+    <script src="~/Scripts/jqueryui/js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="~/Scripts/meiomask.js"></script>
+
     @Scripts.Render("~/bundles/jqueryval")
     @if (TempData["message"] != null)
     {
@@ -313,7 +318,30 @@
             $('#loader').fadeIn('fast');
         }
         $(document).ready(function () {
+            $(".data").datepicker({
+                dateFormat: 'dd/mm/yy',
+                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
+                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                nextText: 'Próximo',
+                prevText: 'Anterior'
+            })
+                .attr("data-val-date", "Data inválida")
+                .attr('readonly', 'true')
+                .css('background', 'white')
+                .css('cursor', 'text')
+                .each(function () {
+                    $(this).val($(this).val().split(' ')[0]);
+                });
+
+            $('.integer').setMask('int');
+            $('.decimal').setMask('decimal');
+            $('input[type=tel]').setMask('phone');
             
+
+
             $('.detalhes-local').click(function () {
                 $(".modal-title").text("Local: " + $(this).attr("data-title"));
 
@@ -364,7 +392,7 @@
             $('.poph').popover();
 
             $('#EstadoId').change(function () {
-                $.get('/Cidade/GetCidades', { estadoId: $(this).val() }, function (data) {
+                $.get('/Home/GetCidades', { estadoId: $(this).val() }, function (data) {
                     $("#CidadeId").html('');
                     $("#CidadeId").append($("<option></option>").val(null).html('[Selecione]'))
                     for (var i in data) {

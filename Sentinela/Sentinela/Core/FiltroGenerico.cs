@@ -16,22 +16,23 @@ namespace Sentinela.Core
 
         private List<Campo<T>> Campos = new List<Campo<T>>();
 
-        public FiltroGenerico<T> AddCampo(string nome, Tipo tipo, Func<object, object, Expression<Func<T, bool>>> expressao)
+        public FiltroGenerico<T> AddCampo(string nome, Tipo tipo, Func<object, Expression<Func<T, bool>>> expressao)
         {
-            return AddCampo(nome, tipo, "","", expressao);
+            return AddCampo(nome,nome, tipo,expressao);
         }
-        public FiltroGenerico<T> AddCampo(string nome, Tipo tipo,string valor1, Func<object, object, Expression<Func<T, bool>>> expressao)
+        public FiltroGenerico<T> AddCampo(string nome,string label, Tipo tipo, Func<object, Expression<Func<T, bool>>> expressao)
         {
-            return AddCampo(nome, tipo, valor1, "", expressao);
+            return AddCampo(nome,label, tipo, "", expressao);
         }
-        public FiltroGenerico<T> AddCampo(string nome,Tipo tipo, string valor1, string valor2, Func<object, object,Expression<Func<T, bool>>> expressao)
+
+        public FiltroGenerico<T> AddCampo(string nome,string label, Tipo tipo, string valor1, Func<object,Expression<Func<T, bool>>> expressao)
         {
             var campo = new Campo<T>();
             campo.Nome = nome;
+            campo.Label = label;
             campo.Expressao = expressao;
             campo.Tipo = tipo;
-            campo.Valor1 = valor1;
-            campo.Valor2 = valor2;
+            campo.Valor = valor1;
 
             Campos.Add(campo);
 
@@ -48,33 +49,54 @@ namespace Sentinela.Core
                 existeFiltros = true;
                 var regra = request.QueryString[filtro];
                 string key = filtro.Substring(0, filtro.Length - filtroKey.Length);
-
-                if (regra.Contains(separador.ToString()))
-                {
-                    var regras = regra.Split(separador);
-                    Campos.FirstOrDefault(c => c.Nome.Equals(key)).Valor1 = regras.First();
-                    Campos.FirstOrDefault(c => c.Nome.Equals(key)).Valor2 = regras.Last();
-                }
-                else
-                {
-                    Campos.FirstOrDefault(c => c.Nome.Equals(key)).Valor1 = regra;
-                }
+                                
+                Campos.FirstOrDefault(c => c.Nome.Equals(key)).Valor = regra;
             }
             return existeFiltros;
         }
-        public IQueryable<T> AplicarFiltro(IQueryable<T> dataSource, HttpRequestBase request)
+        public IQueryable<T> Filtrar(IQueryable<T> dataSource, HttpRequestBase request)
         {
             if (AtribuirValores(request))
             {
-                foreach (var campo in Campos.Where(c => !string.IsNullOrEmpty(c.Valor1)))
-                {                
-                    dataSource = dataSource.Where(campo.Expressao.Invoke(campo.Valor1,campo.Valor2));
+                foreach (var campo in Campos.Where(c => !string.IsNullOrEmpty(c.Valor)))
+                {
+                    switch (campo.Tipo)
+                    {
+                        case Tipo.String:
+                            dataSource = dataSource.Where(campo.Expressao.Invoke(campo.Valor));
+                            break;
+                        case Tipo.DateTime:
+                            dataSource = dataSource.Where(campo.Expressao.Invoke(Convert.ToDateTime(campo.Valor)));
+                            break;
+                        case Tipo.Numeric:
+                            dataSource = dataSource.Where(campo.Expressao.Invoke(Convert.ToDouble(campo.Valor)));
+                            break;
+                        default:
+                            break;
+                    }
                 }
             } 
             
             return dataSource;
         }
 
+        
+        public IEnumerable<T> Ordenar(IEnumerable<T> source,string tipo, string sortBy, string sortDirection)
+        {
+            var param = Expression.Parameter(typeof(T), "item");
+
+            var sortExpression = Expression.Lambda<Func<T, object>>
+                (Expression.Convert(Expression.Property(param, sortBy), typeof(object)), param);
+
+            switch (sortDirection.ToLower())
+            {
+                case "asc":
+                    return source.AsQueryable<T>().OrderBy<T, object>(sortExpression);
+                default:
+                    return source.AsQueryable<T>().OrderByDescending<T, object>(sortExpression);
+
+            }
+        }
         public string GetHtml(string formAction)
         {
             string html =String.Format(
@@ -101,10 +123,9 @@ namespace Sentinela.Core
                             </td>
                             <td>
                                 <input type=""number"" name=""{1}"" value=""{2}"" />
-                                <input type=""number"" name=""{3}"" value=""{4}"" />
                             </td>
                          </tr>",
-                               item.Nome, item.Nome + filtroKey,item.Valor1, item.Nome + filtroKey, item.Valor2);
+                               item.Label, item.Nome + filtroKey,item.Valor);
                         break;
                     case Tipo.DateTime:
                         html += String.Format(
@@ -113,11 +134,10 @@ namespace Sentinela.Core
                                 {0}
                             </td>
                             <td>
-                                <input type=""date"" placeholder=""De"" name=""De{1}"" value=""{2}""/>
-                                <input type=""date"" placeholder=""Ate"" name=""Ate{3}"" value=""{4}""/>
+                                <input type=""text"" class=""data"" name=""{1}"" value=""{2}""/>
                             </td>
                          </tr>",
-                               item.Nome, item.Nome + filtroKey,item.Valor1, item.Nome + filtroKey, item.Valor2);
+                               item.Label, item.Nome + filtroKey, item.Valor);
                         break;
                     case Tipo.String:
                     default:
@@ -130,14 +150,14 @@ namespace Sentinela.Core
                                 <input type=""text"" name=""{1}"" value=""{2}""/>
                             </td>
                          </tr>",
-                               item.Nome, item.Nome + filtroKey, item.Valor1); ;
+                               item.Label, item.Nome + filtroKey, item.Valor); ;
                         break;
                 }
 
             }
 
             html +=
-                @"      <tr><td colspan=""2""><input type=""submit"" value=""Aplicar Filtro"" /></td></tr>
+                @"      <tr><td colspan=""2""><input type=""submit"" style=""float:right;"" value=""Aplicar Filtro"" /></td></tr>
                     </tbody>
                 </table>
             </form>";
@@ -145,14 +165,18 @@ namespace Sentinela.Core
         }
         
     }
-
+    public class GenericSorter<T>
+    {
+        
+    }
     public class Campo<T>
     {
         public string Nome { get; set; }
         public Tipo Tipo { get; set; }
         public Operacao Operacao { get; set; }
-        public string Valor1 { get; set; }
-        public string Valor2 { get; set; }
-        public Func<object,object,Expression<Func<T, bool>>> Expressao { get; set; }
+        public string Valor { get; set; }
+        public Func<object,Expression<Func<T, bool>>> Expressao { get; set; }
+
+        public string Label { get; set; }
     }
 }
