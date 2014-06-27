@@ -71,8 +71,8 @@ namespace Sentinela.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Cliente cliente)
         {
-            cliente.Telefone = cliente.Telefone.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
-            cliente.Celular = cliente.Celular.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+            cliente.Telefone = cliente.Telefone.RemoveMaskTel();
+            cliente.Celular = cliente.Celular.RemoveMaskTel();
             if (ModelState.IsValid)
             {
                 _Contexto.Cliente.Add(cliente);
@@ -106,8 +106,8 @@ namespace Sentinela.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Cliente cliente)
         {
-            cliente.Telefone = cliente.Telefone.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
-            cliente.Celular = cliente.Celular.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+            cliente.Telefone = cliente.Telefone.RemoveMaskTel();
+            cliente.Celular = cliente.Celular.RemoveMaskTel();
 
             if (ModelState.IsValid)
             {

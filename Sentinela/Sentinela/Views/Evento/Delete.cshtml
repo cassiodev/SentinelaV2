@@ -1,12 +1,12 @@
-﻿@model Sentinela.Models.Orcamento
+﻿@model Sentinela.Models.Evento
 
 @{
-    ViewBag.Title = "Excluir Orçamento";
+    ViewBag.Title = "Excluir Evento";
 }
 
-<h2>Excluir Orçamento</h2>
+<h2>Excluir Evento</h2>
 
-@if (Model.Evento.Any())
+@if (Model.Agenda.Any())
 {
     <h4>Não é possível excluir este orçamento, pois ele está vinculado com um ou mais eventos</h4>
     <p>
@@ -35,10 +35,10 @@ else
         </div><br/>
 
         <div class="display-label">
-             @Html.DisplayNameFor(model => model.DataOrcamento):
+             @Html.DisplayNameFor(model => model.DataCadastro):
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.DataOrcamento)
+            @Html.DisplayFor(model => model.DataCadastro)
         </div><br/>
 
         <div class="display-label">

@@ -16,8 +16,8 @@ namespace Sentinela.Models
     {
         public Cidade()
         {
-            this.Local = new HashSet<Local>();
             this.Cliente = new HashSet<Cliente>();
+            this.Local = new HashSet<Local>();
         }
     
         public int CidadeId { get; set; }
@@ -25,7 +25,7 @@ namespace Sentinela.Models
         public int EstadoId { get; set; }
     
         public virtual Estado Estado { get; set; }
-        public virtual ICollection<Local> Local { get; set; }
         public virtual ICollection<Cliente> Cliente { get; set; }
+        public virtual ICollection<Local> Local { get; set; }
     }
 }

@@ -12,19 +12,17 @@ namespace Sentinela.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TipoEvento
+    public partial class Agenda
     {
-        public TipoEvento()
-        {
-            this.Agenda = new HashSet<Agenda>();
-            this.Evento = new HashSet<Evento>();
-        }
-    
+        public int AgendaId { get; set; }
+        public Nullable<int> EventoId { get; set; }
         public int TipoEventoId { get; set; }
-        public string Nome { get; set; }
-        public bool Ativo { get; set; }
+        public int LocalId { get; set; }
+        public System.DateTime Data { get; set; }
+        public string Observacao { get; set; }
     
-        public virtual ICollection<Agenda> Agenda { get; set; }
-        public virtual ICollection<Evento> Evento { get; set; }
+        public virtual TipoEvento TipoEvento { get; set; }
+        public virtual Evento Evento { get; set; }
+        public virtual Local Local { get; set; }
     }
 }

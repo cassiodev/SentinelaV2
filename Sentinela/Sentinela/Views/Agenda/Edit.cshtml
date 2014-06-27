@@ -1,11 +1,14 @@
-﻿@model Sentinela.Models.Evento
+﻿@model Sentinela.Models.Agenda
 
-@using (Ajax.BeginForm("Create", "Evento", null, new AjaxOptions() { HttpMethod = "POST", OnComplete = "onComplete", OnSuccess = "onSuccess", OnFailure = "onFailure", OnBegin = "onBegin" }, new { @id = "formEvento" }))
+
+@using (Ajax.BeginForm("Edit", "Agenda", null, new AjaxOptions() { HttpMethod = "POST", OnComplete = "onComplete", OnSuccess = "onSuccess", OnFailure = "onFailure", OnBegin = "onBegin" }, new { @id = "formEvento" }))
 {
     @Html.AntiForgeryToken()
 
     <fieldset>
-        
+
+        @Html.HiddenFor(m => m.EventoId)
+
         <div class="editor-label">
             @Html.LabelFor(model => model.LocalId, "Local")
         </div>
@@ -13,7 +16,7 @@
             <select name="LocalId" id="LocalEvento">
                 @foreach (var local in ViewBag.Local)
                 {
-                    <option value="@local.LocalId" @String.Format("{0}", Model.LocalId == local.LocalId ? "selected=selected"    : "")> @local.Nome</option>
+                    <option value="@local.LocalId" selected="@String.Format("{0}", Model.LocalId == local.LocalId ? "selected" : "")"> @local.Nome</option>
                 }
             </select>
         </div>
@@ -24,17 +27,8 @@
             @Html.LabelFor(model => model.Data)
         </div>
         <div class="editor-field">
-            @Html.TextBox("Data", Model.Data.ToShortDateString(), new { @class="data" })
+            @Html.TextBox("Data", Model.Data.ToShortDateString())
             @Html.ValidationMessageFor(model => model.Data)
-        </div>
-
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.OrcamentoId, "Nº Orcamento")
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(m => m.OrcamentoId, new { @class = "integer" })
-            @Html.ValidationMessageFor(model => model.OrcamentoId)
         </div>
 
 
@@ -42,8 +36,22 @@
             @Html.LabelFor(model => model.TipoEventoId, "Tipo Evento")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("TipoEventoId", "[Selecione]")
+            <select name="TipoEventoId" id="TipoEventoId">
+                @foreach (var item in ViewBag.TipoEventoId)
+                {
+                    <option value="@item.TipoEventoId" @String.Format("{0}", Model.TipoEventoId == item.TipoEventoId ? "selected=selected" : "")> @item.Nome</option>
+                }
+            </select>
             @Html.ValidationMessageFor(model => model.TipoEventoId)
+        </div>
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EventoId, "Nº Evento")
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(m => m.EventoId, new { @class = "integer" })
+            @Html.ValidationMessageFor(model => model.EventoId)
         </div>
 
 
@@ -58,15 +66,30 @@
         <p>
             <input type="button" class="btn-submit" value="Salvar" />
         </p>
+        
     </fieldset>
+}
+@using (Ajax.BeginForm("Delete", "Agenda", null, new AjaxOptions() { HttpMethod = "POST", OnComplete = "onComplete", OnSuccess = "onSuccess", OnFailure = "onFailure", OnBegin = "showLoader" }, new { @id = "formDeleteEvento" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("id",Model.EventoId)
+    <p>
+        <a href="javascript:;" class="event-remove" data-id="@Model.EventoId">Desmarcar evento</a>
+    </p>
 }
 
 
 
 <script>
-    
-
     $(document).ready(function () {
+        $('#LocalEvento').prop('disabled', true).addClass('disabled');
+        $('#Data').prop('disabled', true).addClass('disabled');
+
+        $('.btn-submit').click(function (e) {
+            e.preventDefault();
+
+            $('#formEvento').submit();
+        });
         $(".data").datepicker({
             dateFormat: 'dd/mm/yy',
             dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
@@ -77,27 +100,26 @@
             nextText: 'Próximo',
             prevText: 'Anterior'
         })
-                        .attr("data-val-date", "Data inválida")
-                        .attr('readonly', 'true')
-                        .css('background', 'white')
-                        .css('cursor', 'text')
-                        .each(function () {
-                            $(this).val($(this).val().split(' ')[0]);
-                        });
+                    .attr("data-val-date", "Data inválida")
+                    .attr('readonly', 'true')
+                    .css('background', 'white')
+                    .css('cursor', 'text')
+                    .each(function () {
+                        $(this).val($(this).val().split(' ')[0]);
+                    });
         $('.integer').setMask('int32');
-        $('#LocalEvento').prop('disabled', true).addClass('disabled');
-        $('#Data').prop('disabled', true).addClass('disabled');
-        $('.btn-submit').click(function (e) {
+        $('.event-remove').click(function (e) {
             e.preventDefault();
             
-            $('#LocalEvento').prop('disabled', false);
-            $('#Data').prop('disabled', false);
-
-            $('#formEvento').submit();
+            if (confirm("Deseja realmente desmarcar este evento?")) {
+                $('#formDeleteEvento').submit();
+            }
+            
         });
+
     });
 
-    
+
 
     function onSuccess(data, status, xhr) {
         bootbox.alert(data.msg);
@@ -105,17 +127,15 @@
             $('#myModal').modal("hide");
             changeYear(data.ano);
         }
+        
     }
 
     function onComplete() {
         hideLoader();
-        $('#LocalEvento').prop('disabled', true).addClass('disabled');
-        $('#Data').prop('disabled', true).addClass('disabled'); 
     }
     function onBegin() {
         showLoader('Salvando...');
     }
-
     function onFailure(data, status, xhr) {
         bootbox.alert('Erro na conexão!');
     }

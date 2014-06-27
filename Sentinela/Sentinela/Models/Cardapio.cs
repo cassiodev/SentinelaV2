@@ -17,8 +17,8 @@ namespace Sentinela.Models
         public Cardapio()
         {
             this.CardapioRefeicaoItem = new HashSet<CardapioRefeicaoItem>();
+            this.Evento = new HashSet<Evento>();
             this.Imagem = new HashSet<Imagem>();
-            this.Orcamento = new HashSet<Orcamento>();
         }
     
         public int CardapioId { get; set; }
@@ -27,7 +27,7 @@ namespace Sentinela.Models
         public bool Ativo { get; set; }
     
         public virtual ICollection<CardapioRefeicaoItem> CardapioRefeicaoItem { get; set; }
+        public virtual ICollection<Evento> Evento { get; set; }
         public virtual ICollection<Imagem> Imagem { get; set; }
-        public virtual ICollection<Orcamento> Orcamento { get; set; }
     }
 }

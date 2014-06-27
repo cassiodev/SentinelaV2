@@ -9,6 +9,9 @@ using PagedList.Mvc;
 using PagedList;
 using System.Configuration;
 using Sentinela.Models;
+using Sentinela.Core;
+using System.Linq.Expressions;
+
 
 namespace Sentinela.Controllers
 {
@@ -20,182 +23,118 @@ namespace Sentinela.Controllers
         //
         // GET: /Evento/
 
-        public ActionResult Index(int? ano, int? localId)
-        {
-            ViewBag.Local = _Contexto.Local.Where(l => l.Ativo).ToList();
-            ViewBag.Ano = ano ?? DateTime.Now.Year;
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult GetEventos(int? ano, int? localId)
+        public ActionResult Index(int? page)
         {
 
-            var query = _Contexto.Evento.Where(e => e.Data.Year == ano && e.LocalId == localId.Value)
-                                            .ToList()
-                                            .Select(e => new
-                                            {
-                                                id = e.EventoId,
-                                                dia = e.Data.Day,
-                                                mes = e.Data.Month,
-                                                cor = "rgb(255, 187, 187)",
-                                                tipo = e.TipoEvento.Nome,
-                                                observacao = e.Observacao,
-                                                cliente = e.Orcamento != null ? String.Format("<a href='/Cliente/{0}' target='_blank'>{1}</a>", e.Orcamento.Cliente.ClienteId, e.Orcamento.Cliente.Pessoa.Nome) : ""
 
-                                            });
-            return Json(query, JsonRequestBehavior.AllowGet);
-        }
+            int pageSize =  Convert.ToInt32(ConfigurationManager.AppSettings["PageSize"]);
+            int pageNumber = (page ?? 1);
 
-        //
-        // GET: /Evento/Create
+            FiltroGenerico<Evento> filtro = new FiltroGenerico<Evento>();
 
-        public ActionResult Create(int? localId, string dataEvento)
-        {
+            filtro.AddCampo("Nome","Nome Cliente", Tipo.String, (arg1) => campo => campo.Cliente.Pessoa.Nome.Contains((string)arg1));
+            filtro.AddCampo("DeDataRecebido", "Data Recebimento(De)", Tipo.DateTime, (arg1) => campo => campo.DataCadastro >= (DateTime)arg1);
+            filtro.AddCampo("AteDataRecebido", "Data Recebimento(Até)", Tipo.DateTime, (arg1) => campo => campo.DataCadastro <= (DateTime)arg1);
+            var orcamentos = _Contexto.Evento.OrderByDescending(o => o.EventoId).Include(o => o.Cliente).Include(o => o.Local).Include(o => o.TipoEvento);
             
-            Evento evento = new Evento() { Data = DateTime.Parse(dataEvento) };
-            ViewBag.Local = _Contexto.Local.ToList();
-            ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento.ToList(), "TipoEventoId", "Nome");
-            return View(evento);
-        }
+            orcamentos = filtro.Filtrar(orcamentos, Request);
 
-        //
-        // POST: /Evento/Create
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Evento evento)
-        {
-            try
-            {
-                #region Validacao
-
-                if (evento.OrcamentoId != 0 && evento.OrcamentoId != null)
-                {
-                    //Valida orçamento
-                    evento.Orcamento = _Contexto.Orcamento.Find(evento.OrcamentoId);
-                    if (evento.Orcamento == null)
-                        throw new Exception("Orçamento não encontrado.");
-                }
-
-                //Valida data
-                if (_Contexto.Evento.Any(e => e.Data == evento.Data && e.LocalId == evento.LocalId))
-                    throw new Exception("Data não disponível" );
-
-
-                #endregion
-
-                if (ModelState.IsValid)
-                {
-                    _Contexto.Evento.Add(evento);
-                    _Contexto.SaveChanges();
-                    return Json(new { erro = false, msg = "Evento adicionado com sucesso!", ano = evento.Data.Year });
-                }
-
-                string msg = "Erro na validação de dados: ";
-
-                foreach (var item in ModelState.Values)
-                {
-                    foreach (var erros in item.Errors)
-                    {
-                        msg += erros.ErrorMessage;
-                    }
-                }
-
-                throw new Exception(msg);
-            }
-            catch (Exception ex)
-            {
-                return Json(new { erro = true, msg = ex.Message });
-            }
+            ViewBag.Filtro = filtro.GetHtml("/Evento/Index");
             
+            return View(orcamentos.ToPagedList(pageNumber,pageSize));
         }
 
         //
-        // GET: /Evento/Edit/5
+        // GET: /Evento/Detalhes/5
+
+        public ActionResult Details(int id = 0)
+        {
+            Evento orcamento = _Contexto.Evento.Find(id);
+            if (orcamento == null)
+            {
+                return HttpNotFound();
+            }
+            return View(orcamento);
+        }
+
+        
+        //
+        // GET: /Orcamento/Edit/5
 
         public ActionResult Edit(int id = 0)
         {
-            
             Evento evento = _Contexto.Evento.Find(id);
-
-
             if (evento == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.TipoEventoId = _Contexto.TipoEvento.ToList();
-            ViewBag.Local = _Contexto.Local.ToList();
+            ViewBag.LocalId = new SelectList(_Contexto.Local, "LocalId", "Nome", evento.LocalId);
+            ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento, "TipoEventoId", "Nome", evento.TipoEventoId);
+            ViewBag.CardapioId = new SelectList(_Contexto.Cardapio, "CardapioId", "Nome", evento.CardapioId);
+            ViewBag.Adicionais = new MultiSelectList(_Contexto.Adicional, "AdicionalId", "Nome", evento.Adicional.Select(a => a.AdicionalId));
             return View(evento);
         }
 
         //
-        // POST: /Evento/Edit/5
+        // POST: /Orcamento/Edit/5
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Evento evento)
+        public ActionResult Edit(Evento evento, IEnumerable<int> Adicionais, FormCollection form)
         {
-            try
+            var _evento = _Contexto.Evento.Find(evento.EventoId);
+
+            if (ModelState.IsValid && _evento != null)
             {
-                #region Validacao
 
-                if (evento.OrcamentoId != 0 && evento.OrcamentoId != null)
-                {
-                    //Valida orçamento
-                    evento.Orcamento = _Contexto.Orcamento.Find(evento.OrcamentoId);
-                    if (evento.Orcamento == null)
-                        throw new Exception("Orçamento não encontrado.");
-                }
+                _evento.Adicional.Clear();
+                if (Adicionais != null)
+                    foreach (var item in Adicionais)
+                        _evento.Adicional.Add(_Contexto.Adicional.Find(item));
 
-                //Valida data
-                if (_Contexto.Evento.Any(e => e.Data == evento.Data && e.LocalId == evento.LocalId))
-                    throw new Exception("Data não disponível");
-
-
-                #endregion
-
-
-
-                var _evento = _Contexto.Evento.Find(evento.EventoId);
-                _evento.Observacao = evento.Observacao;
-                _evento.OrcamentoId = evento.OrcamentoId;
+                _evento.ClienteId = evento.ClienteId;
+                _evento.LocalId = evento.LocalId;
+                _evento.DataEvento = evento.DataEvento;
+                _evento.Convidados = evento.Convidados;
+                _evento.Periodo = evento.Periodo;
                 _evento.TipoEventoId = evento.TipoEventoId;
+                _evento.CardapioId = evento.CardapioId;
+                _evento.DataAlteracao = DateTime.Now;
 
                 _Contexto.SaveChanges();
-
-
-                return Json(new { erro = false, msg = "Evento alterado com sucesso!", ano = _evento.Data.Year });
+                return RedirectToAction("Index");
             }
-            catch (Exception ex)
-            {
-                return Json(new { erro = true, msg = ex.Message });
-            }
-
-            
+            ViewBag.LocalId = new SelectList(_Contexto.Local, "LocalId", "Nome", evento.LocalId);
+            ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento, "TipoEventoId", "Nome", evento.TipoEventoId);
+            ViewBag.CardapioId = new SelectList(_Contexto.Cardapio, "CardapioId", "Nome", evento.CardapioId);
+            ViewBag.Adicional = new MultiSelectList(_Contexto.Adicional, "AdicionalId", "Nome", evento.Adicional.Select(a => a.AdicionalId));
+            return View(evento);
         }
 
+        //
+        // GET: /Orcamento/Delete/5
+
+        public ActionResult Delete(int id = 0)
+        {
+            Evento orcamento = _Contexto.Evento.Find(id);
+            if (orcamento == null)
+            {
+                return HttpNotFound();
+            }
+            return View(orcamento);
+        }
 
         //
-        // POST: /Evento/Delete/5
+        // POST: /Orcamento/Delete/5
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            try
-            {
-                Evento evento = _Contexto.Evento.Find(id);
-                _Contexto.Evento.Remove(evento);
-                _Contexto.SaveChanges();
-                return Json(new { erro = false, msg = "Evento desmarcado com sucesso!", ano = evento.Data.Year });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { erro = true, msg = ex.Message });
-            }
-            
+            Evento orcamento = _Contexto.Evento.Find(id);
+            _Contexto.Evento.Remove(orcamento);
+            _Contexto.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         

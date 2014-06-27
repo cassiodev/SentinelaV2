@@ -18,7 +18,6 @@ namespace Sentinela.Models
         public Nullable<int> LocalId { get; set; }
         public Nullable<int> CardapioId { get; set; }
         public string Url { get; set; }
-        public bool Principal { get; set; }
     
         public virtual Cardapio Cardapio { get; set; }
         public virtual Local Local { get; set; }

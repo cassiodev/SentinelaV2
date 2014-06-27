@@ -1,4 +1,4 @@
-﻿@model Sentinela.Models.Orcamento
+﻿@model Sentinela.Models.Evento
 
 @{
     ViewBag.Title = "Detalhes";
@@ -8,13 +8,13 @@
 
 <div style="display: inline-block; width: 100%;">
     <fieldset class="col-lg-6">
-        <legend style="display: block!important">Orcamento @Html.ActionLink("Editar", "Edit", new { id = Model.OrcamentoId })</legend>
+        <legend style="display: block!important">Evento @Html.ActionLink("Editar", "Edit", new { id = Model.EventoId })</legend>
 
         <div class="display-label">
             Código
         </div>
         <div class="display-field">
-            @Html.DisplayFor(model => model.OrcamentoId)
+            @Html.DisplayFor(model => model.EventoId)
             
         </div>
 
@@ -26,10 +26,10 @@
         </div>
 
         <div class="display-label">
-            Data Orçamento
+            Data Cadastro
         </div>
         <div class="display-field">
-            @Model.DataOrcamento.ToShortDateString()
+            @Model.DataCadastro.ToShortDateString()
         </div>
 
         <div class="display-label">

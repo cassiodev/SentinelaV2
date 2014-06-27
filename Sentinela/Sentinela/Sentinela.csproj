@@ -203,13 +203,13 @@
     <Compile Include="Controllers\CidadeController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\ContaController.cs" />
-    <Compile Include="Controllers\EventoController.cs" />
+    <Compile Include="Controllers\AgendaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagemController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\LocalController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
-    <Compile Include="Controllers\OrcamentoController.cs" />
+    <Compile Include="Controllers\EventoController.cs" />
     <Compile Include="Controllers\RefeicaoController.cs" />
     <Compile Include="Controllers\TipoEventoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -219,6 +219,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Adicional.cs">
+      <DependentUpon>Modelo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Agenda.cs">
       <DependentUpon>Modelo.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Cardapio.cs">
@@ -265,9 +268,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Modelo.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Orcamento.cs">
-      <DependentUpon>Modelo.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Pessoa.cs">
       <DependentUpon>Modelo.tt</DependentUpon>
@@ -905,14 +905,14 @@
     <Content Include="Views\Adicional\Create.cshtml" />
     <Content Include="Views\Adicional\Edit.cshtml" />
     <Content Include="Views\Adicional\Delete.cshtml" />
-    <Content Include="Views\Evento\Index.cshtml" />
-    <Content Include="Views\Evento\Create.cshtml" />
-    <Content Include="Views\Evento\Edit.cshtml" />
+    <Content Include="Views\Agenda\Index.cshtml" />
+    <Content Include="Views\Agenda\Create.cshtml" />
+    <Content Include="Views\Agenda\Edit.cshtml" />
     <Content Include="Views\Imagem\Index.cshtml" />
-    <Content Include="Views\Orcamento\Index.cshtml" />
-    <Content Include="Views\Orcamento\Details.cshtml" />
-    <Content Include="Views\Orcamento\Edit.cshtml" />
-    <Content Include="Views\Orcamento\Delete.cshtml" />
+    <Content Include="Views\Evento\Index.cshtml" />
+    <Content Include="Views\Evento\Details.cshtml" />
+    <Content Include="Views\Evento\Edit.cshtml" />
+    <Content Include="Views\Evento\Delete.cshtml" />
     <Content Include="Views\Home\_DetalhesCardapio.cshtml" />
     <Content Include="Views\Home\_DetalhesLocal.cshtml" />
     <Content Include="Views\Shared\_Filter.cshtml" />

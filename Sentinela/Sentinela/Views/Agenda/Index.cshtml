@@ -1,0 +1,453 @@
+﻿@model Sentinela.Models.Agenda
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    td, th {
+        border: none;
+        padding: 1px!important;
+    }
+
+    .feriado{
+        border: 1px solid red!important;
+    }
+
+     th {
+        font-size: 14px;
+        text-align: center;
+        border: none 0px;
+        padding-left: 0!important;
+        border-bottom: none;
+    }
+
+    .calendarioAnual td {
+        vertical-align: top;
+    }
+
+    .calendarioAnual {
+        width: 100%;
+        margin: 0;
+        
+    }
+    .hoje {
+        border: 1px solid red;
+    }
+    #calendarioAnual {
+        background-color: white;
+        padding: 20px;
+        border-radius: 4px;
+    }
+
+    .calendarioMensal {
+        width: 224px;
+        margin: 1% auto;
+        border: 1px solid #eee;
+    }
+
+    .feriadosLista {
+        width: 224px;
+        margin: 5px auto;
+        font-size: 12px;
+    }
+
+    .calendarioMensal td {
+        width: 32px;
+        height: 32px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .day:hover {
+        background-color: rgb(205, 205, 245);
+    }
+
+    
+
+    .calendarioMensal td.past {
+        background-color: #F5F5F5;
+        cursor: default !important;
+    }
+
+    
+
+    .calendarioAnual thead {
+        background-color: #EBEBEB;
+    }
+
+        .calendarioAnual thead .nomeDiasSemana th {
+            font-size: 12px !important;
+            line-height: 21px;
+        }
+
+    .local {
+        color: red;
+    }
+    .legenda {
+        width: 12px;
+        height: 12px;
+        display:inline-block;
+    }
+    .previousYear, .nextYear{
+        display:inline-block;
+
+    }
+    .h3{
+        margin-top: 10px
+    }
+</style>
+
+
+<h2>Agenda</h2><br/>
+<form>
+    @Html.AntiForgeryToken()
+    <p>
+        
+        <label for="LocalId">Local</label>
+        <select class="localId" id="localId">
+            @foreach (var local in ViewBag.Local)
+            {
+                <option value="@local.LocalId">@local.Nome</option>
+            }
+        </select>
+    
+    
+    </p>
+</form>
+
+   
+    <div id="calendarioAnual">
+        
+    </div>
+
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Fotos do item</h4>
+            </div>
+
+            <div class="modal-body" id="crud">
+            </div>
+
+            <div class="modal-footer" id="modal-footer">
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script type="text/javascript" src="/Scripts/underscore.js"></script>
+    <script type="text/plain" id="templateCalendarioMes">
+    <table class="calendarioMensal">
+        <thead>
+            <tr class="nomeMes">
+                <th colspan="7">{{ nomeMes }}</th>
+            </tr>
+
+            <tr class="nomeDiasSemana">
+                <th>Dom</th>
+                <th>Seg</th>
+                <th>Ter</th>
+                <th>Qua</th>
+                <th>Qui</th>
+                <th>Sex</th>
+                <th>Sáb</th>
+            </tr>
+        </thead>
+        <tbody>
+            {[ for (var i in matriz) { ]}
+            <tr>
+                {[ for (var j in matriz[i]) { ]}
+                <td style="background-color:{{ matriz[i][j].cor }}" class="dia{{ matriz[i][j].diaSemana }} {[ if (matriz[i][j].hasFeriado) { ]} feriado{[ } ]} {[ if (matriz[i][j].mpast || matriz[i][j].dpast) { ]} past{[ } ]} {[ if (matriz[i][j].isDay) { ]} day{[ } ]} {[ if (matriz[i][j].hoje) { ]} hoje{[ } ]}" data-id="{{ matriz[i][j].id }}" data-html="true" data-toggle="popover" data-container="body" data-placement="top"
+                    data-content="
+                    <p>Cliente: {{ matriz[i][j].cliente }}</p> <p>Observação: {{ matriz[i][j].observacao }}</p>" data-original-title="{{ matriz[i][j].tipo }}" data-month="{{ matriz[i][j].dataMonth }}">
+                    {{ matriz[i][j].texto }}
+                </td>
+                {[ } ]}
+            </tr>
+            {[ } ]}
+        </tbody>
+    </table>
+    <div style="clear:both;"></div>
+
+</script>
+    <script type="text/plain" id="templateCalendario">
+    <div>
+        <span>Legenda: </span>
+        <div style="display:inline-block">
+            <div class="legenda hoje"></div> Hoje - 
+            <div class="legenda" style="background-color: rgb(205, 205, 245);"></div> Seleção - 
+            <div class="legenda"  style=" background-color:#f5f5f5"></div> Passado - 
+            <div class="legenda" style=" background-color: rgb(255, 187, 187); border: 1px solid red;"></div> Data reservada
+        </div>
+    </div>
+    <table class="calendarioAnual">
+        <thead>
+            <tr>
+                <th colspan="4">
+                    <h3><a href="javascript:;" class="previousYear"><span class="glyphicon glyphicon-chevron-left"></span></a>
+                        &nbsp;<span id="ano"></span>&nbsp;
+                    <a href="javascript:;" class="nextYear"><span class="glyphicon glyphicon-chevron-right"> </span> </a></h3>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {[ var mes; for (mes = 1; mes <= 12; mes++) { ]}
+                <td>
+                    {{ meses[mes-1] }}
+                </td>
+                {[ if (mes%4==0) { ]}
+            </tr>
+            <tr>
+                {[ } ]}
+                {[ } ]}
+            </tr>
+        </tbody>
+    </table>
+</script>
+    <script type="text/javascript">
+
+    //defino as tags de javascript pro template (o normal eh a tag do asp, mas dai nao deixa compilar, dai eu uso {{ }} e {[ ]})
+    _.templateSettings = {
+        evaluate: /\{\[([\s\S]+?)\]\}/g,
+        interpolate: /\{\{(.+?)\}\}/g
+    };
+    function getDiaByMatriz(linha, coluna, mes, ano) {
+        var primeiroDia = new Date(ano, mes - 1, 1);
+        var ultimoDia = new Date(ano, mes, 0).getDate();
+        var indice = (linha * 7) + coluna;
+        var diaSemana = primeiroDia.getDay();
+        indice -= diaSemana - 1;
+        return ((indice < 1) || (indice > ultimoDia)) ? false : indice;
+    }
+
+    function gerarCalendario($c, dados, ano, _cb) {
+        
+        var nomeMeses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        var tmplMes = _.template($("#templateCalendarioMes").html());
+        var tmplCalendario = _.template($("#templateCalendario").html());
+
+        
+
+        var meses = [];
+        var __data = new Date();
+        for (var mes = 1; mes <= 12; mes++) {
+            var mpast = ((__data.getMonth() + 1) > mes && __data.getFullYear() == ano);
+            var matual = (__data.getMonth() + 1) == mes;
+
+
+            var feriadosMes = _(dados).where({ mes: mes });
+            var matriz = [];
+            for (var linha = 0; linha < 6; linha++) {
+                var row = [];
+                for (var coluna = 0; coluna < 7; coluna++) {
+                    var cor = 'none';
+                    var texto = '';
+                    var tipo = '';
+                    var hasFeriado = false;
+                    var id = 0;
+                    var dia = getDiaByMatriz(linha, coluna, mes, ano);
+                    var isDay = false;
+                    var dpast = (matual && (dia < __data.getDate() && __data.getFullYear() == ano)) || ano < __data.getFullYear();
+                    var hoje = matual && (dia == __data.getDate()) && __data.getFullYear() == ano;
+                    var observacao = '';
+                    var cliente = '';
+                    
+
+                    if (dia !== false) {
+                        isDay = true;
+                        texto = dia;
+                        var feriadoDia = _(feriadosMes).findWhere({ dia: dia });
+                        if (typeof feriadoDia != 'undefined') {
+                            id = feriadoDia.id;
+                            hasFeriado = true;
+                            cor = feriadoDia.cor;
+                            title = feriadoDia.tipo;
+                            observacao = feriadoDia.observacao;
+                            cliente = feriadoDia.cliente;
+                            tipo = feriadoDia.tipo;
+                        }
+                    }
+                    else if (linha >= 4 && matual && ano == __data.getFullYear()) {
+                        dpast = false;
+                    }
+                    row.push({
+                        cor: cor,
+                        texto: texto,
+                        tipo: tipo,
+                        id: id,
+                        hasFeriado: hasFeriado,
+                        isDay: isDay,
+                        diaSemana: coluna,
+                        mpast: mpast,
+                        dpast: dpast,
+                        hoje: hoje,
+                        observacao: observacao,
+                        cliente: cliente,
+                        dataMonth: mes
+                    });
+                }
+                matriz.push(row);
+            }
+
+            meses.push(tmplMes({
+                nomeMes: nomeMeses[mes - 1],
+                matriz: matriz,
+                dados: _(feriadosMes).sortBy(function (item) { return item.dia; })
+            }));
+        }
+
+
+        $c.html(tmplCalendario({ meses: meses }));
+
+        $c.find('.feriado').unbind('click').on('click', function (e) {
+            e.preventDefault();
+            debugger;
+            var feriado = _(dados).findWhere({ id: parseInt($(this).attr('data-id')) });
+            if (typeof feriado != 'undefined') {
+                
+                if (!$(this).hasClass('past')) {
+                    $('.modal-title').text('Editar Agendamento');
+
+                    showLoader('Gerando Formulário');
+                    $.get('/Agenda/Edit', { id: feriado.id },
+                        function (data) {
+                            $('#myModal').modal();
+                            $('#crud').html(data);
+                        },
+                        'html')
+                        .fail(function () {
+                            bootbox.alert("Erro de conexão!");
+                        })
+                        .always(function () {
+                            hideLoader();
+                        });
+
+                }
+
+            }
+        });
+
+    }
+
+    $(document).ready(function () {
+
+        if ($('#ano').text() == '') {
+            ano = parseInt('@ViewBag.Ano');
+            $('#ano').text(ano);
+        }
+        else {
+            ano = $('#ano').text();
+        }
+        changeYear(ano);
+
+        $(".localId").change(function () {
+            changeYear($('#ano').text());
+        });
+
+    });
+    function getFormatedDate(data) {
+        var retorno = '';
+
+        if (data.getDate() < 9)
+            retorno += '0' + data.getDate() + '-';
+        else
+            retorno += data.getDate() + '-';
+
+        if(data.getMonth() < 9)
+            retorno += '0' + (data.getMonth() + 1) + '-';
+        else
+            retorno += (data.getMonth() + 1) + '-';
+
+        retorno += data.getFullYear();
+
+        return retorno;
+    }
+
+    function changeYear(ano) {
+        
+        showLoader();
+        $.post('/Agenda/GetAgenda',
+            {
+                ano: ano,
+                localId: $('#localId').val(),
+                __RequestVerificationToken: $('input[name=__RequestVerificationToken]').val()
+            },
+            function (data) {
+                gerarCalendario($("#calendarioAnual"), data, ano,
+                    function (item) {
+                        // essa funcao é executada quando se clica num feriado
+                        bootbox.alert('Clicou no item:' + item.id + 'descricao:' + item.descricao);
+                    }
+                );
+
+                $('.feriado').hover(function () { $(this).popover('show'); }, function () { $(this).popover('hide'); });
+                $('.previousYear').click(function () {
+                    var ano = parseInt(String($('#ano').text()));
+                    ano--;
+                    $('#ano').text(ano);
+                    changeYear(ano);
+                });
+                $('.nextYear').click(function () {
+                    var ano = parseInt(String($('#ano').text()));
+                    ano++;
+                    $('#ano').text(ano);
+                    changeYear(ano);
+                });
+
+                $('#ano').text(ano);
+                new Date()
+                $('.day').click(function () {
+                    if (!$(this).hasClass('past') && !$(this).hasClass('feriado')) {
+                        $('.modal-title').text('Novo Agendamento');
+                        
+                        var _data = new Date($('#ano').text().trim(), parseInt($(this).attr('data-month').trim()) -1, $(this).text().trim());
+
+                        showLoader('Gerando Formulário');
+                        $.get('/Agenda/Create', { localId: $('#localId').val(), dataEvento: getFormatedDate(_data) },
+                            function (data) {
+                                $('#myModal').modal();
+                                $('#crud').html(data);
+                            },
+                            'html')
+                            .fail(function () {
+                                bootbox.alert("Erro de conexão!");
+                            })
+                            .always(function () {
+                                hideLoader();
+                            });
+
+
+                    }
+                });
+            },
+            'json')
+            .error(function () {
+                bootbox.alert("Erro de conexão!");
+            })
+            .always(function () {
+                hideLoader();
+            });
+    }
+
+
+</script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+    }
+    

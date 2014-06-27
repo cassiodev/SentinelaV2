@@ -16,7 +16,7 @@ namespace Sentinela.Models
     {
         public Cliente()
         {
-            this.Orcamento = new HashSet<Orcamento>();
+            this.Evento = new HashSet<Evento>();
         }
     
         public int ClienteId { get; set; }
@@ -29,6 +29,6 @@ namespace Sentinela.Models
     
         public virtual Cidade Cidade { get; set; }
         public virtual Pessoa Pessoa { get; set; }
-        public virtual ICollection<Orcamento> Orcamento { get; set; }
+        public virtual ICollection<Evento> Evento { get; set; }
     }
 }

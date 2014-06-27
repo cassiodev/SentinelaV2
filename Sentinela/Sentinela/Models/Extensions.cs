@@ -13,6 +13,14 @@ namespace Sentinela.Models
             return _Contexto.Usuario.FirstOrDefault(u => string.Equals(u.Login, usuario.Login) &&
                                                              string.Equals(u.Senha, usuario.Senha));
         }
+
+        public static string RemoveMaskTel(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return value;
+            else
+                return value.RemoveMaskTel();
+        }
         public static MvcHtmlString AntiForgeryTokenForAjaxPost(this HtmlHelper helper)
         {
             var antiForgeryInputTag = helper.AntiForgeryToken().ToString();

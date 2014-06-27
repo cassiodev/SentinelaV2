@@ -1,142 +1,137 @@
 ﻿@model Sentinela.Models.Evento
 
+@{
+    ViewBag.Title = "Editar Evento";
+}
 
-@using (Ajax.BeginForm("Edit", "Evento", null, new AjaxOptions() { HttpMethod = "POST", OnComplete = "onComplete", OnSuccess = "onSuccess", OnFailure = "onFailure", OnBegin = "onBegin" }, new { @id = "formEvento" }))
-{
+<link href="~/Content/Select2/select2.css" rel="stylesheet" />
+
+<h2>Editar Evento</h2><br/>
+
+@using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
 
     <fieldset>
+        <legend>Evento</legend>
 
-        @Html.HiddenFor(m => m.EventoId)
+        @Html.HiddenFor(model => model.EventoId)
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ClienteId, "Cliente")
+        </div>
+        <div class="editor-field">
+            @Html.HiddenFor(model => model.ClienteId, new {@class = "select2" })
+        </div>
+        
         <div class="editor-label">
             @Html.LabelFor(model => model.LocalId, "Local")
         </div>
         <div class="editor-field">
-            <select name="LocalId" id="LocalEvento">
-                @foreach (var local in ViewBag.Local)
-                {
-                    <option value="@local.LocalId" selected="@String.Format("{0}", Model.LocalId == local.LocalId ? "selected" : "")"> @local.Nome</option>
-                }
-            </select>
+            @Html.DropDownList("LocalId", "[Selecione]")
+            @Html.ValidationMessageFor(model => model.LocalId)
         </div>
-
-        
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Data)
+            @Html.LabelFor(model => model.DataEvento, "Data Pretendida")
         </div>
         <div class="editor-field">
-            @Html.TextBox("Data", Model.Data.ToShortDateString())
-            @Html.ValidationMessageFor(model => model.Data)
+            @Html.TextBoxFor(model => model.DataEvento, new { @class = "data" })
+            @Html.ValidationMessageFor(model => model.DataEvento)
         </div>
-
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.TipoEventoId, "Tipo Evento")
+            @Html.LabelFor(model => model.Convidados)
         </div>
         <div class="editor-field">
-            <select name="TipoEventoId" id="TipoEventoId">
-                @foreach (var item in ViewBag.TipoEventoId)
-                {
-                    <option value="@item.TipoEventoId" @String.Format("{0}", Model.TipoEventoId == item.TipoEventoId ? "selected=selected" : "")> @item.Nome</option>
-                }
-            </select>
+            @Html.TextBoxFor(model => model.Convidados, new { @class="integer" })
+            @Html.ValidationMessageFor(model => model.Convidados)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Periodo)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Periodo)
+            @Html.ValidationMessageFor(model => model.Periodo)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Cardapio, "Tipo Evento")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("TipoEventoId", "[Selecione]")
             @Html.ValidationMessageFor(model => model.TipoEventoId)
         </div>
 
-
         <div class="editor-label">
-            @Html.LabelFor(model => model.OrcamentoId, "Nº Orcamento")
+            @Html.LabelFor(model => model.Cardapio, "Cardapio")
         </div>
         <div class="editor-field">
-            @Html.EditorFor(m => m.OrcamentoId)
-            @Html.ValidationMessageFor(model => model.OrcamentoId)
+            @Html.DropDownList("CardapioId", "[Selecione]")
+            @Html.ValidationMessageFor(model => model.CardapioId)
         </div>
 
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Observacao)
+            @Html.LabelFor(model => model.Adicional, "Adicional")
         </div>
         <div class="editor-field">
-            @Html.TextAreaFor(model => model.Observacao)
-            @Html.ValidationMessageFor(model => model.Observacao)
+            @Html.ListBox("Adicionais")
+            @Html.ValidationMessageFor(model => model.Adicional)
         </div>
+
 
         <p>
-            <input type="button" class="btn-submit" value="Salvar" />
+            <input type="submit" value="Salvar" />
         </p>
-        
     </fieldset>
-}
-@using (Ajax.BeginForm("Delete", "Evento", null, new AjaxOptions() { HttpMethod = "POST", OnComplete = "onComplete", OnSuccess = "onSuccess", OnFailure = "onFailure", OnBegin = "showLoader" }, new { @id = "formDeleteEvento" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.Hidden("id",Model.EventoId)
-    <p>
-        <a href="javascript:;" class="event-remove" data-id="@Model.EventoId">Desmarcar evento</a>
-    </p>
+    
+
 }
 
+<div>
+    @Html.ActionLink("Voltar", "Index")
+</div>
 
-
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script src="~/Content/Select2/select2.min.js"></script>
+<script src="~/Content/Select2/select2_locale_pt-BR.js"></script>
 <script>
     $(document).ready(function () {
-        $('#LocalEvento').prop('disabled', true).addClass('disabled');
-        $('#Data').prop('disabled', true).addClass('disabled');
+        $('#DataEvento').attr('type', '');
+        $("#Adicionais").css("width", "300px").select2();
+        $(".select2").css("width", "300px").select2({
+            minimumInputLength: 2,
+            placeholder: 'Informe o nome do cliente aqui.',
+            multiple: false,
 
-        $('.btn-submit').click(function (e) {
-            e.preventDefault();
+            ajax: {
+                url: "/Cliente/GetClientes",
+                dataType: 'json',
+                data: function (term, page) {
+                    return {
+                        nome: term
+                    };
+                },
+                results: function (data, page) {
+                    return { results: data };
+                }
+            },
 
-            $('#formEvento').submit();
-        });
-        $(".data").datepicker({
-            dateFormat: 'dd/mm/yy',
-            dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-            dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
-            dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
-            monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            nextText: 'Próximo',
-            prevText: 'Anterior'
-        })
-                    .attr("data-val-date", "Data inválida")
-                    .attr('readonly', 'true')
-                    .css('background', 'white')
-                    .css('cursor', 'text')
-                    .each(function () {
-                        $(this).val($(this).val().split(' ')[0]);
-                    });
-        $('.integer').setMask('int32');
-        $('.event-remove').click(function (e) {
-            e.preventDefault();
-            
-            if (confirm("Deseja realmente desmarcar este evento?")) {
-                $('#formDeleteEvento').submit();
+            initSelection: function (element, callback) {
+                var id = $(element).val();
+
+                $.ajax("/Cliente/GetClientes" + "?nome=" + id, {
+                    dataType: "json"
+                }).done(function (data) { callback(data[0]); })
+
             }
-            
-        });
 
+        });
     });
 
-
-
-    function onSuccess(data, status, xhr) {
-        bootbox.alert(data.msg);
-        if (data.erro !== true) {
-            $('#myModal').modal("hide");
-            changeYear(data.ano);
-        }
-        
-    }
-
-    function onComplete() {
-        hideLoader();
-    }
-    function onBegin() {
-        showLoader('Salvando...');
-    }
-    function onFailure(data, status, xhr) {
-        bootbox.alert('Erro na conexão!');
-    }
 </script>
+
+}

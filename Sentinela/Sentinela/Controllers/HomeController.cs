@@ -22,10 +22,10 @@ namespace Sentinela.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(Orcamento orcamento, FormCollection frm)
+        public ActionResult Index(Evento evento, FormCollection frm)
         {
-            orcamento.Cliente.Telefone = orcamento.Cliente.Telefone.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
-            orcamento.Cliente.Celular = orcamento.Cliente.Celular.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "");
+            evento.Cliente.Telefone = evento.Cliente.Telefone.RemoveMaskTel();
+            evento.Cliente.Celular = evento.Cliente.Celular.RemoveMaskTel();
 
             foreach (ModelState modelState in ViewData.ModelState.Values)
             {
@@ -38,11 +38,11 @@ namespace Sentinela.Controllers
             if (ModelState.IsValid)
             {
 
-                var cliente = _Contexto.Cliente.FirstOrDefault(c => string.Equals(orcamento.Cliente.Pessoa.Email, c.Pessoa.Email));
+                var cliente = _Contexto.Cliente.FirstOrDefault(c => string.Equals(evento.Cliente.Pessoa.Email, c.Pessoa.Email));
 
                 if (cliente != null)
                 {
-                    orcamento.Cliente = cliente;
+                    evento.Cliente = cliente;
                 }
 
                 var selectValues = frm.GetValues("Adicionais");
@@ -50,12 +50,12 @@ namespace Sentinela.Controllers
                 if (selectValues != null)
                     foreach (int item in selectValues.Select(i => Convert.ToInt32(i)))
                     {
-                        orcamento.Adicional.Add(_Contexto.Adicional.Find(item));
+                        evento.Adicional.Add(_Contexto.Adicional.Find(item));
                     }
-                orcamento.DataAlteracao = DateTime.Now;
-                orcamento.DataOrcamento = DateTime.Now;
+                evento.DataAlteracao = DateTime.Now;
+                evento.DataCadastro = DateTime.Now;
 
-                _Contexto.Orcamento.Add(orcamento);
+                _Contexto.Evento.Add(evento);
                 _Contexto.SaveChanges();
                 TempData["message"] = "Evento registrado com sucesso! Aguarde o contato.";
                 return RedirectToAction("Index");
@@ -69,7 +69,7 @@ namespace Sentinela.Controllers
             ViewBag.Cardapios = _Contexto.Cardapio.Where(c => c.Ativo).ToList();
             ViewBag.Local = _Contexto.Local.Where(l => l.Ativo).ToList();
 
-            return View(orcamento);
+            return View(evento);
         }
 
         public ActionResult About()

@@ -113,6 +113,7 @@ namespace Sentinela.Models
         public string Nome { get; set; }
 
         [StringLength(5000, ErrorMessage = "Máximo de caracteres permitido: 5000.")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Campo nome é descrição")]
         public string Descricao { get; set; }
     }
 
@@ -134,12 +135,12 @@ namespace Sentinela.Models
     }
 
 
-    [MetadataType(typeof(EventoMetaData))]
-    public partial class Evento
+    [MetadataType(typeof(AgendaMetaData))]
+    public partial class Agenda
     {
 
     }
-    public class EventoMetaData
+    public class AgendaMetaData
     {
         [Required(ErrorMessage = "Campo tipo é obrigatorio")]
         public int TipoEventoId { get; set; }
@@ -205,14 +206,13 @@ namespace Sentinela.Models
     }
 
 
-    [MetadataType(typeof(OrcamentoMetaData))]
-    public partial class Orcamento
+    [MetadataType(typeof(EventoMetaData))]
+    public partial class Evento
     {
 
     }
-    public class OrcamentoMetaData
+    public class EventoMetaData
     {
-        public int OrcamentoId { get; set; }
 
         [Required(ErrorMessage = "Campo cliente é obrigatorio")]
         public int ClienteId { get; set; }

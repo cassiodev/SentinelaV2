@@ -16,7 +16,7 @@ namespace Sentinela.Models
     {
         public Adicional()
         {
-            this.Orcamento = new HashSet<Orcamento>();
+            this.Evento = new HashSet<Evento>();
         }
     
         public int AdicionalId { get; set; }
@@ -24,6 +24,6 @@ namespace Sentinela.Models
         public bool Ativo { get; set; }
         public string Descricao { get; set; }
     
-        public virtual ICollection<Orcamento> Orcamento { get; set; }
+        public virtual ICollection<Evento> Evento { get; set; }
     }
 }

@@ -25,7 +25,7 @@
             @Html.DisplayFor(model => model.Nome)
         </div><br/>
     </fieldset>
-    @using (Html.BeginForm()) {
+    using (Html.BeginForm()) {
         <p>
             @Html.AntiForgeryToken()
             <input type="submit" value="Excluir" /> |
