@@ -9,6 +9,7 @@ using PagedList.Mvc;
 using PagedList;
 using System.Configuration;
 using Sentinela.Models;
+using Sentinela.Core;
 
 namespace Sentinela.Controllers
 {
@@ -23,6 +24,14 @@ namespace Sentinela.Controllers
 
         public ActionResult Index(int? page)
         {
+            FiltroGenerico<Cidade> filtro = new FiltroGenerico<Cidade>();
+
+            filtro.AddCampo("Nome", "Nome", Tipo.String, (arg1) => campo => campo.Nome.ToLower().Contains(((string)arg1).ToLower()));
+            var cidade = _Contexto.Cidade.OrderBy(c => c.CidadeId).Include(c => c.Estado);
+
+            cidade = filtro.Filtrar(cidade, Request);
+
+            ViewBag.Filtro = filtro.GetHtml("/Cidade/Index");
 
 
             int pageSize =  Convert.ToInt32(ConfigurationManager.AppSettings["PageSize"]);
@@ -30,7 +39,6 @@ namespace Sentinela.Controllers
 
 
 
-            var cidade = _Contexto.Cidade.OrderBy(c => c.CidadeId).Include(c => c.Estado);
             return View(cidade.ToPagedList(pageNumber,pageSize));
         }
 
