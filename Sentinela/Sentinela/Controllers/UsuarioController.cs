@@ -53,6 +53,7 @@ namespace Sentinela.Controllers
             {
                 _Contexto.Usuario.Add(usuario);
                 _Contexto.SaveChanges();
+                TempData["message"] = "Adicionado com sucesso!";
                 return RedirectToAction("Index");
             }
 
@@ -94,6 +95,7 @@ namespace Sentinela.Controllers
                 original.Pessoa.Email = usuario.Pessoa.Email;
 
                 _Contexto.SaveChanges();
+                TempData["message"] = "Alteração feita com sucesso!";
                 return RedirectToAction("Index");
             }
             ViewBag.UsuarioId = new SelectList(_Contexto.Pessoa, "PessoaId", "Email", usuario.UsuarioId);
@@ -123,6 +125,7 @@ namespace Sentinela.Controllers
             Usuario usuario = _Contexto.Usuario.Find(id);
             _Contexto.Usuario.Remove(usuario);
             _Contexto.SaveChanges();
+            TempData["message"] = "Exclusão feita com sucesso!";
             return RedirectToAction("Index");
         }
 

@@ -51,6 +51,7 @@ namespace Sentinela.Controllers
             {
                 _Contexto.Adicional.Add(adicional);
                 _Contexto.SaveChanges();
+                TempData["message"] = "Adicionado com sucesso!";
                 return RedirectToAction("Index");
             }
 
@@ -81,6 +82,7 @@ namespace Sentinela.Controllers
             {
                 _Contexto.Entry(adicional).State = EntityState.Modified;
                 _Contexto.SaveChanges();
+                TempData["message"] = "Alteração feita com sucesso!";
                 return RedirectToAction("Index");
             }
             return View(adicional);
@@ -109,6 +111,7 @@ namespace Sentinela.Controllers
             Adicional adicional = _Contexto.Adicional.Find(id);
             _Contexto.Adicional.Remove(adicional);
             _Contexto.SaveChanges();
+            TempData["message"] = "Exclusão feita com sucesso!";
             return RedirectToAction("Index");
         }
 

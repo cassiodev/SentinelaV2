@@ -60,6 +60,7 @@ namespace Sentinela.Controllers
             {
                 _Contexto.Item.Add(item);
                 _Contexto.SaveChanges();
+                TempData["message"] = "Adicionado com sucesso!";
                 return RedirectToAction("Index");
             }
 
@@ -90,6 +91,7 @@ namespace Sentinela.Controllers
             {
                 _Contexto.Entry(item).State = EntityState.Modified;
                 _Contexto.SaveChanges();
+                TempData["message"] = "Alteração feita com sucesso!";
                 return RedirectToAction("Index");
             }
             return View(item);
@@ -118,6 +120,7 @@ namespace Sentinela.Controllers
             Item item = _Contexto.Item.Find(id);
             _Contexto.Item.Remove(item);
             _Contexto.SaveChanges();
+            TempData["message"] = "Exclusão feita com sucesso!";
             return RedirectToAction("Index");
         }
 

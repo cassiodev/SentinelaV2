@@ -67,6 +67,7 @@ namespace Sentinela.Controllers
             {
                 _Contexto.Local.Add(local);
                 _Contexto.SaveChanges();
+                TempData["message"] = "Adicionado com sucesso!";
                 return RedirectToAction("Index");
             }
 
@@ -101,6 +102,7 @@ namespace Sentinela.Controllers
             {
                 _Contexto.Entry(local).State = EntityState.Modified;
                 _Contexto.SaveChanges();
+                TempData["message"] = "Alteração feita com sucesso!";
                 return RedirectToAction("Index");
             }
             ViewBag.CidadeId = new SelectList(_Contexto.Cidade, "CidadeId", "Nome", local.CidadeId);
@@ -143,6 +145,7 @@ namespace Sentinela.Controllers
             _Contexto.Local.Remove(local);
             
             _Contexto.SaveChanges();
+            TempData["message"] = "Exclusão feita com sucesso!";
             return RedirectToAction("Index");
         }
 

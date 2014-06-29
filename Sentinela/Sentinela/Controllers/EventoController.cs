@@ -102,6 +102,7 @@ namespace Sentinela.Controllers
                 _evento.DataAlteracao = DateTime.Now;
 
                 _Contexto.SaveChanges();
+                TempData["message"] = "Alteração feita com sucesso!";
                 return RedirectToAction("Index");
             }
             ViewBag.LocalId = new SelectList(_Contexto.Local, "LocalId", "Nome", evento.LocalId);
@@ -134,6 +135,8 @@ namespace Sentinela.Controllers
             Evento orcamento = _Contexto.Evento.Find(id);
             _Contexto.Evento.Remove(orcamento);
             _Contexto.SaveChanges();
+            TempData["message"] = "Exclusão feita com sucesso!";
+
             return RedirectToAction("Index");
         }
 

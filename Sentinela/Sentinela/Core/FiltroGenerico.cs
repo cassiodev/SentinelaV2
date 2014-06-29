@@ -63,13 +63,13 @@ namespace Sentinela.Core
                     switch (campo.Tipo)
                     {
                         case Tipo.String:
-                            dataSource = dataSource.Where(campo.Expressao.Invoke(campo.Valor));
+                            dataSource = dataSource.Where(campo.Expressao(campo.Valor));
                             break;
                         case Tipo.DateTime:
-                            dataSource = dataSource.Where(campo.Expressao.Invoke(Convert.ToDateTime(campo.Valor)));
+                            dataSource = dataSource.Where(campo.Expressao(Convert.ToDateTime(campo.Valor)));
                             break;
                         case Tipo.Numeric:
-                            dataSource = dataSource.Where(campo.Expressao.Invoke(Convert.ToDouble(campo.Valor)));
+                            dataSource = dataSource.Where(campo.Expressao(Convert.ToDouble(campo.Valor)));
                             break;
                         default:
                             break;

@@ -59,6 +59,7 @@ namespace Sentinela.Controllers
             {
                 _Contexto.Cardapio.Add(cardapio);
                 _Contexto.SaveChanges();
+                TempData["message"] = "Adicionado com sucesso!";
                 return RedirectToAction("Index");
             }
 
@@ -100,6 +101,7 @@ namespace Sentinela.Controllers
             if (ModelState.IsValid)
             {
                 _Contexto.SaveChanges();
+                TempData["message"] = "Alteração feita com sucesso!";
                 return RedirectToAction("Index");
             }
             return View(cardapio);
@@ -144,6 +146,7 @@ namespace Sentinela.Controllers
             
             _Contexto.Cardapio.Remove(cardapio);
             _Contexto.SaveChanges();
+            TempData["message"] = "Exclusão feita com sucesso!";
             return RedirectToAction("Index");
         }
 

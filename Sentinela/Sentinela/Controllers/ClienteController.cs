@@ -77,6 +77,7 @@ namespace Sentinela.Controllers
             {
                 _Contexto.Cliente.Add(cliente);
                 _Contexto.SaveChanges();
+                TempData["message"] = "Adicionado com sucesso!";
                 return RedirectToAction("Index");
             }
 
@@ -112,6 +113,7 @@ namespace Sentinela.Controllers
             if (ModelState.IsValid)
             {
                 _Contexto.Entry(cliente).State = EntityState.Modified;
+                TempData["message"] = "Alteração feita com sucesso!";
                 _Contexto.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -143,6 +145,7 @@ namespace Sentinela.Controllers
             Cliente cliente = _Contexto.Cliente.Find(id);
             _Contexto.Cliente.Remove(cliente);
             _Contexto.SaveChanges();
+            TempData["message"] = "Exclusão feita com sucesso!";
             return RedirectToAction("Index");
         }
 

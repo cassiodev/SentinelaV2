@@ -63,6 +63,7 @@ namespace Sentinela.Controllers
             {
                 _Contexto.TipoEvento.Add(tipoevento);
                 _Contexto.SaveChanges();
+                TempData["message"] = "Adicionado com sucesso!";
                 return RedirectToAction("Index");
             }
 
@@ -93,6 +94,7 @@ namespace Sentinela.Controllers
             {
                 _Contexto.Entry(tipoevento).State = EntityState.Modified;
                 _Contexto.SaveChanges();
+                TempData["message"] = "Alteração feita com sucesso!";
                 return RedirectToAction("Index");
             }
             return View(tipoevento);
@@ -121,6 +123,7 @@ namespace Sentinela.Controllers
             TipoEvento tipoevento = _Contexto.TipoEvento.Find(id);
             _Contexto.TipoEvento.Remove(tipoevento);
             _Contexto.SaveChanges();
+            TempData["message"] = "Exclusão feita com sucesso!";
             return RedirectToAction("Index");
         }
 

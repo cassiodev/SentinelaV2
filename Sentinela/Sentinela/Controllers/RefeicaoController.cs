@@ -53,6 +53,7 @@ namespace Sentinela.Controllers
             {
                 _Contexto.Refeicao.Add(refeicao);
                 _Contexto.SaveChanges();
+                TempData["message"] = "Adicionado com sucesso!";
                 return RedirectToAction("Index");
             }
 
@@ -84,6 +85,7 @@ namespace Sentinela.Controllers
             {
                 _Contexto.Entry(refeicao).State = EntityState.Modified;
                 _Contexto.SaveChanges();
+                TempData["message"] = "Alteração feita com sucesso!";
                 return RedirectToAction("Index");
             }
             return View(refeicao);
@@ -112,6 +114,7 @@ namespace Sentinela.Controllers
             Refeicao refeicao = _Contexto.Refeicao.Find(id);
             _Contexto.Refeicao.Remove(refeicao);
             _Contexto.SaveChanges();
+            TempData["message"] = "Exclusão feita com sucesso!";
             return RedirectToAction("Index");
         }
 
