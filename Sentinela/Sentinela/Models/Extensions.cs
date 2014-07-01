@@ -10,8 +10,9 @@ namespace Sentinela.Models
     {
         public static Usuario Autentica(this Usuario usuario, Contexto _Contexto)
         {
-            return _Contexto.Usuario.FirstOrDefault(u => string.Equals(u.Login, usuario.Login) &&
-                                                             string.Equals(u.Senha, usuario.Senha));
+            return _Contexto.Usuario.FirstOrDefault(u => string.Equals(u.Login, usuario.Login.ToLower()) &&
+                                                         string.Equals(u.Senha, usuario.Senha) &&
+                                                         u.Ativo);
         }
 
         public static string RemoveMaskTel(this string value)
@@ -19,8 +20,16 @@ namespace Sentinela.Models
             if (string.IsNullOrEmpty(value))
                 return value;
             else
-                return value.RemoveMaskTel();
+                return value.Replace("-", "").Replace("(", "").Replace(")", "").Replace(" ", "");
         }
+        public static string RemoveMaskCpf(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return value;
+            else
+                return value.Replace("-", "").Replace(".", "").Replace(" ", "");
+        }
+
         public static MvcHtmlString AntiForgeryTokenForAjaxPost(this HtmlHelper helper)
         {
             var antiForgeryInputTag = helper.AntiForgeryToken().ToString();

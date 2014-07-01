@@ -6,7 +6,7 @@
 
     <h2>Excluir Adicional</h2>
 
-    @if (Model.Orcamento.Any())
+    @if (Model.Evento.Any())
     {
         <h4>Não é possivel excluir este item pois está vinculado á um ou mais orçamentos.</h4>
         @Html.ActionLink("Voltar", "Index")

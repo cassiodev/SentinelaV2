@@ -10,7 +10,9 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-
+    @Html.HiddenFor(m => m.ClienteId)
+    @Html.HiddenFor(m => m.Pessoa.PessoaId)
+    
     <fieldset>
         <legend>Cliente</legend>
 
@@ -50,7 +52,7 @@
             @Html.LabelFor(model => model.Cpf)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Cpf)
+            @Html.EditorFor(model => model.Cpf, new { @class = "cpf" })
             @Html.ValidationMessageFor(model => model.Cpf)
         </div>
 
@@ -75,7 +77,7 @@
         </div>
 
         <div class="editor-field">
-            @Html.DropDownList("EstadoId","[Selecione]")
+            @Html.DropDownList("EstadoId", "[Selecione]")
             @Html.ValidationMessageFor(model => model.Cidade.EstadoId)
         </div>
 
@@ -99,8 +101,10 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/CustomValidation.js")
     <script>
         $(document).ready(function () {
+            $('input[name=Cpf]').setMask('cpf');
             $('#EstadoId').change(function () {
                 $.get('/Cidade/GetCidades', { estadoId: $(this).val() }, function (data) {
                     $("#CidadeId").html('');

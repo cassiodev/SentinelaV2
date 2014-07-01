@@ -101,6 +101,7 @@
     @Scripts.Render("~/Scripts/CustomValidation.js")
 <script>
     $(document).ready(function () {
+        $('input[name=Cpf]').setMask('cpf');
         $('#EstadoId').change(function () {
             $.get('/Cidade/GetCidades', { estadoId: $(this).val() }, function (data) {
                 $("#CidadeId").html('');

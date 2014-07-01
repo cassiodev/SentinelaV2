@@ -5,17 +5,16 @@
 }
 
 <h2>Excluir Usuario</h2>
-
+@if (ViewBag.Usuarios <= 1)
+{
+    <h4>Não é possível excluir todos os usuários da administração</h4>
+    @Html.ActionLink("Voltar", "Index")
+}
+else
+{
 <h3>Tem certeza que deseja excluir este registro?</h3><br/><br/>
 <fieldset>
     <legend>Usuario</legend>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Senha):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Senha)
-    </div><br/>
 
     <div class="display-label">
          @Html.DisplayNameFor(model => model.Login):
@@ -31,10 +30,11 @@
         @Html.DisplayFor(model => model.Ativo)
     </div><br/>
 </fieldset>
-@using (Html.BeginForm()) {
+using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     <p>
         <input type="submit" value="Excluir" /> |
         @Html.ActionLink("Voltar", "Index")
     </p>
+}
 }

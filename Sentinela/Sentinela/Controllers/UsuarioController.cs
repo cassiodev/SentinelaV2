@@ -38,7 +38,6 @@ namespace Sentinela.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.UsuarioId = new SelectList(_Contexto.Pessoa, "PessoaId", "Email");
             return View();
         }
 
@@ -47,17 +46,32 @@ namespace Sentinela.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Usuario usuario)
+        public ActionResult Create(UsuarioModelView usuario)
         {
+            if (_Contexto.Pessoa.Any(c => c.Email.Equals(usuario.Email)))
+                ModelState.AddModelError("Email", "E-mail já cadastrado!");
+            if (_Contexto.Usuario.Any(c => c.Login.ToLower().Equals(usuario.Login.ToLower())))
+                ModelState.AddModelError("Login", "Login já cadastrado!");
+
             if (ModelState.IsValid)
             {
-                _Contexto.Usuario.Add(usuario);
+
+                var original = new Usuario();
+                original.Pessoa = new Pessoa();
+
+                original.Login = usuario.Login.ToLower();
+                original.Ativo = usuario.Ativo;
+                original.Pessoa.Nome = usuario.Nome;
+                original.Pessoa.Email = usuario.Email;
+                original.Senha = usuario.Senha;
+                original.Pessoa.PessoaId = usuario.PessoaId;
+                
+                _Contexto.Usuario.Add(original);
                 _Contexto.SaveChanges();
                 TempData["message"] = "Adicionado com sucesso!";
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UsuarioId = new SelectList(_Contexto.Pessoa, "PessoaId", "Email", usuario.UsuarioId);
             return View(usuario);
         }
 
@@ -66,13 +80,25 @@ namespace Sentinela.Controllers
 
         public ActionResult Edit(int id = 0)
         {
+
             Usuario usuario = _Contexto.Usuario.Find(id);
             if (usuario == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.UsuarioId = new SelectList(_Contexto.Pessoa, "PessoaId", "Email", usuario.UsuarioId);
-            return View(usuario);
+
+            var original = new UsuarioModelView();
+
+            original.Login = usuario.Login;
+            original.Ativo = usuario.Ativo;
+            original.Nome = usuario.Pessoa.Nome;
+            original.Email = usuario.Pessoa.Email;
+            original.Senha = usuario.Senha;
+            original.ConfirmaSenha = usuario.Senha;
+            original.UsuarioId = usuario.UsuarioId;
+            original.PessoaId = usuario.UsuarioId;
+
+            return View(original);
         }
 
         //
@@ -80,25 +106,29 @@ namespace Sentinela.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Usuario usuario)
+        public ActionResult Edit(UsuarioModelView usuario)
         {
 
-            ModelState["Senha"].Errors.Clear();
-            
+            if (_Contexto.Pessoa.Any(c => c.Email.Equals(usuario.Email) && c.PessoaId != usuario.UsuarioId))
+                ModelState.AddModelError("Email", "E-mail já cadastrado!");
+            if (_Contexto.Usuario.Any(c => c.Login.ToLower().Equals(usuario.Login.ToLower()) && c.Pessoa.PessoaId != usuario.UsuarioId))
+                ModelState.AddModelError("Login", "Login já cadastrado!");
+
             if (ModelState.IsValid)
             {
                 var original = _Contexto.Usuario.Find(usuario.UsuarioId);
 
-                original.Login = usuario.Login;
+                original.Login = usuario.Login.ToLower();
                 original.Ativo = usuario.Ativo;
-                original.Pessoa.Nome = usuario.Pessoa.Nome;
-                original.Pessoa.Email = usuario.Pessoa.Email;
+                original.Pessoa.Nome = usuario.Nome;
+                original.Pessoa.Email = usuario.Email;
+                original.Senha = usuario.Senha;
+                
 
                 _Contexto.SaveChanges();
                 TempData["message"] = "Alteração feita com sucesso!";
                 return RedirectToAction("Index");
             }
-            ViewBag.UsuarioId = new SelectList(_Contexto.Pessoa, "PessoaId", "Email", usuario.UsuarioId);
             return View(usuario);
         }
 
@@ -107,6 +137,7 @@ namespace Sentinela.Controllers
 
         public ActionResult Delete(int id = 0)
         {
+            ViewBag.Usuarios = _Contexto.Usuario.Count();
             Usuario usuario = _Contexto.Usuario.Find(id);
             if (usuario == null)
             {

@@ -58,7 +58,7 @@ namespace Sentinela.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.CidadeId = new SelectList(_Contexto.Cidade, "CidadeId", "Nome");
+            
             ViewBag.EstadoId = new SelectList(_Contexto.Estado, "EstadoId", "UF");
 
             return View();
@@ -73,6 +73,13 @@ namespace Sentinela.Controllers
         {
             cliente.Telefone = cliente.Telefone.RemoveMaskTel();
             cliente.Celular = cliente.Celular.RemoveMaskTel();
+            cliente.Cpf = cliente.Cpf.RemoveMaskCpf();
+
+            if (_Contexto.Cliente.Any(c => c.Pessoa.Email.Equals(cliente.Pessoa.Email)))
+                ModelState.AddModelError("Pessoa.Email", "E-mail de cliente já existente!");
+            if(_Contexto.Cliente.Any(c=> c.Cpf != null && c.Cpf.Equals(cliente.Cpf)))
+                ModelState.AddModelError("Cpf", "CPF já cadastrado!");
+
             if (ModelState.IsValid)
             {
                 _Contexto.Cliente.Add(cliente);
@@ -81,7 +88,7 @@ namespace Sentinela.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CidadeId = new SelectList(_Contexto.Cidade, "CidadeId", "Nome", cliente.CidadeId);
+            ViewBag.EstadoId = new SelectList(_Contexto.Estado, "EstadoId", "UF");
             return View(cliente);
         }
 
@@ -109,6 +116,12 @@ namespace Sentinela.Controllers
         {
             cliente.Telefone = cliente.Telefone.RemoveMaskTel();
             cliente.Celular = cliente.Celular.RemoveMaskTel();
+            cliente.Cpf = cliente.Cpf.RemoveMaskCpf();
+
+            if (_Contexto.Cliente.Any(c => c.Pessoa.Email.Equals(cliente.Pessoa.Email) && c.ClienteId != cliente.ClienteId))
+                ModelState.AddModelError("Pessoa.Email", "E-mail de cliente já existente!");
+            if (_Contexto.Cliente.Any(c => (c.Cpf != null && c.Cpf.Equals(cliente.Cpf)) && c.ClienteId != cliente.ClienteId))
+                ModelState.AddModelError("Cpf", "CPF já cadastrado!");
 
             if (ModelState.IsValid)
             {
@@ -117,8 +130,20 @@ namespace Sentinela.Controllers
                 _Contexto.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CidadeId = new SelectList(_Contexto.Cidade, "CidadeId", "Nome", cliente.CidadeId);
-            ViewBag.ClienteId = new SelectList(_Contexto.Pessoa, "PessoaId", "Email", cliente.ClienteId);
+
+            if (cliente.CidadeId != 0 && cliente.CidadeId != -1)
+            {
+                var estadoId = _Contexto.Cidade.Find(cliente.CidadeId).EstadoId;
+                ViewBag.CidadeId = new SelectList(_Contexto.Cidade.Where(e => e.EstadoId == estadoId), "CidadeId", "Nome", cliente.CidadeId);
+                ViewBag.EstadoId = new SelectList(_Contexto.Estado, "EstadoId", "UF", estadoId);
+            }
+            else
+            {
+                ViewBag.EstadoId = new SelectList(_Contexto.Estado, "EstadoId", "UF");
+                ViewBag.CidadeId = new SelectList(_Contexto.Cidade.Where(c=>c.CidadeId==0), "CidadeId", "Nome", cliente.CidadeId);
+
+            }
+            
             return View(cliente);
         }
 

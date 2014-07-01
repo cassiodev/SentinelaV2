@@ -104,7 +104,7 @@ $(document).ready(function () {
         $(".btn-adicionar").attr("data-id", $(this).attr("data-id"));
         var that = this;
 
-        $.get("/Imagem/Index", { id: $(that).attr("data-id"), classe: 'local' }, function (data) {
+        $.get("/Imagem/Index", { id: $(that).attr("data-id"), entidade: 'local' }, function (data) {
             debugger;
             $("#fotos").html(data);
         }, 'html');

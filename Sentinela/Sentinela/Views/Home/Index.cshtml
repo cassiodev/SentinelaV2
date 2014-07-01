@@ -245,7 +245,15 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Cliente.CidadeId, "Cidade")
-                @Html.DropDownListFor(m => m.Cliente.CidadeId, new List<SelectListItem>())
+                @if (ViewBag.CidadeId == null)
+                {
+                    @Html.DropDownListFor(m => m.Cliente.CidadeId, new SelectList(new List<SelectListItem>()))
+                }
+                else
+                {
+                    @Html.DropDownListFor(m => m.Cliente.CidadeId, (ViewBag.CidadeId as SelectList))
+                }
+
                 @Html.ValidationMessageFor(model => model.Cliente.CidadeId)
             </div>
 

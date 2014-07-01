@@ -35,13 +35,13 @@ namespace Sentinela.Controllers
             filtro.AddCampo("Nome","Nome Cliente", Tipo.String, (arg1) => campo => campo.Cliente.Pessoa.Nome.Contains((string)arg1));
             filtro.AddCampo("DeDataRecebido", "Data Recebimento(De)", Tipo.DateTime, (arg1) => campo => campo.DataCadastro >= (DateTime)arg1);
             filtro.AddCampo("AteDataRecebido", "Data Recebimento(Até)", Tipo.DateTime, (arg1) => campo => campo.DataCadastro <= (DateTime)arg1);
-            var orcamentos = _Contexto.Evento.OrderByDescending(o => o.EventoId).Include(o => o.Cliente).Include(o => o.Local).Include(o => o.TipoEvento);
+            var eventos = _Contexto.Evento.OrderByDescending(o => o.EventoId).Include(o => o.Cliente).Include(o => o.Local).Include(o => o.TipoEvento);
             
-            orcamentos = filtro.Filtrar(orcamentos, Request);
+            eventos = filtro.Filtrar(eventos, Request);
 
             ViewBag.Filtro = filtro.GetHtml("/Evento/Index");
             
-            return View(orcamentos.ToPagedList(pageNumber,pageSize));
+            return View(eventos.ToPagedList(pageNumber,pageSize));
         }
 
         //
@@ -105,10 +105,10 @@ namespace Sentinela.Controllers
                 TempData["message"] = "Alteração feita com sucesso!";
                 return RedirectToAction("Index");
             }
-            ViewBag.LocalId = new SelectList(_Contexto.Local, "LocalId", "Nome", evento.LocalId);
-            ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento, "TipoEventoId", "Nome", evento.TipoEventoId);
-            ViewBag.CardapioId = new SelectList(_Contexto.Cardapio, "CardapioId", "Nome", evento.CardapioId);
-            ViewBag.Adicional = new MultiSelectList(_Contexto.Adicional, "AdicionalId", "Nome", evento.Adicional.Select(a => a.AdicionalId));
+            ViewBag.LocalId = new SelectList(_Contexto.Local.Where(e => e.Ativo), "LocalId", "Nome", evento.LocalId);
+            ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento.Where(e => e.Ativo), "TipoEventoId", "Nome", evento.TipoEventoId);
+            ViewBag.CardapioId = new SelectList(_Contexto.Cardapio.Where(e => e.Ativo), "CardapioId", "Nome", evento.CardapioId);
+            ViewBag.Adicionais = new MultiSelectList(_Contexto.Adicional.Where(e => e.Ativo), "AdicionalId", "Nome", evento.Adicional.Select(a => a.AdicionalId));
             return View(evento);
         }
 

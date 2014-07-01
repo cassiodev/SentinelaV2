@@ -27,13 +27,14 @@ namespace Sentinela.Controllers
             evento.Cliente.Telefone = evento.Cliente.Telefone.RemoveMaskTel();
             evento.Cliente.Celular = evento.Cliente.Celular.RemoveMaskTel();
 
-            foreach (ModelState modelState in ViewData.ModelState.Values)
+
+            var capLocal = _Contexto.Local.Find(evento.LocalId).Capacidade;
+
+            if (capLocal < evento.Convidados + evento.Criancas)
             {
-                foreach (ModelError error in modelState.Errors)
-                {
-                    TempData["message"] += "\n" + error.ErrorMessage;
-                }
-            }
+                ModelState.AddModelError("Convidados", "Capacidade máxima do local: " + capLocal);
+                ModelState.AddModelError("Criancas", "Capacidade máxima do local: " + capLocal);
+            }            
 
             if (ModelState.IsValid)
             {
@@ -61,9 +62,20 @@ namespace Sentinela.Controllers
                 return RedirectToAction("Index");
             }
 
-            
+            TempData["message"] = "Não foi possível completar sua solicitação, por favor, verifique os campos com erro.";
 
-            ViewBag.EstadoId = new SelectList(_Contexto.Estado.ToList(), "EstadoId", "UF");
+
+            if (evento.Cliente.CidadeId != -1 && evento.Cliente.CidadeId != 0)
+            {
+                var estadoId = _Contexto.Cidade.Find(evento.Cliente.CidadeId).EstadoId;
+                ViewBag.EstadoId = new SelectList(_Contexto.Estado.ToList(), "EstadoId", "UF", estadoId);
+                ViewBag.CidadeId = new SelectList(_Contexto.Cidade.Where(c => c.EstadoId == estadoId).ToList(), "CidadeId", "Nome", evento.Cliente.CidadeId);
+            }
+            else
+            {
+                ViewBag.EstadoId = new SelectList(_Contexto.Estado.ToList(), "EstadoId", "UF");
+            }
+            
             ViewBag.TipoEventoId = new SelectList(_Contexto.TipoEvento.ToList(), "TipoEventoId", "Nome");
             ViewBag.Adicionais = _Contexto.Adicional.Where(a => a.Ativo).ToList();
             ViewBag.Cardapios = _Contexto.Cardapio.Where(c => c.Ativo).ToList();

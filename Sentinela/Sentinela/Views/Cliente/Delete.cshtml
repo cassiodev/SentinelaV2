@@ -5,57 +5,65 @@
 }
 
 <h2>Excluir Cliente</h2>
+    @if (Model.Evento.Any())
+    {
+    <h4>Não é possivel excluir este cliente pois está vinculado a um ou mais orçamentos.</h4>
+    @Html.ActionLink("Voltar", "Index")
+    }
+    else
+    {
 
-<h3>Tem certeza que deseja excluir este registro?</h3><br/><br/>
-<fieldset>
-    <legend>Cliente</legend>
+    <h3>Tem certeza que deseja excluir este registro?</h3><br/><br/>
+    <fieldset>
+        <legend>Cliente</legend>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Cidade.Nome):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Cidade.Nome)
-    </div><br/>
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Cidade.Nome):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Cidade.Nome)
+        </div><br/>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Logradouro):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Logradouro)
-    </div><br/>
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Logradouro):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Logradouro)
+        </div><br/>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Numero):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Numero)
-    </div><br/>
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Numero):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Numero)
+        </div><br/>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Cpf):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Cpf)
-    </div><br/>
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Cpf):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Cpf)
+        </div><br/>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Celular):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Celular)
-    </div><br/>
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Celular):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Celular)
+        </div><br/>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Telefone):
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Telefone)
-    </div><br/>
-</fieldset>
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    <p>
-        <input type="submit" value="Excluir" /> |
-        @Html.ActionLink("Voltar", "Index")
-    </p>
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Telefone):
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Telefone)
+        </div><br/>
+    </fieldset>
+        using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+            <p>
+                <input type="submit" value="Excluir" /> |
+                @Html.ActionLink("Voltar", "Index")
+            </p>
+    }
 }

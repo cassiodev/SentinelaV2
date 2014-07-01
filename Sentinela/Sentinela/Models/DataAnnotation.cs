@@ -8,6 +8,39 @@ using System.Web.Mvc;
 
 namespace Sentinela.Models
 {
+    public class UsuarioModelView
+    {
+        public int PessoaId { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Email obrigatório")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Email inválido")]
+        public string Email { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Nome obrigatório")]
+        [StringLength(60, MinimumLength = 2, ErrorMessage = "Nome muito longo ou muito curto")]
+        public string Nome { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Senha é obrigatório")]
+        [DataType(DataType.Password, ErrorMessage = "Digite uma senha válida")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "A senha deverá possuir no minimo 6 e no máximo 100 caracteres.")]
+        public string Senha { get; set; }
+
+        [Display(Name="Confirma Senha")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Senha é obrigatório")]
+        [DataType(DataType.Password, ErrorMessage = "Digite uma senha válida")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "A senha deverá possuir no minimo 6 e no máximo 100 caracteres.")]
+        [Compare("Senha", ErrorMessage="Campo senha e confirma senha devem ser iguais")]
+        public string ConfirmaSenha { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Login é obrigatório")]
+        [StringLength(40, MinimumLength = 6, ErrorMessage = "O login deverá possuir no minimo 6 e no máximo 40 caracteres.")]
+        public string Login { get; set; }
+
+        public int UsuarioId { get; set; }
+
+        public bool Ativo { get; set; }
+    }
+
+
+
     [MetadataType(typeof(UsuarioMetaData))]
     public partial class Usuario
     {
@@ -24,9 +57,12 @@ namespace Sentinela.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Login é obrigatório")]
         [StringLength(40, MinimumLength = 6, ErrorMessage = "O login deverá possuir no minimo 6 e no máximo 40 caracteres.")]
         public string Login { get; set; }
+
+
         
     }
     [MetadataType(typeof(PessoaMetaData))]
+
     public partial class Pessoa
     {
 
@@ -227,9 +263,9 @@ namespace Sentinela.Models
         public int TipoEventoId { get; set; }
 
 
-        [Required(ErrorMessage = "Campo Data é obrigatorio")]
-        [DataType(DataType.Date, ErrorMessage="O valor deve ser uma data")]
-        public System.DateTime DataEvento { get; set; }
+        //[Required(ErrorMessage = "Campo Data é obrigatorio")]
+        //[DataType(DataType.Date, ErrorMessage="O valor deve ser uma data")]
+        //public System.DateTime DataEvento { get; set; }
 
         [Required(ErrorMessage = "Campo convidados é obrigatorio")]
         [Range(0, int.MaxValue)]

@@ -1,4 +1,4 @@
-﻿@model Sentinela.Models.Usuario
+﻿@model Sentinela.Models.UsuarioModelView
 
 @{
     ViewBag.Title = "Create";
@@ -14,29 +14,22 @@
         <legend>Usuario</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Pessoa.Nome)
+            @Html.LabelFor(model => model.Nome)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Pessoa.Nome)
-            @Html.ValidationMessageFor(model => model.Pessoa.Nome)
+            @Html.EditorFor(model => model.Nome)
+            @Html.ValidationMessageFor(model => model.Nome)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Pessoa.Email)
+            @Html.LabelFor(model => model.Email)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Pessoa.Email)
-            @Html.ValidationMessageFor(model => model.Pessoa.Email)
+            @Html.EditorFor(model => model.Email)
+            @Html.ValidationMessageFor(model => model.Email)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Senha)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Senha)
-            @Html.ValidationMessageFor(model => model.Senha)
-        </div>
-
+        
         <div class="editor-label">
             @Html.LabelFor(model => model.Login)
         </div>
@@ -44,7 +37,20 @@
             @Html.EditorFor(model => model.Login)
             @Html.ValidationMessageFor(model => model.Login)
         </div>
-
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Senha)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Senha)
+            @Html.ValidationMessageFor(model => model.Senha)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ConfirmaSenha)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ConfirmaSenha)
+            @Html.ValidationMessageFor(model => model.ConfirmaSenha)
+        </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.Ativo)
         </div>

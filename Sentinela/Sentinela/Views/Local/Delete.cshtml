@@ -5,7 +5,7 @@
 }
 
 <h2>Excluir Local</h2>
-@if (Model.Orcamento.Any() || Model.Evento.Any())
+@if (Model.Evento.Any() || Model.Agenda.Any())
 {
     <h4>Não é possível excluir este local, pois está vinculado com algum orçamento ou evento.</h4>
     @Html.ActionLink("Voltar", "Index")
