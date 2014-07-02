@@ -7,7 +7,7 @@
 
     <fieldset>
 
-        @Html.HiddenFor(m => m.EventoId)
+        @Html.HiddenFor(m => m.AgendaId)
 
         <div class="editor-label">
             @Html.LabelFor(model => model.LocalId, "Local")
@@ -16,7 +16,7 @@
             <select name="LocalId" id="LocalEvento">
                 @foreach (var local in ViewBag.Local)
                 {
-                    <option value="@local.LocalId" selected="@String.Format("{0}", Model.LocalId == local.LocalId ? "selected" : "")"> @local.Nome</option>
+                    <option value="@local.LocalId" @String.Format("{0}", Model.LocalId == local.LocalId ? "selected" : "")> @local.Nome</option>
                 }
             </select>
         </div>

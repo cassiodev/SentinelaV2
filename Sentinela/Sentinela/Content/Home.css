@@ -16,3 +16,9 @@
             max-width: 800px !important;
         }
 }
+
+@media print{
+    .menu-header{
+        display: none;
+    }
+}

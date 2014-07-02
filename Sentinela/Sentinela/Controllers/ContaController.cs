@@ -37,6 +37,7 @@ namespace Sentinela.Controllers
                 }
             }
 
+            ViewBag.returnUrl = returnUrl;
             ModelState.AddModelError("", "Login ou senha incorretos.");
             return View(model);
         }

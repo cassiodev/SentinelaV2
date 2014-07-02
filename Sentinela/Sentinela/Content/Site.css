@@ -3,6 +3,11 @@
     margin: 0;
     padding: 0;
 }
+@media print{
+    .menu-header{
+        display: none;
+    }
+}
 
 .display-label{
     font-weight: bold;

@@ -82,6 +82,21 @@ namespace Sentinela.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Evento evento, IEnumerable<int> Adicionais, FormCollection form)
         {
+            var capLocal = _Contexto.Local.Find(evento.LocalId).Capacidade;
+
+            if (!evento.Criancas.HasValue)
+                evento.Criancas = 0;
+
+            if (capLocal < evento.Convidados + evento.Criancas)
+            {
+                ModelState.AddModelError("Convidados", "Capacidade máxima do local: " + capLocal);
+                ModelState.AddModelError("Criancas", "Capacidade máxima do local: " + capLocal);
+            }
+            if (evento.Convidados + evento.Criancas == 0)
+            {
+                ModelState.AddModelError("Convidados", "Mínimo 1 convidado");
+            }
+
             var _evento = _Contexto.Evento.Find(evento.EventoId);
 
             if (ModelState.IsValid && _evento != null)

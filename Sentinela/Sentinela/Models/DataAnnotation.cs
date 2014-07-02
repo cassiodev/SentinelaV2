@@ -223,7 +223,7 @@ namespace Sentinela.Models
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "Campo tamanho é obrigatorio")]
-        [Range(0, double.MaxValue)]
+        [Range(0, 999999)]
         public decimal Tamanho { get; set; }
 
         [Required(AllowEmptyStrings = false,ErrorMessage = "Campo logradouro é obrigatorio")]
@@ -263,9 +263,10 @@ namespace Sentinela.Models
         public int TipoEventoId { get; set; }
 
 
-        //[Required(ErrorMessage = "Campo Data é obrigatorio")]
-        //[DataType(DataType.Date, ErrorMessage="O valor deve ser uma data")]
-        //public System.DateTime DataEvento { get; set; }
+        [Required(ErrorMessage = "Campo Data é obrigatorio")]
+        [DataType(DataType.Date, ErrorMessage = "O valor deve ser uma data")]
+        [DisplayFormat(ApplyFormatInEditMode = true,DataFormatString ="{0:dd.MM.yyyy}")]
+        public System.DateTime DataEvento { get; set; }
 
         [Required(ErrorMessage = "Campo convidados é obrigatorio")]
         [Range(0, int.MaxValue)]

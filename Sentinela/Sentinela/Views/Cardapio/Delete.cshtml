@@ -8,7 +8,7 @@
 
 @if (Model.CardapioRefeicaoItem.Any() || Model.Imagem.Any() || Model.Evento.Any())
 {
-    <h4>Não é possivel excluir este cardápio pois existem Refeições ou Orçamentos vinculados á ele.</h4>
+    <h4>Não é possivel excluir este cardápio pois existem Refeições ou Eventos vinculados á ele.</h4>
     <p>
         @Html.ActionLink("Voltar", "Index")
     </p>   

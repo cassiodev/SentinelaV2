@@ -832,6 +832,7 @@
     <Content Include="Scripts\jqueryui\css\images\ui-icons_ffd27a_256x240.png" />
     <Content Include="Scripts\jqueryui\css\images\ui-icons_ffffff_256x240.png" />
     <Content Include="Scripts\jqueryui\css\jquery-ui-1.10.4.custom.min.css" />
+    <Content Include="Scripts\jqueryui\js\jquery-ui-1.10.4.custom.js" />
     <Content Include="Scripts\jqueryui\js\jquery-ui-1.10.4.custom.min.js" />
     <Content Include="Scripts\meiomask.js" />
     <Content Include="Scripts\knockout-2.2.0.debug.js" />

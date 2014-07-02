@@ -4,10 +4,10 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Excluir</h2>
+<h2>Excluir Tipo de Evento</h2>
 @if (Model.Evento.Any() || Model.Agenda.Any())
 {
-    <h4>Não é possível excluir este tipo, pois ele está vinculado com um ou mais eventos ou orçamentos</h4>
+    <h4>Não é possível excluir este tipo, pois ele está vinculado com um ou mais eventos ou agendamentos</h4>
     <p>
         @Html.ActionLink("Voltar", "Index")
     </p>

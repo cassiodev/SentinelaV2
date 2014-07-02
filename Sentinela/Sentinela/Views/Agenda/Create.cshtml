@@ -13,7 +13,7 @@
             <select name="LocalId" id="LocalEvento">
                 @foreach (var local in ViewBag.Local)
                 {
-                    <option value="@local.LocalId" @String.Format("{0}", Model.LocalId == local.LocalId ? "selected=selected"    : "")> @local.Nome</option>
+                    <option value="@local.LocalId" @String.Format("{0}", Model.LocalId == local.LocalId ? "selected" : "")> @local.Nome</option>
                 }
             </select>
         </div>

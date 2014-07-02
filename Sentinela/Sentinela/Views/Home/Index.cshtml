@@ -175,7 +175,7 @@
         <div>
             <div class="form-group">
                 @Html.LabelFor(m => m.DataEvento, "Data Pretendida")
-                @Html.TextBoxFor(m => m.DataEvento, new { @class = "data" })
+                @Html.TextBox("DataEvento", Model == null ? "" : Model.DataEvento.ToShortDateString(), new { @class = "data",  @data_val_required = "O campo DataEvento é obrigatório." })
                 @Html.ValidationMessageFor(model => model.DataEvento)
             </div>
             <div class="form-group">
@@ -303,7 +303,12 @@
     <script src="~/Scripts/jqueryui/js/jquery-ui-1.10.4.custom.min.js"></script>
     <script src="~/Scripts/meiomask.js"></script>
 
-    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/globalize/globalize.js"></script>
+    <script src="~/Scripts/globalize/cultures/globalize.culture.pt-BR.js"></script>
+
+
     @if (TempData["message"] != null)
     {
         <script type="text/javascript">
@@ -416,8 +421,10 @@
             $("#Cliente_Logradouro").css("display", "inline-block").css("width", "79%");
 
             $("#Cliente_Numero").css("display", "inline-block").css("width", "20%");
-        });
 
+
+        });
+        
     </script>
 
 

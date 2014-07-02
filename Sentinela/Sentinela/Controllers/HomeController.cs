@@ -27,14 +27,22 @@ namespace Sentinela.Controllers
             evento.Cliente.Telefone = evento.Cliente.Telefone.RemoveMaskTel();
             evento.Cliente.Celular = evento.Cliente.Celular.RemoveMaskTel();
 
-
-            var capLocal = _Contexto.Local.Find(evento.LocalId).Capacidade;
-
-            if (capLocal < evento.Convidados + evento.Criancas)
+            if (evento.LocalId != 0)
             {
-                ModelState.AddModelError("Convidados", "Capacidade máxima do local: " + capLocal);
-                ModelState.AddModelError("Criancas", "Capacidade máxima do local: " + capLocal);
-            }            
+                var capLocal = _Contexto.Local.Find(evento.LocalId).Capacidade;
+
+                if (capLocal < evento.Convidados + evento.Criancas)
+                {
+                    ModelState.AddModelError("Convidados", "Capacidade máxima do local: " + capLocal);
+                    ModelState.AddModelError("Criancas", "Capacidade máxima do local: " + capLocal);
+                }
+                if (evento.Convidados + evento.Criancas == 0)
+                {
+                    ModelState.AddModelError("Convidados", "Mínimo 1 convidado");
+                }    
+            }
+
+            
 
             if (ModelState.IsValid)
             {

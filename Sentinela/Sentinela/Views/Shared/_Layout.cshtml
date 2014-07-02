@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <style>
-
+            
             #loader {
                 z-index: 9999;
                 width: 100%;
@@ -52,7 +52,7 @@
     </head>
     <body>
         <header>
-            <div class="content-wrapper">
+            <div class="content-wrapper menu-header">
                 <div class="float-left">
                     <p class="site-title">@Html.ActionLink("Área Admin", "Index", "Admin")</p>
                 </div>
@@ -118,13 +118,13 @@
                 @*@Scripts.Render("~/bundles/jquery")*@
         <script src="~/Scripts/jquery.js"></script>
         @Scripts.Render("~/bundles/modernizr")
+        <script src="~/Scripts/jqueryui/js/jquery-ui-1.10.4.custom.js"></script>
 
         <script src="~/Scripts/globalize/globalize.js"></script>
-        <script src="~/Scripts/globalize/cultures/globalize.culture.@(System.Threading.Thread.CurrentThread.CurrentCulture.Name).js"></script>
+        <script src="~/Scripts/globalize/cultures/globalize.culture.globalize.culture.pt-BR.js"></script>
 
         <script src="~/Scripts/bootstrap.min.js"></script>
         <script src="~/Scripts/bootbox.js"></script>
-        <script src="~/Scripts/jqueryui/js/jquery-ui-1.10.4.custom.min.js"></script>
         <script src="~/Scripts/meiomask.js"></script>
         @RenderSection("scripts", required: false)
         @if (TempData["message"] != null)
@@ -179,7 +179,16 @@
             $('.integer').setMask('int');
             $('.decimal').setMask('moeda');
             $('input[type=tel]').setMask('phone');
+            Globalize.culture = Globalize.culture("pt-BR");
+            $.culture = Globalize.culture("pt-BR");
+            $.validator.methods.date = function (value, element) {
+                //This is not ideal but Chrome passes dates through in ISO1901 format regardless of locale
+                //and despite displaying in the specified format.
 
+                return this.optional(element)
+                    || Globalize.parseDate(value, "dd/MM/yyyy", "pt-BR")
+                    || Globalize.parseDate(value, "yyyy-mm-dd");
+            }
         </script>
         <div id="loader"><div class="icon"></div><div class="msg">Carregando...</div></div>
     </body>

@@ -53,8 +53,8 @@
 </fieldset>
 
 <fieldset>
-    <legend>Orçamentos Cadastrados</legend>
-    <h2>Orçamentos Cadastrados</h2>
+    <legend>Eventos Cadastrados</legend>
+    <h2>Eventos Cadastrados</h2>
     @foreach (var item in Model.Evento.OrderBy(o => o.DataCadastro))
     {
         <a style="display: inline-block; border: 1px solid black; color:black; text-decoration: none" href="/Evento/Details/@item.EventoId">
